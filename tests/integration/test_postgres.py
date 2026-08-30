@@ -35,4 +35,4 @@ async def test_postgres_has_locked_schema() -> None:
         await engine.dispose()
 
     assert set(SCHEMAS).issubset(schemas)
-    assert revision == "0001_locked_schema"
+    assert revision == "0002_poc_query_indexes"

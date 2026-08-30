@@ -41,7 +41,11 @@ export function formatDate(value) {
   if (!value) return "Unknown";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "Unknown";
-  return date.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
+  return `${date.toLocaleString("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "UTC",
+  })} UTC`;
 }
 
 export function provenanceLine(item) {

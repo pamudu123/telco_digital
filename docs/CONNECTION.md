@@ -18,7 +18,10 @@ PostgreSQL is the system of record. Neo4j is a rebuildable projection. Domain co
 | Neo4j | Relationship projection (Bolt) | Docker Compose `:7687` / Browser `:7474` | Neo4j Aura or self-hosted (not Supabase) |
 | App env | `DATABASE_URL`, Neo4j credentials | `.env` from `.env.example` | Same vars; secrets in host / CI / Supabase |
 
-Optional later: FastAPI (`poetry install --extras api`), ML (`--extras ml`). No LLM until Milestone 12.
+The early read-only showcase already uses FastAPI. ML remains optional
+(`--extras ml`), and no LLM is connected before its accepted capability.
+For the single-project Vercel package, see
+[VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md).
 
 An early read-only capability-00 showcase can be served with
 `SHOWCASE_ENABLED=true` and `poetry run uvicorn telco_digital.api.app:app --reload`.
@@ -112,6 +115,7 @@ Copy `.env.example` → `.env` and fill:
 | Variable | Required | Description |
 |---|---|---|
 | `DATABASE_URL` | Yes | `postgresql+asyncpg://…` — local Docker or Supabase |
+| `DATABASE_POOL_MODE` | Yes | `direct` / `session`; use `transaction` for the Vercel Supabase pooler |
 | `NEO4J_URI` | Yes (for graph) | `bolt://…` or `neo4j+s://…` |
 | `NEO4J_USER` | Yes (for graph) | Usually `neo4j` |
 | `NEO4J_PASSWORD` | Yes (for graph) | Match Compose / Aura |
@@ -163,7 +167,8 @@ Predictions stored as Neo4j “facts”                   # forbidden by locked 
 
 ## Related docs
 
-- [SUPABASE-CONNECTION.md](./SUPABASE-CONNECTION.md) — hosted PostgreSQL setup and verification  
+- [SUPABASE-CONNECTION.md](./SUPABASE-CONNECTION.md) — hosted PostgreSQL setup and verification
+- [VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md) — one Vercel project for frontend and FastAPI
 - [DATA-MODEL.md](./DATA-MODEL.md) — schemas and tables  
 - [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md) — step 62 Supabase deploy  
 - [TESTING.md](./TESTING.md) — when Postgres/Neo4j are required for tests  

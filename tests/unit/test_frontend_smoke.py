@@ -25,6 +25,12 @@ def test_frontend_does_not_assign_untrusted_inner_html() -> None:
         assert "innerHTML" not in source
 
 
+def test_frontend_renders_temporal_provenance_in_utc() -> None:
+    dom_js = (ROOT / "js" / "dom.js").read_text(encoding="utf-8")
+    assert 'timeZone: "UTC"' in dom_js
+    assert "} UTC`" in dom_js
+
+
 def test_nav_distinguishes_live_and_planned_pages() -> None:
     app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
     assert '["journey", "Journey and Event Memory", "planned"]' in app_js

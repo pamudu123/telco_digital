@@ -4,8 +4,9 @@ This project uses Supabase as hosted PostgreSQL. It does **not** use the
 `supabase` Python client as its domain data layer.
 
 PostgreSQL remains the source of truth, and the existing SQLAlchemy, asyncpg,
-Alembic, repository, and unit-of-work stack remains unchanged. FastAPI will be
-added later as a thin API adapter over application services.
+Alembic, repository, and unit-of-work stack remains unchanged. The early
+read-only showcase uses FastAPI as a thin adapter; this does not mark the full
+API capability complete.
 
 See [CONNECTION.md](./CONNECTION.md) for the complete local, PostgreSQL, and
 Neo4j service overview. The architectural rules are defined in
@@ -56,8 +57,8 @@ in `.env.example`, documentation, source code, chat logs, or commits.
 | Workload | Connection | Guidance |
 |---|---|---|
 | Alembic and administrative scripts | Direct, port `5432` | Required default for schema migration and long-lived DDL |
-| Initial POC runtime | Direct, port `5432` | Simplest option while concurrency is low |
-| Later serverless or high-concurrency runtime | Supavisor pooler, commonly port `6543` | Use the exact dashboard pooler URI and validate asyncpg behavior |
+| Local initial POC runtime | Direct, port `5432` | Simplest option while concurrency is low |
+| Vercel serverless runtime | Supavisor transaction pooler, port `6543` | Set `DATABASE_POOL_MODE=transaction`; use the exact dashboard URI |
 
 Do not use a transaction-pooler URI for Alembic. If runtime pooling is added
 later, keep a separate direct migration secret in the deployment environment.
@@ -104,8 +105,8 @@ python -m poetry run pytest -q
 python -m poetry run ruff check .
 ```
 
-`alembic current` must report `0001_locked_schema (head)`. In Supabase, confirm
-that `public.alembic_version` contains `0001_locked_schema` and that the locked
+`alembic current` must report `0002_poc_query_indexes (head)`. In Supabase, confirm
+that `public.alembic_version` contains `0002_poc_query_indexes` and that the locked
 internal schemas exist.
 
 ## Security rules
@@ -131,3 +132,4 @@ internal schemas exist.
 | Alembic fails through port `6543` | Switch to the direct port `5432` URI |
 | Pooler reports tenant or user not found | Use the exact pooler hostname and username shown by Supabase |
 | Integration tests are skipped | Ensure `DATABASE_URL` is available to the test process and contains no placeholder |
+| Vercel transaction-pool errors | Use the dashboard transaction-pooler URI and set `DATABASE_POOL_MODE=transaction` |

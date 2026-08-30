@@ -1,9 +1,12 @@
 from datetime import datetime
 
 import pytest
+from dotenv import load_dotenv
 
 from telco_digital.application.clock import FixedClock
 from telco_digital.infrastructure.memory import InMemoryUnitOfWork
+
+load_dotenv()
 
 
 def utc(value: str) -> datetime:

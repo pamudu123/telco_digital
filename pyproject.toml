@@ -16,6 +16,8 @@ dependencies = [
     "pydantic-settings (>=2.7.0,<3.0.0)",
     "python-dotenv (>=1.0.1,<2.0.0)",
     "neo4j (>=5.27.0,<7.0.0)",
+    "fastapi (>=0.115.0,<1.0.0)",
+    "uvicorn[standard] (>=0.34.0,<1.0.0)",
 ]
 
 [project.optional-dependencies]
@@ -26,8 +28,6 @@ dev = [
     "httpx (>=0.28.0,<1.0.0)",
 ]
 api = [
-    "fastapi (>=0.115.0,<1.0.0)",
-    "uvicorn[standard] (>=0.34.0,<1.0.0)",
     "httpx (>=0.28.0,<1.0.0)",
 ]
 ml = [
@@ -45,6 +45,9 @@ notebooks = [
 
 [tool.poetry]
 packages = [{include = "telco_digital", from = "src"}]
+
+[tool.vercel]
+entrypoint = "src.telco_digital.api.app:app"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

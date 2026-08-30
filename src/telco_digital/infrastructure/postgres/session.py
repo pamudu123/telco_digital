@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 from sqlalchemy.sql import text
 
 from telco_digital.config import Settings, get_settings
@@ -13,7 +15,17 @@ from telco_digital.config import Settings, get_settings
 
 def create_engine(settings: Settings | None = None) -> AsyncEngine:
     settings = settings or get_settings()
-    return create_async_engine(settings.database_url, pool_pre_ping=True)
+    database_url = make_url(settings.database_url)
+    engine_options: dict = {"pool_pre_ping": True}
+
+    if settings.database_pool_mode == "transaction":
+        database_url = database_url.update_query_dict({"prepared_statement_cache_size": "0"})
+        engine_options.update(
+            connect_args={"statement_cache_size": 0},
+            poolclass=NullPool,
+        )
+
+    return create_async_engine(database_url, **engine_options)
 
 
 def create_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:

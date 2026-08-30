@@ -12,6 +12,7 @@
 | [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md) | Coding order 01–62 |
 | [TESTING.md](./TESTING.md) | Unit / integration / scenario tests |
 | [CONNECTION.md](./CONNECTION.md) | Local Docker, Supabase Postgres, Neo4j / Aura env setup |
+| [VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md) | Single-project deployment for the static UI and FastAPI backend |
 | [POC-UI.md](./POC-UI.md) | Intelligence Showcase UI for the existing Omobio/NG applications |
 | [EXISTING-APP.md](./EXISTING-APP.md) | Mapping from shared-intelligence capabilities to existing Omobio applications |
 | [features/README.md](./features/README.md) | Verified capability status, evidence and implementation documents |

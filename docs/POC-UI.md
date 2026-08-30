@@ -310,19 +310,24 @@ Neo4j must never receive arbitrary direct writes from the UI.
 
 ### POC deployment
 
-The static frontend can be deployed to Vercel. FastAPI can be deployed as a
-separate Vercel Python project, while Supabase continues to host PostgreSQL and
-Neo4j Aura hosts the graph projection:
+The frontend and FastAPI backend are packaged as one Vercel project and share a
+single origin. Supabase continues to host PostgreSQL and Neo4j Aura hosts the
+graph projection:
 
 ```text
-Vercel static frontend -> Vercel FastAPI
-                                  |
-                                  +--> Supabase PostgreSQL
-                                  +--> Neo4j Aura
+One Vercel FastAPI project
+  +--> /            HTML / CSS / JavaScript
+  +--> /api/v1/*    FastAPI
+                         |
+                         +--> Supabase PostgreSQL
+                         +--> Neo4j Aura
 ```
 
-Using separate frontend and API deployments keeps credentials server-side and
-allows the UI to remain a simple collection of static files.
+The root `app.py` is Vercel's entrypoint. FastAPI serves the existing
+`frontend/` directory, so `API_BASE_URL=/api/v1` remains same-origin and CORS is
+not required for the deployed UI. See
+[VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md) for environment and migration
+instructions.
 
 ## 8. Delivery sequence
 

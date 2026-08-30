@@ -21,3 +21,12 @@ poetry run pytest
 ```
 
 If Docker is not running, `pytest` still covers the temporal core against an in-memory unit of work.
+
+## Single-project Vercel POC
+
+The root `app.py` deploys the FastAPI read boundary and framework-free frontend
+as one Vercel project and one origin. Use the Supabase transaction pooler for
+Vercel runtime traffic and the direct database connection for Alembic.
+
+See [docs/VERCEL-DEPLOYMENT.md](docs/VERCEL-DEPLOYMENT.md) for environment,
+migration, deployment and verification instructions.
