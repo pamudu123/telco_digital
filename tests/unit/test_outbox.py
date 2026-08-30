@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 import pytest
+from tests.helpers import utc
 
 from telco_digital.application.commands.commands import (
     CreateCustomerCommand,
@@ -9,7 +10,6 @@ from telco_digital.application.commands.commands import (
 from telco_digital.application.services.customer import create_customer
 from telco_digital.application.services.recharge import record_recharge
 from telco_digital.domain.enums import EventType, OutboxStatus
-from tests.helpers import utc
 
 
 @pytest.mark.asyncio

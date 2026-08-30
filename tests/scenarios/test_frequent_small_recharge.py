@@ -3,10 +3,10 @@
 from decimal import Decimal
 
 import pytest
+from tests.helpers import utc
 
 from telco_digital.application.seed import seed_demo_customers
 from telco_digital.domain.enums import WarningType
-from tests.helpers import utc
 
 
 @pytest.mark.scenario

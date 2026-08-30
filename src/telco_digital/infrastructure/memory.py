@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from datetime import datetime
 from decimal import Decimal
-from typing import Iterable
 from uuid import UUID
 
 from telco_digital.domain.entities import (

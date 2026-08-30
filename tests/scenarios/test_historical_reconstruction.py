@@ -3,12 +3,12 @@
 from decimal import Decimal
 
 import pytest
+from tests.helpers import utc
 
 from telco_digital.application.commands.commands import GetCustomerStateQuery, GetTimelineQuery
 from telco_digital.application.seed import seed_demo_customers
 from telco_digital.application.services.customer_state import get_customer_state
 from telco_digital.application.services.timeline import get_timeline
-from tests.helpers import utc
 
 
 @pytest.mark.scenario

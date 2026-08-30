@@ -3,6 +3,7 @@ the event remains stored and IMPOSSIBLE_TRAVEL is generated.
 """
 
 import pytest
+from tests.helpers import utc
 
 from telco_digital.application.commands.commands import (
     CreateCustomerCommand,
@@ -13,7 +14,6 @@ from telco_digital.application.services.customer import create_customer
 from telco_digital.application.services.timeline import get_timeline
 from telco_digital.application.services.travel import record_travel
 from telco_digital.domain.enums import EventType, WarningType
-from tests.helpers import utc
 
 
 @pytest.mark.scenario

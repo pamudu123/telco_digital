@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import uuid4
 
-from telco_digital.application.clock import Clock, SystemClock
+from telco_digital.application.clock import Clock
 from telco_digital.application.unit_of_work.protocol import UnitOfWork
 from telco_digital.domain.entities import ActivityEvent, Customer, OutboxEvent, Warning
 from telco_digital.domain.enums import EventType, OutboxStatus
