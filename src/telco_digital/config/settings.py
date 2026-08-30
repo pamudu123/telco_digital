@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -9,6 +10,16 @@ class Settings(BaseSettings):
     neo4j_user: str = "neo4j"
     neo4j_password: str = "password"
     log_level: str = "INFO"
+    cors_origins: list[str] = ["http://localhost:8000", "http://127.0.0.1:8000"]
+    api_environment: str = "local"
+    showcase_enabled: bool = True
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def split_cors_origins(cls, value: object) -> object:
+        if isinstance(value, str):
+            return [part.strip() for part in value.split(",") if part.strip()]
+        return value
 
 
 def get_settings() -> Settings:

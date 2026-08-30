@@ -32,6 +32,31 @@ BACKGROUND_PERSONAS = (
     "WALLET_ACTIVE",
     "STREAMING_HEAVY",
 )
+SEED_PERSONAS = {
+    "U001": "FREQUENT_TRAVELLER",
+    "U002": "PRICE_SENSITIVE",
+    "U003": "STABLE_HIGH_VALUE",
+    "U004": "DECLINING_ENGAGEMENT",
+    "U005": "WALLET_FRAUD_CLUSTER",
+}
+GOLDEN_CUSTOMER_REFS = tuple(f"U{index:03d}" for index in range(1, 11))
+
+
+def persona_for_ref(customer_ref: str) -> str | None:
+    """Map a customer_ref to the documented generator/seed persona code."""
+    if customer_ref in SEED_PERSONAS:
+        return SEED_PERSONAS[customer_ref]
+    if customer_ref in GOLDEN_PERSONAS:
+        return GOLDEN_PERSONAS[customer_ref]
+    if customer_ref.startswith("BG") and customer_ref[2:].isdigit():
+        sequence = int(customer_ref[2:])
+        if sequence >= 1:
+            return BACKGROUND_PERSONAS[(sequence - 1) % len(BACKGROUND_PERSONAS)]
+    return None
+
+
+def expected_generated_row_count(background_customers: int = 1000) -> int:
+    return sum(len(rows) for rows in build_dataset(background_customers).rows.values())
 
 
 def deterministic_id(kind: str, key: str) -> UUID:

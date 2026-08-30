@@ -115,8 +115,13 @@ python -m poetry run python scripts/generate_poc_dataset.py reset
 
 - Automatic Neo4j projection of the new outbox records; that belongs to capability 01.
 - Temporal/graph features, event memory, behavior models, churn, recommendations,
-  fraud scoring, forecasting, twins, decisioning, Copilot, API, and UI.
+  fraud scoring, forecasting, twins, decisioning, Copilot, complete FastAPI, and
+  the POC simulator.
 - A general production data-ingestion or orchestration platform.
+
+An early read-only UI showcase for this dataset is a sequencing exception
+documented in [00-read-only-showcase.md](./00-read-only-showcase.md). It does
+not complete capabilities 12 or 13.
 
 ## 11. POC limitations
 

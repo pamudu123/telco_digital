@@ -20,6 +20,11 @@ PostgreSQL is the system of record. Neo4j is a rebuildable projection. Domain co
 
 Optional later: FastAPI (`poetry install --extras api`), ML (`--extras ml`). No LLM until Milestone 12.
 
+An early read-only capability-00 showcase can be served with
+`SHOWCASE_ENABLED=true` and `poetry run uvicorn telco_digital.api.app:app --reload`.
+That slice does not complete capability 12. See
+[features/00-read-only-showcase.md](./features/00-read-only-showcase.md).
+
 ---
 
 ## 1. Local (Docker Compose)

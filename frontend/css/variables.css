@@ -1,0 +1,43 @@
+:root {
+  --navy: #001529;
+  --navy-hover: #0a2540;
+  --primary: #1890ff;
+  --primary-dark: #096dd9;
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #1f1f1f;
+  --muted: #8c8c8c;
+  --border: #e8e8e8;
+  --fact: #1890ff;
+  --fact-bg: #e6f7ff;
+  --planned: #d46b08;
+  --planned-bg: #fff7e6;
+  --unknown: #8c8c8c;
+  --unknown-bg: #f5f5f5;
+  --success: #389e0d;
+  --success-bg: #f6ffed;
+  --danger: #cf1322;
+  --danger-bg: #fff1f0;
+  --graph: #722ed1;
+  --graph-bg: #f9f0ff;
+  --derived: #d48806;
+  --prediction: #d4380d;
+  --recommend: #389e0d;
+  --shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  --radius: 8px;
+  --sidebar-width: 248px;
+  --header-height: 56px;
+  --banner-height: 40px;
+  --font: "Segoe UI", "Inter", "Roboto", system-ui, sans-serif;
+  --focus: 2px solid #1890ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

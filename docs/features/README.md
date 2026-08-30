@@ -26,3 +26,7 @@ must not be interpreted as implemented behavior.
 The planned presentation of these capabilities inside the existing Omobio/NG
 application family is documented in [POC-UI.md](../POC-UI.md). UI labels must
 use this status table and must not present planned capabilities as live output.
+
+An early **read-only showcase** for capability-00 evidence is documented in
+[00-read-only-showcase.md](./00-read-only-showcase.md). That slice does not
+change the status of capabilities 12 or 13.

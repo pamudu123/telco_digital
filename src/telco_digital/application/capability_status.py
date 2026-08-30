@@ -1,0 +1,379 @@
+"""Structured POC capability status. Markdown docs must match this manifest."""
+
+from __future__ import annotations
+
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
+
+CapabilityStatusValue = Literal["POC complete", "In progress", "Not started", "Deferred"]
+
+
+class CapabilityRecord(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    number: str
+    name: str
+    status: CapabilityStatusValue
+    document: str | None = None
+    demonstrated_scenario: str
+    consuming_applications: tuple[str, ...] = ()
+    evidence: tuple[str, ...] = ()
+    implemented: tuple[str, ...] = ()
+    not_implemented: tuple[str, ...] = ()
+    limitations: tuple[str, ...] = ()
+
+
+class CapabilityManifest(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    capabilities: tuple[CapabilityRecord, ...]
+    notes: str = (
+        "POC complete means the documented scenario works in the shared demo "
+        "environment; it does not mean production ready. An early read-only "
+        "showcase may present capability-00 facts without completing FastAPI "
+        "or the simulator."
+    )
+
+
+CAPABILITIES: tuple[CapabilityRecord, ...] = (
+    CapabilityRecord(
+        number="00",
+        name="Expanded POC dataset",
+        status="POC complete",
+        document="docs/features/00-poc-dataset.md",
+        demonstrated_scenario=(
+            "Deterministic cross-domain dataset: U001–U005 preserved, U006–U010 "
+            "added, 1,000 background customers, facts with matching activity and outbox events."
+        ),
+        consuming_applications=(
+            "Selfcare",
+            "Loyalty",
+            "adReach",
+            "Viber",
+            "Mobile Money",
+            "SFA",
+            "Lottery",
+        ),
+        evidence=(
+            "docs/features/00-poc-dataset.md",
+            "notebooks/00_dataset/00_dataset.ipynb",
+            "notebooks/00_dataset/outputs/metrics.json",
+            "notebooks/00_dataset/outputs/tables/",
+            "notebooks/00_dataset/outputs/plots/",
+        ),
+        implemented=(
+            "Deterministic golden and background population generation",
+            "Cross-domain facts with activity/outbox parity",
+            "Idempotent load, dataset-owned reset, validation, notebook, and plots",
+        ),
+        not_implemented=(
+            "Neo4j projection of the expanded outbox",
+            "Features, event memory, models, twins, decisions, Copilot",
+            "Complete FastAPI surface and POC simulator",
+        ),
+        limitations=(
+            "Synthetic, scenario-shaped distributions",
+            "Not a production-scale or certified dataset",
+        ),
+    ),
+    CapabilityRecord(
+        number="01",
+        name="Outbox and Neo4j projection",
+        status="Not started",
+        demonstrated_scenario="PostgreSQL outbox projected into a rebuildable Neo4j graph.",
+        consuming_applications=("Mobile Money", "SFA", "Lottery"),
+        not_implemented=("Outbox worker completion for the expanded dataset", "Graph rebuild"),
+        limitations=("Graph output must not be treated as source of truth",),
+    ),
+    CapabilityRecord(
+        number="02",
+        name="Temporal and graph features",
+        status="Not started",
+        demonstrated_scenario="Time-aware and graph features derived from recorded facts.",
+        consuming_applications=("Selfcare", "Loyalty", "Mobile Money", "SFA"),
+        not_implemented=("Feature snapshots", "Graph features"),
+    ),
+    CapabilityRecord(
+        number="03",
+        name="Event memory",
+        status="Not started",
+        demonstrated_scenario="Similar historical episodes retrieved for a current situation.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "SFA"),
+        not_implemented=("Episode matching", "CustomerContext"),
+    ),
+    CapabilityRecord(
+        number="04",
+        name="Behaviour intelligence",
+        status="Not started",
+        demonstrated_scenario="Derived behaviour traits from observed history.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
+        not_implemented=("Behaviour model", "Trait store"),
+    ),
+    CapabilityRecord(
+        number="05",
+        name="Churn prediction",
+        status="Not started",
+        demonstrated_scenario="Churn risk with drivers for declining-engagement customers.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber"),
+        not_implemented=("Churn model", "Prediction records"),
+    ),
+    CapabilityRecord(
+        number="06",
+        name="Recommendations and uncertainty",
+        status="Not started",
+        demonstrated_scenario="Ranked offers with unknowns and confidence.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "SFA"),
+        not_implemented=("Candidate generation", "Uncertainty handling"),
+    ),
+    CapabilityRecord(
+        number="07",
+        name="Graph fraud",
+        status="Not started",
+        demonstrated_scenario="Shared-device and transfer patterns scored from the graph.",
+        consuming_applications=("Mobile Money", "Loyalty", "SFA", "Lottery"),
+        not_implemented=("Fraud features", "Fraud scorer"),
+    ),
+    CapabilityRecord(
+        number="08",
+        name="SFA forecasting",
+        status="Not started",
+        demonstrated_scenario="Retailer demand forecast and stockout warning.",
+        consuming_applications=("SFA",),
+        not_implemented=("Forecast model", "Retailer twin"),
+    ),
+    CapabilityRecord(
+        number="09",
+        name="Digital twins",
+        status="Not started",
+        demonstrated_scenario="Interpreted current state distinct from recorded facts.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
+        not_implemented=("DigitalTwin V1",),
+    ),
+    CapabilityRecord(
+        number="10",
+        name="Decision engine and explanations",
+        status="Not started",
+        demonstrated_scenario="Next-best action with reason codes and constraints.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
+        not_implemented=("Decision engine", "Explanation layer"),
+    ),
+    CapabilityRecord(
+        number="11",
+        name="OpenRouter GLM Copilot",
+        status="Not started",
+        demonstrated_scenario="Read-only grounded Copilot with deterministic fallback.",
+        consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
+        not_implemented=("Copilot", "LLM connection"),
+        limitations=("No LLM before Milestone 12",),
+    ),
+    CapabilityRecord(
+        number="12",
+        name="FastAPI",
+        status="Not started",
+        demonstrated_scenario=(
+            "Stable application-service API including health, projection lag, and model versions."
+        ),
+        consuming_applications=("All applications",),
+        implemented=(),
+        not_implemented=(
+            "Complete FastAPI surface",
+            "Projection lag and model-version endpoints",
+            "Command adapters",
+        ),
+        limitations=("A minimal read-only showcase slice must not be labelled FastAPI complete",),
+    ),
+    CapabilityRecord(
+        number="13",
+        name="POC simulator",
+        status="Not started",
+        document=None,
+        demonstrated_scenario="Framework-free simulator using the NG application visual language.",
+        consuming_applications=("All applications",),
+        not_implemented=("Write path from UI", "Simulator.js", "End-to-end command tracing"),
+        limitations=(
+            "An early read-only showcase is not the simulator; the document name remains "
+            "13-poc-simulator.md when this capability is implemented",
+        ),
+    ),
+)
+
+MANIFEST = CapabilityManifest(capabilities=CAPABILITIES)
+
+STATUS_TABLE_ROWS: tuple[tuple[str, str, str], ...] = tuple(
+    (item.number, item.name, item.status) for item in CAPABILITIES
+)
+
+ARTIFACT_LINKS: tuple[dict[str, str], ...] = (
+    {
+        "title": "Documentation",
+        "path": "docs/features/00-poc-dataset.md",
+        "description": "Capability-00 dataset evidence",
+        "source": "capability_00_artifact",
+    },
+    {
+        "title": "Executed notebook",
+        "path": "notebooks/00_dataset/00_dataset.ipynb",
+        "description": "Read-only analysis of retained metrics",
+        "source": "capability_00_artifact",
+    },
+    {
+        "title": "Metrics",
+        "path": "notebooks/00_dataset/outputs/metrics.json",
+        "description": "Validated load report",
+        "source": "capability_00_artifact",
+    },
+    {
+        "title": "Tables",
+        "path": "notebooks/00_dataset/outputs/tables/",
+        "description": "Compact JSON tables from the notebook",
+        "source": "capability_00_artifact",
+    },
+    {
+        "title": "Plots",
+        "path": "notebooks/00_dataset/outputs/plots/",
+        "description": "Retained capability-00 charts",
+        "source": "capability_00_artifact",
+    },
+)
+
+
+class WalkthroughStep(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    number: int
+    title: str
+    live: bool
+    summary: str
+
+
+class Walkthrough(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    id: str
+    title: str
+    customer_ref: str | None = None
+    retailer_ref: str | None = None
+    applications: tuple[str, ...]
+    current_evidence: str
+    later_intelligence: str
+    steps: tuple[WalkthroughStep, ...] = Field(default_factory=tuple)
+
+
+def _fact_steps(*, unknown: str, consumer: str) -> tuple[WalkthroughStep, ...]:
+    return (
+        WalkthroughStep(
+            number=1, title="What happened", live=True, summary="Authoritative recorded facts."
+        ),
+        WalkthroughStep(
+            number=2,
+            title="What the platform knows",
+            live=True,
+            summary="Reconstructed context from facts at as_of.",
+        ),
+        WalkthroughStep(
+            number=3,
+            title="What it infers or predicts",
+            live=False,
+            summary="Derived output is POC planned until later capabilities are verified.",
+        ),
+        WalkthroughStep(
+            number=4,
+            title="What it recommends",
+            live=False,
+            summary="Decisions and reason codes are POC planned.",
+        ),
+        WalkthroughStep(number=5, title="What remains unknown", live=True, summary=unknown),
+        WalkthroughStep(
+            number=6,
+            title="Which existing application consumes the result",
+            live=True,
+            summary=consumer,
+        ),
+    )
+
+
+WALKTHROUGHS: tuple[Walkthrough, ...] = (
+    Walkthrough(
+        id="singapore-travel",
+        title="Customer travels to Singapore",
+        customer_ref="U001",
+        applications=("Selfcare",),
+        current_evidence="Travel, plan and usage facts",
+        later_intelligence="Event memory and uncertainty-aware recommendation",
+        steps=_fact_steps(
+            unknown=(
+                "Trip duration is known for U001's March 2026 journey; later trips may be unknown."
+            ),
+            consumer="Mobile Selfcare",
+        ),
+    ),
+    Walkthrough(
+        id="small-recharges",
+        title="Repeated small recharges",
+        customer_ref="U002",
+        applications=("Selfcare", "Loyalty"),
+        current_evidence="Recharge and balance history",
+        later_intelligence="Behaviour trait and personalised offer",
+        steps=_fact_steps(
+            unknown="No behaviour trait or offer is generated in this showcase.",
+            consumer="Mobile Selfcare and Loyalty Management",
+        ),
+    ),
+    Walkthrough(
+        id="declining-usage",
+        title="Falling usage with complaints",
+        customer_ref="U004",
+        applications=("Selfcare", "Loyalty", "adReach", "Viber"),
+        current_evidence="Usage and service events",
+        later_intelligence="Churn risk and next-best action",
+        steps=_fact_steps(
+            unknown="No churn score is produced in this showcase.",
+            consumer="Mobile Selfcare, Loyalty, adReach and Viber",
+        ),
+    ),
+    Walkthrough(
+        id="shared-device",
+        title="Shared device and suspicious transfers",
+        customer_ref="U009",
+        applications=("Mobile Money",),
+        current_evidence="Device, wallet, merchant and transaction facts",
+        later_intelligence="Neo4j graph fraud evidence",
+        steps=_fact_steps(
+            unknown="Graph fraud scoring is not implemented.",
+            consumer="Mobile Money",
+        ),
+    ),
+    Walkthrough(
+        id="retailer-stock",
+        title="Falling retailer stock with rising sales",
+        retailer_ref="RET-001",
+        applications=("SFA",),
+        current_evidence="Sales and inventory events",
+        later_intelligence="Forecast, retailer twin and restock action",
+        steps=_fact_steps(
+            unknown="No forecast or stockout score is produced in this showcase.",
+            consumer="Mobile SFA",
+        ),
+    ),
+    Walkthrough(
+        id="campaign-response",
+        title="Changing campaign responses",
+        customer_ref="U006",
+        applications=("adReach", "Viber"),
+        current_evidence="Campaign interaction history",
+        later_intelligence="Campaign intelligence and channel decision",
+        steps=_fact_steps(
+            unknown="No propensity or channel decision is produced in this showcase.",
+            consumer="adReach and Viber Campaign Manager",
+        ),
+    ),
+)
+
+
+def get_manifest() -> CapabilityManifest:
+    return MANIFEST
+
+
+def get_walkthroughs() -> tuple[Walkthrough, ...]:
+    return WALKTHROUGHS

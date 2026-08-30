@@ -15,6 +15,7 @@
 | [POC-UI.md](./POC-UI.md) | Intelligence Showcase UI for the existing Omobio/NG applications |
 | [EXISTING-APP.md](./EXISTING-APP.md) | Mapping from shared-intelligence capabilities to existing Omobio applications |
 | [features/README.md](./features/README.md) | Verified capability status, evidence and implementation documents |
+| [features/00-read-only-showcase.md](./features/00-read-only-showcase.md) | Early read-only UI showcase for capability-00 evidence (not FastAPI/simulator complete) |
 
 Start here: [LOCKED-ARCHITECTURE.md](./LOCKED-ARCHITECTURE.md).  
 Code next: steps 01–33 in [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md).

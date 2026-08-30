@@ -344,11 +344,15 @@ backend behaviour:
 - Idempotent dataset loading and validation.
 - Executed capability-00 notebook, metrics, compact tables and plots.
 - Documentation showing how the shared layer connects to existing applications.
+- An early **read-only HTML/CSS/JavaScript showcase** for capability-00
+  evidence, documented in [features/00-read-only-showcase.md](./features/00-read-only-showcase.md).
+  Live pages call a minimal FastAPI read slice. Capabilities 12 and 13 remain
+  not started.
 
 ## What is not implemented now
 
-- The HTML/CSS/JavaScript frontend or simulator.
-- FastAPI endpoints for frontend consumption.
+- The complete FastAPI capability (all application services, projection lag,
+  model versions) and the POC simulator / write path.
 - Authentication, roles, permissions or multi-tenant UI isolation.
 - Live Neo4j projection for the expanded dataset.
 - Feature, event-memory, model, recommendation, twin or decision screens.
