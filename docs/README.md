@@ -12,6 +12,9 @@
 | [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md) | Coding order 01–62 |
 | [TESTING.md](./TESTING.md) | Unit / integration / scenario tests |
 | [CONNECTION.md](./CONNECTION.md) | Local Docker, Supabase Postgres, Neo4j / Aura env setup |
+| [POC-UI.md](./POC-UI.md) | Intelligence Showcase UI for the existing Omobio/NG applications |
+| [EXISTING-APP.md](./EXISTING-APP.md) | Mapping from shared-intelligence capabilities to existing Omobio applications |
+| [features/README.md](./features/README.md) | Verified capability status, evidence and implementation documents |
 
 Start here: [LOCKED-ARCHITECTURE.md](./LOCKED-ARCHITECTURE.md).  
 Code next: steps 01–33 in [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md).

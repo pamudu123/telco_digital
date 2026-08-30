@@ -33,3 +33,8 @@ poetry.toml
 .idea/
 .vscode/
 *.swp
+
+# Notebook runtime caches and large temporary extracts
+.ipynb_checkpoints/
+notebooks/**/outputs/tables/*.csv
+notebooks/**/outputs/tables/*.parquet

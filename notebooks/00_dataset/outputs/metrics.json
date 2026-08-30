@@ -1,0 +1,102 @@
+{
+  "dataset_version": "poc-v1",
+  "seed": 20260831,
+  "period": {
+    "start": "2025-09-01T00:00:00+00:00",
+    "end": "2026-08-31T23:59:00+00:00"
+  },
+  "background_customers": 1000,
+  "new_golden_customers": 5,
+  "expected_existing_golden_customers": 5,
+  "row_counts": {
+    "accounts": 1005,
+    "activity_events": 19772,
+    "balance_ledger": 4020,
+    "campaign_interactions": 1005,
+    "campaigns": 10,
+    "customer_devices": 1005,
+    "customers": 1005,
+    "devices": 964,
+    "distributors": 5,
+    "inventory_events": 1200,
+    "loyalty_accounts": 1005,
+    "loyalty_ledger": 2010,
+    "merchants": 20,
+    "money_transactions": 2010,
+    "outbox_events": 19772,
+    "plans": 8,
+    "recharges": 4020,
+    "retailers": 25,
+    "sales": 1200,
+    "sales_agents": 10,
+    "service_interactions": 143,
+    "sfa_products": 12,
+    "subscriptions": 1005,
+    "travels": 144,
+    "usage_events": 6030,
+    "wallets": 1005
+  },
+  "persona_counts": {
+    "DECLINING_ENGAGEMENT": 143,
+    "FREQUENT_TRAVELLER": 143,
+    "LOYALTY_REACTIVATED": 1,
+    "PRICE_SENSITIVE": 143,
+    "PROMOTION_RESPONSIVE": 144,
+    "RETAIL_LINKED": 1,
+    "STABLE_HIGH_VALUE": 143,
+    "STREAMING_HEAVY": 142,
+    "UNKNOWN_DURATION_TRAVELLER": 1,
+    "WALLET_ACTIVE": 143,
+    "WALLET_FRAUD_CLUSTER": 1
+  },
+  "monthly_usage_mb": {
+    "2025-09": 1352476.0,
+    "2025-11": 1318156.0,
+    "2026-01": 1283836.0,
+    "2026-03": 1249516.0,
+    "2026-05": 1215196.0,
+    "2026-07": 1180876.0
+  },
+  "monthly_recharges": {
+    "2025-09": 1005,
+    "2025-11": 50,
+    "2025-12": 955,
+    "2026-02": 50,
+    "2026-03": 955,
+    "2026-05": 152,
+    "2026-06": 853
+  },
+  "monthly_transactions": {
+    "2026-03": 81,
+    "2026-04": 924,
+    "2026-05": 122,
+    "2026-06": 883
+  },
+  "monthly_sales_amount": {
+    "2025-09": 281500.0,
+    "2025-10": 299300.0,
+    "2025-11": 287650.0,
+    "2025-12": 312900.0,
+    "2026-01": 301050.0,
+    "2026-02": 224250.0,
+    "2026-03": 289800.0,
+    "2026-04": 263950.0,
+    "2026-05": 305250.0,
+    "2026-06": 276250.0,
+    "2026-07": 289950.0,
+    "2026-08": 192900.0
+  },
+  "operation": "validate",
+  "operation_result": {},
+  "validation": {
+    "dataset_version": "poc-v1",
+    "new_customer_rows": 1005,
+    "expected_new_customer_rows": 1005,
+    "total_customer_rows": 1010,
+    "activity_event_rows": 19772,
+    "outbox_event_rows": 19772,
+    "event_outbox_parity": true,
+    "customer_count_valid": true,
+    "valid": true
+  }
+}

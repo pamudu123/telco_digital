@@ -32,6 +32,14 @@ ml = [
     "scikit-learn (>=1.6.0,<2.0.0)",
     "pandas (>=2.2.0,<3.0.0)",
 ]
+notebooks = [
+    "jupyterlab (>=4.4.0,<5.0.0)",
+    "nbconvert (>=7.16.0,<8.0.0)",
+    "ipykernel (>=6.29.0,<8.0.0)",
+    "pandas (>=2.2.0,<3.0.0)",
+    "matplotlib (>=3.10.0,<4.0.0)",
+    "seaborn (>=0.13.0,<1.0.0)",
+]
 
 [tool.poetry]
 packages = [{include = "telco_digital", from = "src"}]
