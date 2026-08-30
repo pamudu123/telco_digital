@@ -11,7 +11,10 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option("sqlalchemy.url", get_settings().database_url)
+# ConfigParser treats percent-encoded URL characters as interpolation tokens.
+# Escape them for Alembic's configuration layer; the resolved engine URL still
+# contains the original percent-encoded database credentials.
+config.set_main_option("sqlalchemy.url", get_settings().database_url.replace("%", "%%"))
 target_metadata = Base.metadata
 
 

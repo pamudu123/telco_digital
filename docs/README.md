@@ -11,6 +11,7 @@
 | [MILESTONES.md](./MILESTONES.md) | Milestone 1–15 gates |
 | [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md) | Coding order 01–62 |
 | [TESTING.md](./TESTING.md) | Unit / integration / scenario tests |
+| [CONNECTION.md](./CONNECTION.md) | Local Docker, Supabase Postgres, Neo4j / Aura env setup |
 
 Start here: [LOCKED-ARCHITECTURE.md](./LOCKED-ARCHITECTURE.md).  
 Code next: steps 01–33 in [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md).

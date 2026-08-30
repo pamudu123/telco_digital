@@ -70,6 +70,9 @@ class SqlCustomerRepository:
                 updated_at=customer.updated_at,
             )
         )
+        # Customer creation adds dependent account/device rows in the same UoW.
+        # Flush the aggregate root first so database FK ordering is explicit.
+        await self.session.flush()
 
     async def get_by_id(self, customer_id: UUID) -> Customer | None:
         row = await self.session.get(CustomerModel, customer_id)
@@ -130,6 +133,8 @@ class SqlDeviceRepository:
                 first_seen_at=device.first_seen_at,
             )
         )
+        # A customer-device link may be added immediately after this repository call.
+        await self.session.flush()
 
     async def get_by_id(self, device_id: UUID) -> Device | None:
         row = await self.session.get(DeviceModel, device_id)
