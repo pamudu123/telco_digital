@@ -21,8 +21,6 @@ def frequent_small_recharge_pattern(
     """True when many small top-ups occur in the lookback window ending at as_of."""
     window_start = as_of - lookback
     recent = [
-        r
-        for r in recharges
-        if window_start <= r.occurred_at <= as_of and r.amount <= threshold
+        r for r in recharges if window_start <= r.occurred_at <= as_of and r.amount <= threshold
     ]
     return len(recent) >= min_count

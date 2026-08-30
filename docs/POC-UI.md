@@ -1,5 +1,7 @@
 # POC Intelligence Showcase UI
 
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–02. Customer 360 includes amber, versioned point-in-time derived features, and Graph Explorer includes purple Neo4j projection evidence. Event memory, models, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+
 ## Purpose
 
 The POC UI should help a visitor understand what the shared-intelligence platform

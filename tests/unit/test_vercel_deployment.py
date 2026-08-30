@@ -50,8 +50,7 @@ def test_transaction_pool_mode_disables_application_and_statement_pools() -> Non
 def test_vercel_accepts_a_provider_postgresql_url_without_driver_suffix() -> None:
     settings = Settings(
         database_url=(
-            "postgresql://postgres.project:password@"
-            "aws-0-region.pooler.supabase.com:6543/postgres"
+            "postgresql://postgres.project:password@aws-0-region.pooler.supabase.com:6543/postgres"
         ),
         database_pool_mode="transaction",
     )

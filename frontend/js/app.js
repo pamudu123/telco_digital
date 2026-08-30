@@ -4,6 +4,7 @@ import { renderCustomer360, errorBox } from "./customer-360.js";
 import { badge, el, formatDate, formatNumber, provenanceLine, statusBox } from "./dom.js";
 import { renderStatus } from "./status.js";
 import { renderWalkthroughs } from "./walkthroughs.js";
+import { renderGraph } from "./graph.js";
 
 const NAV = [
   ["overview", "Overview", "live"],
@@ -12,7 +13,7 @@ const NAV = [
   ["campaigns", "Campaigns and Loyalty", "live"],
   ["money", "Money and Fraud", "live"],
   ["retail", "Retail and SFA", "live"],
-  ["graph", "Graph Explorer", "planned"],
+  ["graph", "Graph Explorer", "live"],
   ["models", "Models and Decisions", "planned"],
   ["copilot", "Copilot", "planned"],
   ["status", "POC Status", "live"],
@@ -22,10 +23,6 @@ const PLANNED = {
   journey: {
     title: "Journey and Event Memory",
     body: "Event memory matches similar historical episodes. This capability is not started. No fabricated journey metrics are shown.",
-  },
-  graph: {
-    title: "Graph Explorer",
-    body: "Neo4j is a rebuildable projection and is not live for the expanded dataset. No graph output is shown as fact.",
   },
   models: {
     title: "Models and Decisions",
@@ -60,7 +57,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. This is a capability-00 read-only showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–02 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -101,14 +98,14 @@ async function renderOverview(root) {
     el("div", { className: "page-header" }, [
       el("div", {}, [
         el("h1", { text: "Intelligence overview" }),
-        el("p", { text: "Live capability-00 evidence from PostgreSQL. Planned capabilities are labeled, not invented." }),
+        el("p", { text: "Live facts, Neo4j projection evidence and point-in-time features. Later capabilities are labeled as planned." }),
       ]),
       el("a", { href: "#/status", text: "POC status" }),
     ]),
     statusBox("loading", "Loading live database evidence…"),
   );
   try {
-    const [overview, evidence] = await Promise.all([api.overview(), api.evidence()]);
+    const [overview, evidence, manifest] = await Promise.all([api.overview(), api.evidence(), api.status()]);
     if (overview.source !== "live_database" || evidence.source !== "live_database") {
       root.append(
         statusBox("error", "Unexpected evidence source", "Live pages do not mix notebook artifacts into metric cards."),
@@ -149,13 +146,14 @@ async function renderOverview(root) {
         el(
           "div",
           { className: "stepper" },
-          ["00 Dataset", "01 Graph", "02 Features", "03 Memory", "04 Models", "05 Decisions", "11 Copilot", "12 API"].map(
-            (label, index) =>
-              el("div", { className: `step ${index === 0 ? "complete" : "planned"}` }, [
-                el("div", { className: "dot", text: String(index).padStart(2, "0") }),
-                el("div", { text: label }),
-                badge(index === 0 ? "POC complete" : "POC planned", index === 0 ? "live" : "planned"),
-              ]),
+          manifest.capabilities.slice(0, 8).map((capability) => {
+            const complete = capability.status === "POC complete";
+            return el("div", { className: `step ${complete ? "complete" : "planned"}` }, [
+              el("div", { className: "dot", text: capability.number }),
+              el("div", { text: capability.name }),
+              badge(capability.status, complete ? "live" : "planned"),
+            ]);
+          }),
           ),
         ),
       ]),
@@ -263,6 +261,7 @@ export function start() {
     else if (id === "money") await renderCustomer360(content, { lens: "money" });
     else if (id === "retail") await renderCustomer360(content, { lens: "retail" });
     else if (id === "walkthroughs") await renderWalkthroughs(content);
+    else if (id === "graph") await renderGraph(content);
     else if (id === "status") await renderStatus(content);
     else if (PLANNED[id]) renderPlanned(content, id);
     else content.replaceChildren(statusBox("error", "Unknown page", "Use the Intelligence navigation."));

@@ -205,9 +205,7 @@ class InMemoryRechargeRepository:
 
     async def list_as_of(self, customer_id: UUID, as_of: datetime) -> list[Recharge]:
         return [
-            r
-            for r in await self.list_by_customer(customer_id)
-            if _as_of_ok(r.occurred_at, as_of)
+            r for r in await self.list_by_customer(customer_id) if _as_of_ok(r.occurred_at, as_of)
         ]
 
 
@@ -223,9 +221,7 @@ class InMemoryUsageRepository:
 
     async def list_as_of(self, customer_id: UUID, as_of: datetime) -> list[UsageEvent]:
         return [
-            u
-            for u in await self.list_by_customer(customer_id)
-            if _as_of_ok(u.occurred_at, as_of)
+            u for u in await self.list_by_customer(customer_id) if _as_of_ok(u.occurred_at, as_of)
         ]
 
     async def total_mb(
@@ -257,11 +253,7 @@ class InMemoryTravelRepository:
         return [t for t in self._store.all() if t.customer_id == customer_id]
 
     async def list_as_of(self, customer_id: UUID, as_of: datetime) -> list[Travel]:
-        return [
-            t
-            for t in await self.list_by_customer(customer_id)
-            if t.started_at <= as_of
-        ]
+        return [t for t in await self.list_by_customer(customer_id) if t.started_at <= as_of]
 
     async def update(self, travel: Travel) -> None:
         self._store.items[travel.id] = travel
@@ -285,9 +277,7 @@ class InMemoryServiceInteractionRepository:
             if item.status != "OPEN":
                 if item.resolved_at is None or item.resolved_at <= as_of:
                     continue
-            if item.status == "OPEN" or (
-                item.resolved_at is not None and item.resolved_at > as_of
-            ):
+            if item.status == "OPEN" or (item.resolved_at is not None and item.resolved_at > as_of):
                 count += 1
         return count
 

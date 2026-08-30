@@ -108,10 +108,24 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="02",
         name="Temporal and graph features",
-        status="Not started",
+        status="POC complete",
+        document="docs/features/02-feature-layer.md",
         demonstrated_scenario="Time-aware and graph features derived from recorded facts.",
         consuming_applications=("Selfcare", "Loyalty", "Mobile Money", "SFA"),
-        not_implemented=("Feature snapshots", "Graph features"),
+        evidence=(
+            "docs/features/02-feature-layer.md",
+            "notebooks/02_features/02_features.ipynb",
+            "notebooks/02_features/outputs/metrics.json",
+            "notebooks/02_features/outputs/tables/",
+            "notebooks/02_features/outputs/plots/",
+        ),
+        implemented=(
+            "Point-in-time temporal and graph feature services",
+            "Explicit deterministic snapshot materialization",
+            "Read-only feature and graph showcase endpoints",
+        ),
+        not_implemented=("Training and scoring", "Production feature store"),
+        limitations=("POC feature definitions over synthetic data",),
     ),
     CapabilityRecord(
         number="03",

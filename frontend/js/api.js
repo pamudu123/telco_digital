@@ -31,6 +31,12 @@ export const api = {
   walkthroughs: () => request("/showcase/walkthroughs"),
   customer360: (ref, asOf) =>
     request(`/customers/${encodeURIComponent(ref)}/360${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
+  customerFeatures: (ref, asOf) =>
+    request(`/customers/${encodeURIComponent(ref)}/features${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
+  graphSummary: (asOf) =>
+    request(`/showcase/graph/summary${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
+  graphCustomer: (ref, asOf) =>
+    request(`/showcase/graph/customers/${encodeURIComponent(ref)}${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
   retailer: (ref, asOf) =>
     request(
       `/showcase/sfa/retailers/${encodeURIComponent(ref)}${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`,

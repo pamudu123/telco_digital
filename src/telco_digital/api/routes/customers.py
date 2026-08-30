@@ -5,17 +5,45 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 
-from telco_digital.api.deps import get_as_of_queries, get_uow, require_showcase
+from telco_digital.api.deps import get_as_of_queries, get_settings_dep, get_uow, require_showcase
 from telco_digital.application.services import showcase as showcase_service
 from telco_digital.application.services.common import NotFoundError
+from telco_digital.config import Settings
+from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
+from telco_digital.infrastructure.postgres.features import PostgresTemporalFeatureQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
+from telco_digital.intelligence.features import (
+    CustomerFeatureService,
+    GraphFeatureService,
+    TemporalFeatureService,
+)
 
 router = APIRouter(
     prefix="/customers",
     tags=["customers"],
     dependencies=[Depends(require_showcase)],
 )
+
+
+@router.get("/{customer_ref}/features")
+async def customer_features(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    settings: Settings = Depends(get_settings_dep),
+) -> dict:
+    as_of, queries = context
+    service = CustomerFeatureService(
+        TemporalFeatureService(PostgresTemporalFeatureQueries(queries.session)),
+        GraphFeatureService(Neo4jFeatureQueries(settings)),
+    )
+    try:
+        result = await service.calculate(customer_ref, as_of)
+        return result.model_dump(mode="json")
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
 
 
 @router.get("/{customer_ref}/360")

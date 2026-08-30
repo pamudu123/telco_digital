@@ -16,14 +16,10 @@ class GraphRepository:
 
     def ensure_constraints(self) -> None:
         statements = (
-            "CREATE CONSTRAINT customer_id IF NOT EXISTS "
-            "FOR (n:Customer) REQUIRE n.id IS UNIQUE",
-            "CREATE CONSTRAINT account_id IF NOT EXISTS "
-            "FOR (n:Account) REQUIRE n.id IS UNIQUE",
-            "CREATE CONSTRAINT device_id IF NOT EXISTS "
-            "FOR (n:Device) REQUIRE n.id IS UNIQUE",
-            "CREATE CONSTRAINT plan_id IF NOT EXISTS "
-            "FOR (n:Plan) REQUIRE n.id IS UNIQUE",
+            "CREATE CONSTRAINT customer_id IF NOT EXISTS FOR (n:Customer) REQUIRE n.id IS UNIQUE",
+            "CREATE CONSTRAINT account_id IF NOT EXISTS FOR (n:Account) REQUIRE n.id IS UNIQUE",
+            "CREATE CONSTRAINT device_id IF NOT EXISTS FOR (n:Device) REQUIRE n.id IS UNIQUE",
+            "CREATE CONSTRAINT plan_id IF NOT EXISTS FOR (n:Plan) REQUIRE n.id IS UNIQUE",
             "CREATE CONSTRAINT wallet_id IF NOT EXISTS FOR (n:Wallet) REQUIRE n.id IS UNIQUE",
             "CREATE CONSTRAINT merchant_id IF NOT EXISTS FOR (n:Merchant) REQUIRE n.id IS UNIQUE",
             "CREATE CONSTRAINT transaction_id IF NOT EXISTS "
@@ -149,25 +145,32 @@ class GraphRepository:
         )
 
     def project_wallets(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row
             MATCH (customer:Customer {id: row.customer_id})
             MERGE (wallet:Wallet {id: row.id})
             SET wallet.wallet_ref = row.wallet_ref, wallet.status = row.status,
                 wallet.created_at = datetime(row.created_at), wallet.projection = 'poc-v1'
             MERGE (customer)-[:OWNS_WALLET {projection: 'poc-v1'}]->(wallet)
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_merchants(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MERGE (merchant:Merchant {id: row.id})
             SET merchant.merchant_ref = row.merchant_ref, merchant.name = row.name,
                 merchant.category = row.category, merchant.country_code = row.country_code,
                 merchant.status = row.status, merchant.projection = 'poc-v1'
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_transactions(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row
             MATCH (customer:Customer {id: row.customer_id})
             MATCH (source:Wallet {id: row.source_wallet_id})
@@ -192,59 +195,79 @@ class GraphRepository:
             OPTIONAL MATCH (device:Device {id: row.device_id})
             FOREACH (_ IN CASE WHEN device IS NULL THEN [] ELSE [1] END |
                 MERGE (transaction)-[:USED_DEVICE {projection: 'poc-v1'}]->(device))
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_distributors(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MERGE (n:Distributor {id: row.id})
             SET n.distributor_ref = row.distributor_ref, n.name = row.name,
                 n.region = row.region, n.projection = 'poc-v1'
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_retailers(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MATCH (d:Distributor {id: row.distributor_id})
             MERGE (n:Retailer {id: row.id})
             SET n.retailer_ref = row.retailer_ref, n.name = row.name, n.region = row.region,
                 n.status = row.status, n.latitude = row.latitude, n.longitude = row.longitude,
                 n.projection = 'poc-v1'
             MERGE (n)-[:SUPPLIED_BY {projection: 'poc-v1'}]->(d)
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_sales_agents(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MATCH (d:Distributor {id: row.distributor_id})
             MERGE (n:SalesAgent {id: row.id})
             SET n.agent_ref = row.agent_ref, n.name = row.name, n.status = row.status,
                 n.projection = 'poc-v1'
             MERGE (n)-[:WORKS_FOR {projection: 'poc-v1'}]->(d)
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_products(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MERGE (n:Product {id: row.id})
             SET n.product_code = row.product_code, n.name = row.name,
                 n.category = row.category, n.projection = 'poc-v1'
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_sales(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MATCH (r:Retailer {id: row.retailer_id})
             MATCH (p:Product {id: row.product_id})
             MERGE (r)-[sale:SOLD {id: row.id}]->(p)
             SET sale.quantity = row.quantity, sale.amount = row.amount,
                 sale.occurred_at = datetime(row.occurred_at),
                 sale.sales_agent_id = row.sales_agent_id, sale.projection = 'poc-v1'
-            """, rows)
+            """,
+            rows,
+        )
 
     def project_inventory_events(self, rows: Iterable[Mapping[str, Any]]) -> None:
-        self._write("""
+        self._write(
+            """
             UNWIND $rows AS row MATCH (r:Retailer {id: row.retailer_id})
             MATCH (p:Product {id: row.product_id})
             MERGE (r)-[event:INVENTORY_EVENT {id: row.id}]->(p)
             SET event.event_type = row.event_type, event.quantity = row.quantity,
                 event.occurred_at = datetime(row.occurred_at), event.projection = 'poc-v1'
-            """, rows)
+            """,
+            rows,
+        )
 
     def counts(self) -> dict[str, int]:
         query = """

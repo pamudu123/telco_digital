@@ -25,9 +25,7 @@ def test_demo_dataset_references_only_generated_parent_rows() -> None:
     assert all(row["customer_id"] in customer_ids for row in bundle.rows["recharges"])
     assert all(row["account_id"] in account_ids for row in bundle.rows["recharges"])
     assert all(row["plan_id"] in plan_ids for row in bundle.rows["subscriptions"])
-    assert all(
-        row["source_wallet_id"] in wallet_ids for row in bundle.rows["money_transactions"]
-    )
+    assert all(row["source_wallet_id"] in wallet_ids for row in bundle.rows["money_transactions"])
     assert all(
         row["destination_wallet_id"] is None or row["destination_wallet_id"] in wallet_ids
         for row in bundle.rows["money_transactions"]

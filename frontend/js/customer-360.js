@@ -147,14 +147,39 @@ export async function renderCustomer360(root, { lens = "all", walkthroughId } = 
   }
 
   try {
-    const data = await api.customer360(selected, asOf || undefined);
-    root.append(renderFacts(data, currentLens));
+    const [data, features] = await Promise.all([
+      api.customer360(selected, asOf || undefined),
+      api.customerFeatures(selected, asOf || undefined),
+    ]);
+    root.append(renderFacts(data, currentLens, features));
   } catch (error) {
     root.append(errorBox(error, `Could not load ${selected}.`));
   }
 }
 
-function renderFacts(data, lens) {
+function featurePanel(features) {
+  const groups = Object.entries(features.temporal || {});
+  return el("section", { className: "card" }, [
+    el("header", {}, [el("h2", { text: "Derived features" }), badge("Derived", "derived")]),
+    el("p", { className: "meta", text: `${features.feature_set_version} • as_of ${formatDate(features.as_of)}` }),
+    ...groups.map(([name, group]) =>
+      el("div", {}, [
+        el("h3", { text: `${name}${group.window_days ? ` (${group.window_days}d)` : ""}` }),
+        el("dl", { className: "feature-list" }, Object.entries(group.values || {}).map(([key, value]) =>
+          el("div", {}, [el("dt", { text: key.replaceAll("_", " ") }), el("dd", { text: value ?? "Unknown" })]),
+        )),
+      ]),
+    ),
+    el("h3", { text: "Graph context" }),
+    features.graph.available
+      ? el("dl", { className: "feature-list" }, Object.entries(features.graph.values || {}).map(([key, value]) =>
+          el("div", {}, [el("dt", { text: key.replaceAll("_", " ") }), el("dd", { text: value ?? "Unknown" })]),
+        ))
+      : statusBox("empty", "Graph features unavailable", (features.graph.unknowns || []).join(" ")),
+  ]);
+}
+
+function renderFacts(data, lens, features) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
     recharges: factList("Recharge history", data.recharges, "No recharges at this as_of."),
@@ -187,7 +212,7 @@ function renderFacts(data, lens) {
       el("div", { className: "grid grid-2" }, visible),
       factList("Customer timeline", data.timeline, "No activity events at this as_of."),
     ]),
-    plannedRail(),
+    el("aside", {}, [featurePanel(features), plannedRail()]),
   ]);
 }
 

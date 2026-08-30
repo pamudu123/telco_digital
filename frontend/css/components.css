@@ -73,6 +73,33 @@
   color: var(--danger);
 }
 
+.badge-graph {
+  background: var(--graph-bg);
+  color: var(--graph);
+}
+
+.badge-derived {
+  background: #fff7e6;
+  color: var(--derived);
+}
+
+.feature-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1rem;
+}
+
+.feature-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-block: 0.25rem;
+}
+
+.feature-list dt { text-transform: capitalize; }
+.feature-list dd { margin: 0; font-weight: 600; }
+
 .table {
   width: 100%;
   border-collapse: collapse;

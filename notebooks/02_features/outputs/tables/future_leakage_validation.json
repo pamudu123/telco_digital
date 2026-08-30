@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "rule": "all adapters enforce occurred_at <= as_of",
+  "unit_test": "tests/unit/test_features.py"
+}

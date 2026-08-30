@@ -165,9 +165,7 @@ class SqlCustomerDeviceRepository:
 
     async def list_by_customer(self, customer_id: UUID) -> list[CustomerDevice]:
         result = await self.session.execute(
-            select(CustomerDeviceModel).where(
-                CustomerDeviceModel.customer_id == customer_id
-            )
+            select(CustomerDeviceModel).where(CustomerDeviceModel.customer_id == customer_id)
         )
         return [_to_customer_device(r) for r in result.scalars()]
 
@@ -183,8 +181,7 @@ class SqlCustomerDeviceRepository:
             .where(
                 CustomerDeviceModel.customer_id == customer_id,
                 CustomerDeviceModel.valid_from <= as_of,
-                (CustomerDeviceModel.valid_to.is_(None))
-                | (CustomerDeviceModel.valid_to > as_of),
+                (CustomerDeviceModel.valid_to.is_(None)) | (CustomerDeviceModel.valid_to > as_of),
             )
             .order_by(CustomerDeviceModel.valid_from.desc())
             .limit(1)
@@ -273,8 +270,7 @@ class SqlSubscriptionRepository:
             .where(
                 SubscriptionModel.customer_id == customer_id,
                 SubscriptionModel.started_at <= as_of,
-                (SubscriptionModel.ended_at.is_(None))
-                | (SubscriptionModel.ended_at > as_of),
+                (SubscriptionModel.ended_at.is_(None)) | (SubscriptionModel.ended_at > as_of),
             )
             .order_by(SubscriptionModel.started_at.desc())
         )
@@ -520,14 +516,10 @@ class SqlEventRepository:
     async def list_timeline(
         self, customer_id: UUID, *, as_of: datetime | None = None
     ) -> list[ActivityEvent]:
-        stmt = select(ActivityEventModel).where(
-            ActivityEventModel.customer_id == customer_id
-        )
+        stmt = select(ActivityEventModel).where(ActivityEventModel.customer_id == customer_id)
         if as_of is not None:
             stmt = stmt.where(ActivityEventModel.occurred_at <= as_of)
-        stmt = stmt.order_by(
-            ActivityEventModel.occurred_at, ActivityEventModel.recorded_at
-        )
+        stmt = stmt.order_by(ActivityEventModel.occurred_at, ActivityEventModel.recorded_at)
         result = await self.session.execute(stmt)
         return [_to_event(r) for r in result.scalars()]
 

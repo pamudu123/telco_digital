@@ -17,6 +17,10 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
     assert "POC planned" in app_js
     assert "Graph Explorer" in app_js
     assert "Copilot" in app_js
+    assert 'import { renderGraph } from "./graph.js"' in app_js
+    assert "customerFeatures" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "Derived features" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "Graph projection" in (ROOT / "js" / "graph.js").read_text(encoding="utf-8")
 
 
 def test_frontend_does_not_assign_untrusted_inner_html() -> None:

@@ -446,9 +446,7 @@ def _reference_rows(rows: dict[str, list[dict[str, Any]]]) -> None:
                 "id": deterministic_id("distributor", str(index)),
                 "distributor_ref": f"DIST-{index:02d}",
                 "name": f"POC Distributor {index}",
-                "region": ("WESTERN", "CENTRAL", "SOUTHERN", "NORTHERN", "EASTERN")[
-                    index - 1
-                ],
+                "region": ("WESTERN", "CENTRAL", "SOUTHERN", "NORTHERN", "EASTERN")[index - 1],
             }
         )
     for index in range(1, 26):
@@ -504,9 +502,7 @@ def _sfa_facts(
                 if retailer == 1 and month >= 9:
                     quantity += 25
                 sale_id = deterministic_id("sale", f"{retailer}:{product}:{month}")
-                event_id = _add_event(
-                    rows, "SFA_SALE_RECORDED", "sale", sale_id, None, occurred_at
-                )
+                event_id = _add_event(rows, "SFA_SALE_RECORDED", "sale", sale_id, None, occurred_at)
                 amount = Decimal(quantity * (100 + product * 50))
                 rows["sales"].append(
                     {

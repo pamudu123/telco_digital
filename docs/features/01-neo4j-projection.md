@@ -2,6 +2,8 @@
 
 ## 1. POC objective
 
+> UI status: Graph Explorer now exposes managed projection counts, reconciliation, shared-device evidence and customer graph context. Purple styling distinguishes rebuildable relationships from PostgreSQL facts and amber derived features.
+
 Prove that PostgreSQL remains authoritative while a useful cross-domain Neo4j
 graph can be rebuilt, reconciled, and checkpointed through the transactional
 outbox. This is deliberately a single-worker POC, not a distributed projection

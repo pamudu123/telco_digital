@@ -5,9 +5,17 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 
-from telco_digital.api.deps import get_as_of_queries, get_queries, require_showcase
+from telco_digital.api.deps import (
+    as_of_query,
+    get_as_of_queries,
+    get_queries,
+    get_settings_dep,
+    require_showcase,
+)
 from telco_digital.application.services import showcase as showcase_service
 from telco_digital.application.services.common import NotFoundError
+from telco_digital.config import Settings
+from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 
 router = APIRouter(
@@ -15,6 +23,30 @@ router = APIRouter(
     tags=["showcase"],
     dependencies=[Depends(require_showcase)],
 )
+
+
+@router.get("/graph/summary")
+async def graph_summary(
+    as_of: datetime = Depends(as_of_query),
+    settings: Settings = Depends(get_settings_dep),
+) -> dict:
+    try:
+        return await Neo4jFeatureQueries(settings).summary(as_of)
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Neo4j projection is unreachable") from exc
+
+
+@router.get("/graph/customers/{customer_ref}")
+async def graph_customer(
+    customer_ref: str,
+    as_of: datetime = Depends(as_of_query),
+    settings: Settings = Depends(get_settings_dep),
+) -> dict:
+    try:
+        result = await Neo4jFeatureQueries(settings).calculate(customer_ref, as_of)
+        return {"customer_ref": customer_ref, "as_of": as_of, **result.model_dump(mode="json")}
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Neo4j projection is unreachable") from exc
 
 
 def _now() -> datetime:

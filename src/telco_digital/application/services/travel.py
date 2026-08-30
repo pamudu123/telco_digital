@@ -170,9 +170,7 @@ async def end_travel(
             match = next((t for t in travels if t.id == command.travel_id), None)
         else:
             open_trips = [
-                t
-                for t in travels
-                if t.ended_at is None and t.started_at <= command.ended_at
+                t for t in travels if t.ended_at is None and t.started_at <= command.ended_at
             ]
             match = max(open_trips, key=lambda t: t.started_at) if open_trips else None
         if match is None:

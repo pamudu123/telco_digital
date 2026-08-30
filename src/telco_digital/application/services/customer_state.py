@@ -23,17 +23,13 @@ async def get_customer_state(
         balance = await uow.ledgers.balance_at(account.id, as_of)
 
         travels = list(await uow.travels.list_as_of(customer.id, as_of))
-        loc = location_at(
-            home_country=customer.home_country, travels=travels, as_of=as_of
-        )
+        loc = location_at(home_country=customer.home_country, travels=travels, as_of=as_of)
         trip_duration_known = True
         active_travel_id = None
         if loc.travel is not None:
             active_travel_id = loc.travel.id
             # ended_at after as_of is future leakage — at as_of the trip was still open.
-            trip_duration_known = (
-                loc.travel.ended_at is not None and loc.travel.ended_at <= as_of
-            )
+            trip_duration_known = loc.travel.ended_at is not None and loc.travel.ended_at <= as_of
 
         subscription = await uow.subscriptions.active_at(customer.id, as_of)
         plan_code = None

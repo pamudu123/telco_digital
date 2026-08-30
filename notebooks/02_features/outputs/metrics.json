@@ -1,0 +1,8 @@
+{
+  "feature_set_version": "customer-features-v1",
+  "snapshot_count": 15,
+  "numeric_feature_count": 29,
+  "future_leakage_checks_failed": 0,
+  "graph_available_count": 15,
+  "synthetic_poc": true
+}

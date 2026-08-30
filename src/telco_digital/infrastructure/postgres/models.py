@@ -224,9 +224,7 @@ class LoyaltyLedgerModel(Base):
     __table_args__ = {"schema": "marketing"}
 
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
-    loyalty_account_id: Mapped[UUID] = mapped_column(
-        ForeignKey("marketing.loyalty_account.id")
-    )
+    loyalty_account_id: Mapped[UUID] = mapped_column(ForeignKey("marketing.loyalty_account.id"))
     customer_id: Mapped[UUID] = mapped_column(ForeignKey("core.customer.id"))
     entry_type: Mapped[str] = mapped_column(String(32))
     points: Mapped[int] = mapped_column(Integer)
@@ -291,9 +289,7 @@ class MoneyTransactionModel(Base):
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
     transaction_ref: Mapped[str] = mapped_column(String(64), unique=True)
     source_wallet_id: Mapped[UUID] = mapped_column(ForeignKey("money.wallet.id"))
-    destination_wallet_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("money.wallet.id")
-    )
+    destination_wallet_id: Mapped[UUID | None] = mapped_column(ForeignKey("money.wallet.id"))
     merchant_id: Mapped[UUID | None] = mapped_column(ForeignKey("money.merchant.id"))
     customer_id: Mapped[UUID] = mapped_column(ForeignKey("core.customer.id"))
     device_id: Mapped[UUID | None] = mapped_column(ForeignKey("core.device.id"))
@@ -469,9 +465,7 @@ class RecommendationOutcomeModel(Base):
     __table_args__ = {"schema": "intelligence"}
 
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
-    recommendation_id: Mapped[UUID] = mapped_column(
-        ForeignKey("intelligence.recommendation.id")
-    )
+    recommendation_id: Mapped[UUID] = mapped_column(ForeignKey("intelligence.recommendation.id"))
     selected_option: Mapped[str | None] = mapped_column(String(128))
     accepted: Mapped[bool] = mapped_column(Boolean)
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

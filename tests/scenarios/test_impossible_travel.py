@@ -58,8 +58,7 @@ async def test_impossible_travel_is_stored_not_rejected(uow, clock) -> None:
 
     warning_events = [e for e in timeline if e.event_type == EventType.WARNING_RAISED.value]
     assert any(
-        e.payload.get("warning_type") == WarningType.IMPOSSIBLE_TRAVEL.value
-        for e in warning_events
+        e.payload.get("warning_type") == WarningType.IMPOSSIBLE_TRAVEL.value for e in warning_events
     )
     customer = await uow.customers.get_by_ref("U001")
     travels = await uow.travels.list_by_customer(customer.id)

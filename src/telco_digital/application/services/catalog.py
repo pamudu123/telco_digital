@@ -15,9 +15,7 @@ async def create_plan(
     clock: Clock | None = None,
 ) -> Plan:
     _ = clock or SystemClock()
-    country = (
-        normalize_country(command.country_code) if command.country_code else None
-    )
+    country = normalize_country(command.country_code) if command.country_code else None
     async with uow:
         existing = await uow.plans.get_by_code(command.plan_code)
         if existing is not None:
