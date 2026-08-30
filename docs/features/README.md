@@ -6,7 +6,7 @@ scenario works in the shared demo environment; it does not mean production ready
 | # | Capability | Status | Document |
 |---|---|---|---|
 | 00 | Expanded POC dataset | POC complete | [00-poc-dataset.md](./00-poc-dataset.md) |
-| 01 | Outbox and Neo4j projection | Not started | — |
+| 01 | Outbox and Neo4j projection | POC complete | [01-neo4j-projection.md](./01-neo4j-projection.md) |
 | 02 | Temporal and graph features | Not started | — |
 | 03 | Event memory | Not started | — |
 | 04 | Behaviour intelligence | Not started | — |

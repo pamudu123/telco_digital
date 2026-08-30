@@ -80,11 +80,30 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="01",
         name="Outbox and Neo4j projection",
-        status="Not started",
+        status="POC complete",
+        document="docs/features/01-neo4j-projection.md",
         demonstrated_scenario="PostgreSQL outbox projected into a rebuildable Neo4j graph.",
         consuming_applications=("Mobile Money", "SFA", "Lottery"),
-        not_implemented=("Outbox worker completion for the expanded dataset", "Graph rebuild"),
-        limitations=("Graph output must not be treated as source of truth",),
+        evidence=(
+            "docs/features/01-neo4j-projection.md",
+            "notebooks/01_graph_projection/01_graph_projection.ipynb",
+            "notebooks/01_graph_projection/outputs/metrics.json",
+            "notebooks/01_graph_projection/outputs/tables/",
+            "notebooks/01_graph_projection/outputs/plots/",
+        ),
+        implemented=(
+            "Managed cross-domain graph rebuild",
+            "Single-worker outbox retry and success checkpointing",
+            "Source/projection reconciliation and graph-shape evidence",
+        ),
+        not_implemented=(
+            "Distributed worker operations and dead-letter replay",
+            "Incremental event-specific projection",
+        ),
+        limitations=(
+            "Graph output remains a rebuildable projection, never source of truth",
+            "One controlled worker and snapshot rebuild are POC-only choices",
+        ),
     ),
     CapabilityRecord(
         number="02",

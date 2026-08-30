@@ -11,6 +11,7 @@ from telco_digital.application.capability_status import (
 def test_manifest_keeps_fastapi_and_simulator_not_started() -> None:
     by_number = {item.number: item for item in CAPABILITIES}
     assert by_number["00"].status == "POC complete"
+    assert by_number["01"].status == "POC complete"
     assert by_number["12"].status == "Not started"
     assert by_number["12"].name == "FastAPI"
     assert by_number["13"].status == "Not started"
@@ -32,4 +33,6 @@ def test_manifest_does_not_claim_showcase_completes_later_capabilities() -> None
     manifest = get_manifest()
     notes = manifest.notes.lower()
     assert "read-only" in notes or "showcase" in notes
-    assert all(item.status != "POC complete" for item in CAPABILITIES if item.number != "00")
+    assert all(
+        item.status != "POC complete" for item in CAPABILITIES if item.number not in {"00", "01"}
+    )

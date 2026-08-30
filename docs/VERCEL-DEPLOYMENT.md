@@ -49,6 +49,10 @@ runtime uses Supavisor transaction mode. The application selects SQLAlchemy
 `NullPool` and disables asyncpg statement caching when
 `DATABASE_POOL_MODE=transaction`.
 
+The application accepts Supabase's copied `postgresql://` scheme and normalizes
+it to `postgresql+asyncpg://`. Do not include surrounding quotes, an environment
+variable name, or whitespace in the Vercel value.
+
 Do not add the direct migration URI, OpenRouter key, Supabase secret key or
 Neo4j password to frontend JavaScript.
 
@@ -140,4 +144,3 @@ python -m poetry check --lock
 - Vercel deployment protection is not a replacement for application auth.
 - Production deployment needs monitoring, alerting, backups, rate limits and a
   deliberate worker/queue design.
-

@@ -45,3 +45,20 @@ def test_transaction_pool_mode_disables_application_and_statement_pools() -> Non
         assert engine.url.query["prepared_statement_cache_size"] == "0"
     finally:
         engine.sync_engine.dispose()
+
+
+def test_vercel_accepts_a_provider_postgresql_url_without_driver_suffix() -> None:
+    settings = Settings(
+        database_url=(
+            "postgresql://postgres.project:password@"
+            "aws-0-region.pooler.supabase.com:6543/postgres"
+        ),
+        database_pool_mode="transaction",
+    )
+
+    engine = create_engine(settings)
+    try:
+        assert engine.url.drivername == "postgresql+asyncpg"
+        assert isinstance(engine.sync_engine.pool, NullPool)
+    finally:
+        engine.sync_engine.dispose()

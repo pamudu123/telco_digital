@@ -1,0 +1,79 @@
+[
+  {
+    "source": "customers",
+    "graph": "Customer",
+    "postgres": 1010,
+    "neo4j": 1010,
+    "difference": 0
+  },
+  {
+    "source": "accounts",
+    "graph": "Account",
+    "postgres": 1010,
+    "neo4j": 1010,
+    "difference": 0
+  },
+  {
+    "source": "devices",
+    "graph": "Device",
+    "postgres": 967,
+    "neo4j": 967,
+    "difference": 0
+  },
+  {
+    "source": "plans",
+    "graph": "Plan",
+    "postgres": 12,
+    "neo4j": 12,
+    "difference": 0
+  },
+  {
+    "source": "wallets",
+    "graph": "Wallet",
+    "postgres": 1005,
+    "neo4j": 1005,
+    "difference": 0
+  },
+  {
+    "source": "merchants",
+    "graph": "Merchant",
+    "postgres": 20,
+    "neo4j": 20,
+    "difference": 0
+  },
+  {
+    "source": "transactions",
+    "graph": "Transaction",
+    "postgres": 2010,
+    "neo4j": 2010,
+    "difference": 0
+  },
+  {
+    "source": "distributors",
+    "graph": "Distributor",
+    "postgres": 5,
+    "neo4j": 5,
+    "difference": 0
+  },
+  {
+    "source": "retailers",
+    "graph": "Retailer",
+    "postgres": 25,
+    "neo4j": 25,
+    "difference": 0
+  },
+  {
+    "source": "sales_agents",
+    "graph": "SalesAgent",
+    "postgres": 10,
+    "neo4j": 10,
+    "difference": 0
+  },
+  {
+    "source": "products",
+    "graph": "Product",
+    "postgres": 12,
+    "neo4j": 12,
+    "difference": 0
+  }
+]

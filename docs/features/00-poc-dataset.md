@@ -113,7 +113,7 @@ python -m poetry run python scripts/generate_poc_dataset.py reset
 
 ## 10. What is not implemented
 
-- Automatic Neo4j projection of the new outbox records; that belongs to capability 01.
+- Neo4j projection was outside capability 00 and is now delivered separately by capability 01.
 - Temporal/graph features, event memory, behavior models, churn, recommendations,
   fraud scoring, forecasting, twins, decisioning, Copilot, complete FastAPI, and
   the POC simulator.

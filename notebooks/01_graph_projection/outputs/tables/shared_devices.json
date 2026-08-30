@@ -1,0 +1,90 @@
+[
+  {
+    "device_ref": "D001",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_001",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_002",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_003",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_004",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_005",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_006",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_007",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_008",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_009",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_010",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_011",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_012",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_013",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_014",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_015",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_016",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_017",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_018",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_019",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_020",
+    "customers": 3
+  },
+  {
+    "device_ref": "DEV-SHARED_000",
+    "customers": 2
+  }
+]

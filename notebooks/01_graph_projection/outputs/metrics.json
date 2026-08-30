@@ -1,0 +1,53 @@
+{
+  "projection": "poc-v1",
+  "source_counts": {
+    "customers": 1010,
+    "accounts": 1010,
+    "devices": 967,
+    "customer_devices": 1010,
+    "plans": 12,
+    "subscriptions": 1009,
+    "wallets": 1005,
+    "merchants": 20,
+    "transactions": 2010,
+    "distributors": 5,
+    "retailers": 25,
+    "sales_agents": 10,
+    "products": 12,
+    "sales": 1200,
+    "inventory_events": 1200
+  },
+  "node_counts": {
+    "Account": 1010,
+    "Customer": 1010,
+    "Device": 967,
+    "Distributor": 5,
+    "Merchant": 20,
+    "Plan": 12,
+    "Product": 12,
+    "Retailer": 25,
+    "SalesAgent": 10,
+    "Transaction": 2010,
+    "Wallet": 1005
+  },
+  "relationship_counts": {
+    "AT_MERCHANT": 1988,
+    "FROM_WALLET": 2010,
+    "INITIATED": 2010,
+    "INVENTORY_EVENT": 1200,
+    "OWNS_WALLET": 1005,
+    "SOLD": 1200,
+    "SUBSCRIBES_TO": 1009,
+    "SUPPLIED_BY": 25,
+    "TO_WALLET": 22,
+    "USED_DEVICE": 2010,
+    "USES": 1010,
+    "WORKS_FOR": 10
+  },
+  "outbox_status": {
+    "PROCESSED": 19811
+  },
+  "reconciled": true,
+  "shared_device_count": 22,
+  "max_customer_degree": 6
+}
