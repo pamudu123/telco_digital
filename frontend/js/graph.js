@@ -1,4 +1,4 @@
-import { api } from "./api.js";
+import { api, isAbortError } from "./api.js";
 import { badge, el, formatNumber, provenanceLine, statusBox } from "./dom.js";
 
 function countTable(title, rows) {
@@ -12,13 +12,14 @@ function countTable(title, rows) {
   ]);
 }
 
-export async function renderGraph(root) {
+export async function renderGraph(root, { signal } = {}) {
   root.replaceChildren(statusBox("loading", "Loading managed Neo4j projection…"));
   try {
     const [data, customer] = await Promise.all([
-      api.graphSummary(),
-      api.graphCustomer("U009"),
+      api.graphSummary(undefined, { signal }),
+      api.graphCustomer("U009", undefined, { signal }),
     ]);
+    if (signal?.aborted) return;
     root.replaceChildren(
       el("div", { className: "page-header" }, [
         el("div", {}, [el("h1", { text: "Graph Explorer" }), el("p", { text: `${data.projection} • ${data.as_of}` })]),
@@ -42,6 +43,7 @@ export async function renderGraph(root) {
       ]),
     );
   } catch (error) {
+    if (signal?.aborted || isAbortError(error)) return;
     root.replaceChildren(statusBox("error", "Neo4j unavailable", error.message));
   }
 }

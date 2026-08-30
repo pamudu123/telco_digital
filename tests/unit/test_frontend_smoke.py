@@ -40,3 +40,20 @@ def test_nav_distinguishes_live_and_planned_pages() -> None:
     assert '["journey", "Journey and Event Memory", "planned"]' in app_js
     assert '["overview", "Overview", "live"]' in app_js
     assert "No LLM answers" in app_js or "not connected" in app_js
+
+
+def test_customer_360_does_not_paint_stale_loads() -> None:
+    app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
+    api_js = (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    customer_js = (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+
+    assert "AbortController" in app_js
+    assert "active.abort()" in app_js
+    assert "isAbortError" in api_js
+    assert "AbortError" in api_js
+    assert "page-results" in customer_js
+    assert "Promise.allSettled" in customer_js
+    assert "results.replaceChildren" in customer_js
+    assert "Recorded facts remain live" in customer_js
+    assert "root.append(renderFacts" not in customer_js
+    assert "root.append(errorBox" not in customer_js

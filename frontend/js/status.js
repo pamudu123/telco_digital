@@ -1,4 +1,4 @@
-import { api } from "./api.js";
+import { api, isAbortError } from "./api.js";
 import { badge, el, statusBox } from "./dom.js";
 import { errorBox } from "./customer-360.js";
 
@@ -12,10 +12,11 @@ const IMPACT = [
   ["Lottery", "Secondary lens; abuse investigation later."],
 ];
 
-export async function renderStatus(root) {
-  root.append(statusBox("loading", "Loading capability status…"));
+export async function renderStatus(root, { signal } = {}) {
+  root.replaceChildren(statusBox("loading", "Loading capability status…"));
   try {
-    const data = await api.status();
+    const data = await api.status({ signal });
+    if (signal?.aborted) return;
     const table = el("table", { className: "table" }, [
       el("thead", {}, [
         el("tr", {}, [
@@ -90,6 +91,7 @@ export async function renderStatus(root) {
       ]),
     );
   } catch (error) {
+    if (signal?.aborted || isAbortError(error)) return;
     root.replaceChildren(errorBox(error, "Could not load capability status."));
   }
 }

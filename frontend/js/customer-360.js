@@ -1,4 +1,4 @@
-import { api, ApiError } from "./api.js";
+import { api, ApiError, isAbortError } from "./api.js";
 import { badge, el, formatDate, formatNumber, provenanceLine, statusBox, text } from "./dom.js";
 
 const LENSES = {
@@ -54,15 +54,21 @@ function plannedRail() {
   ]);
 }
 
-export async function renderCustomer360(root, { lens = "all", walkthroughId } = {}) {
-  root.append(statusBox("loading", "Loading recorded facts…"));
+function stale(signal) {
+  return Boolean(signal?.aborted);
+}
+
+export async function renderCustomer360(root, { lens = "all", signal } = {}) {
+  root.replaceChildren(statusBox("loading", "Loading recorded facts…"));
   let personas;
   try {
-    personas = await api.personas();
+    personas = await api.personas({ signal });
   } catch (error) {
+    if (stale(signal) || isAbortError(error)) return;
     root.replaceChildren(errorBox(error, "Could not load personas."));
     return;
   }
+  if (stale(signal)) return;
 
   const params = new URLSearchParams(window.location.hash.split("?")[1] || "");
   const selected = params.get("ref") || "U001";
@@ -117,6 +123,9 @@ export async function renderCustomer360(root, { lens = "all", walkthroughId } = 
     window.location.hash = `#/customer-360?${next.toString()}`;
   });
 
+  if (stale(signal)) return;
+
+  const results = el("div", { className: "page-results" });
   root.replaceChildren(
     el("div", { className: "page-header" }, [
       el("div", {}, [
@@ -127,34 +136,57 @@ export async function renderCustomer360(root, { lens = "all", walkthroughId } = 
       ]),
     ]),
     toolbar,
+    results,
   );
 
   if (currentLens === "lottery") {
-    root.append(
+    results.replaceChildren(
       statusBox(
         "empty",
         "Mobile Lottery is a secondary lens.",
         "Later graph and anomaly capabilities may support abuse investigation. No lottery facts are shown as live intelligence.",
       ),
+      plannedRail(),
     );
-    root.append(plannedRail());
     return;
   }
 
   if (currentLens === "retail") {
-    await renderRetail(root, asOf);
+    await renderRetail(results, asOf, signal);
     return;
   }
 
-  try {
-    const [data, features] = await Promise.all([
-      api.customer360(selected, asOf || undefined),
-      api.customerFeatures(selected, asOf || undefined),
-    ]);
-    root.append(renderFacts(data, currentLens, features));
-  } catch (error) {
-    root.append(errorBox(error, `Could not load ${selected}.`));
+  results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
+  const [factsOutcome, featuresOutcome] = await Promise.allSettled([
+    api.customer360(selected, asOf || undefined, { signal }),
+    api.customerFeatures(selected, asOf || undefined, { signal }),
+  ]);
+  if (stale(signal)) return;
+
+  if (factsOutcome.status === "rejected") {
+    if (isAbortError(factsOutcome.reason)) return;
+    results.replaceChildren(errorBox(factsOutcome.reason, `Could not load ${selected}.`));
+    return;
   }
+
+  const features = featuresOutcome.status === "fulfilled" ? featuresOutcome.value : null;
+  const featuresError =
+    featuresOutcome.status === "rejected" && !isAbortError(featuresOutcome.reason)
+      ? featuresOutcome.reason
+      : null;
+  results.replaceChildren(renderFacts(factsOutcome.value, currentLens, features, featuresError));
+}
+
+function featureErrorPanel(error) {
+  return el("section", { className: "card" }, [
+    el("header", {}, [el("h2", { text: "Derived features" }), badge("Unavailable", "unknown")]),
+    statusBox(
+      "error",
+      "Could not load derived features",
+      "Recorded facts remain live. Notebook artifacts are not substituted.",
+    ),
+    el("p", { className: "meta", text: error instanceof Error ? error.message : "Request failed" }),
+  ]);
 }
 
 function featurePanel(features) {
@@ -179,7 +211,7 @@ function featurePanel(features) {
   ]);
 }
 
-function renderFacts(data, lens, features) {
+function renderFacts(data, lens, features, featuresError) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
     recharges: factList("Recharge history", data.recharges, "No recharges at this as_of."),
@@ -212,14 +244,18 @@ function renderFacts(data, lens, features) {
       el("div", { className: "grid grid-2" }, visible),
       factList("Customer timeline", data.timeline, "No activity events at this as_of."),
     ]),
-    el("aside", {}, [featurePanel(features), plannedRail()]),
+    el("aside", {}, [
+      featuresError ? featureErrorPanel(featuresError) : features ? featurePanel(features) : null,
+      plannedRail(),
+    ]),
   ]);
 }
 
-async function renderRetail(root, asOf) {
+async function renderRetail(root, asOf, signal) {
   try {
-    const data = await api.retailer("RET-001", asOf || undefined);
-    root.append(
+    const data = await api.retailer("RET-001", asOf || undefined, { signal });
+    if (stale(signal)) return;
+    root.replaceChildren(
       el("div", {}, [
         el("section", { className: "card fact-card" }, [
           el("header", {}, [el("h2", { text: data.name }), badge("Recorded fact", "fact")]),
@@ -235,7 +271,8 @@ async function renderRetail(root, asOf) {
       ]),
     );
   } catch (error) {
-    root.append(errorBox(error, "Could not load retailer RET-001."));
+    if (stale(signal) || isAbortError(error)) return;
+    root.replaceChildren(errorBox(error, "Could not load retailer RET-001."));
   }
 }
 

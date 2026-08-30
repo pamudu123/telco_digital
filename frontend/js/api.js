@@ -9,11 +9,21 @@ export class ApiError extends Error {
   }
 }
 
-async function request(path) {
+export function isAbortError(error) {
+  return Boolean(error && error.name === "AbortError");
+}
+
+function asOfQuery(path, asOf) {
+  return asOf ? `${path}?as_of=${encodeURIComponent(asOf)}` : path;
+}
+
+async function request(path, options = {}) {
+  const { signal } = options;
   let response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`);
-  } catch {
+    response = await fetch(`${API_BASE_URL}${path}`, signal ? { signal } : {});
+  } catch (error) {
+    if (isAbortError(error)) throw error;
     throw new ApiError(503, { source: "unavailable", detail: "API is unreachable" });
   }
   const payload = await response.json().catch(() => ({}));
@@ -24,21 +34,18 @@ async function request(path) {
 }
 
 export const api = {
-  overview: (asOf) => request(`/showcase/overview${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
-  evidence: (asOf) => request(`/showcase/evidence${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
-  personas: () => request("/showcase/personas"),
-  status: () => request("/showcase/status"),
-  walkthroughs: () => request("/showcase/walkthroughs"),
-  customer360: (ref, asOf) =>
-    request(`/customers/${encodeURIComponent(ref)}/360${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
-  customerFeatures: (ref, asOf) =>
-    request(`/customers/${encodeURIComponent(ref)}/features${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
-  graphSummary: (asOf) =>
-    request(`/showcase/graph/summary${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
-  graphCustomer: (ref, asOf) =>
-    request(`/showcase/graph/customers/${encodeURIComponent(ref)}${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`),
-  retailer: (ref, asOf) =>
-    request(
-      `/showcase/sfa/retailers/${encodeURIComponent(ref)}${asOf ? `?as_of=${encodeURIComponent(asOf)}` : ""}`,
-    ),
+  overview: (asOf, options) => request(asOfQuery("/showcase/overview", asOf), options),
+  evidence: (asOf, options) => request(asOfQuery("/showcase/evidence", asOf), options),
+  personas: (options) => request("/showcase/personas", options),
+  status: (options) => request("/showcase/status", options),
+  walkthroughs: (options) => request("/showcase/walkthroughs", options),
+  customer360: (ref, asOf, options) =>
+    request(asOfQuery(`/customers/${encodeURIComponent(ref)}/360`, asOf), options),
+  customerFeatures: (ref, asOf, options) =>
+    request(asOfQuery(`/customers/${encodeURIComponent(ref)}/features`, asOf), options),
+  graphSummary: (asOf, options) => request(asOfQuery("/showcase/graph/summary", asOf), options),
+  graphCustomer: (ref, asOf, options) =>
+    request(asOfQuery(`/showcase/graph/customers/${encodeURIComponent(ref)}`, asOf), options),
+  retailer: (ref, asOf, options) =>
+    request(asOfQuery(`/showcase/sfa/retailers/${encodeURIComponent(ref)}`, asOf), options),
 };

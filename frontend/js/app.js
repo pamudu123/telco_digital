@@ -1,4 +1,4 @@
-import { api } from "./api.js";
+import { api, isAbortError } from "./api.js";
 import { renderBarChart, renderDoughnut } from "./charts.js";
 import { renderCustomer360, errorBox } from "./customer-360.js";
 import { badge, el, formatDate, formatNumber, provenanceLine, statusBox } from "./dom.js";
@@ -93,7 +93,7 @@ function setCurrent(nav, id) {
   }
 }
 
-async function renderOverview(root) {
+async function renderOverview(root, { signal } = {}) {
   root.replaceChildren(
     el("div", { className: "page-header" }, [
       el("div", {}, [
@@ -105,9 +105,14 @@ async function renderOverview(root) {
     statusBox("loading", "Loading live database evidence…"),
   );
   try {
-    const [overview, evidence, manifest] = await Promise.all([api.overview(), api.evidence(), api.status()]);
+    const [overview, evidence, manifest] = await Promise.all([
+      api.overview(undefined, { signal }),
+      api.evidence(undefined, { signal }),
+      api.status({ signal }),
+    ]);
+    if (signal?.aborted) return;
     if (overview.source !== "live_database" || evidence.source !== "live_database") {
-      root.append(
+      root.replaceChildren(
         statusBox("error", "Unexpected evidence source", "Live pages do not mix notebook artifacts into metric cards."),
       );
       return;
@@ -209,6 +214,7 @@ async function renderOverview(root) {
       "Activity events",
     );
   } catch (error) {
+    if (signal?.aborted || isAbortError(error)) return;
     root.replaceChildren(errorBox(error, "Could not load overview evidence."));
   }
 }
@@ -251,21 +257,33 @@ function renderPlanned(root, id) {
 
 export function start() {
   const { nav, content } = renderShell(document.body);
+  let active = new AbortController();
+
   async function show() {
+    active.abort();
+    const controller = new AbortController();
+    active = controller;
+    const { signal } = controller;
     const id = route();
     setCurrent(nav, id);
     content.replaceChildren();
-    if (id === "overview") await renderOverview(content);
-    else if (id === "customer-360") await renderCustomer360(content);
-    else if (id === "campaigns") await renderCustomer360(content, { lens: "campaigns" });
-    else if (id === "money") await renderCustomer360(content, { lens: "money" });
-    else if (id === "retail") await renderCustomer360(content, { lens: "retail" });
-    else if (id === "walkthroughs") await renderWalkthroughs(content);
-    else if (id === "graph") await renderGraph(content);
-    else if (id === "status") await renderStatus(content);
-    else if (PLANNED[id]) renderPlanned(content, id);
-    else content.replaceChildren(statusBox("error", "Unknown page", "Use the Intelligence navigation."));
-    content.focus();
+    try {
+      if (id === "overview") await renderOverview(content, { signal });
+      else if (id === "customer-360") await renderCustomer360(content, { signal });
+      else if (id === "campaigns") await renderCustomer360(content, { lens: "campaigns", signal });
+      else if (id === "money") await renderCustomer360(content, { lens: "money", signal });
+      else if (id === "retail") await renderCustomer360(content, { lens: "retail", signal });
+      else if (id === "walkthroughs") await renderWalkthroughs(content, { signal });
+      else if (id === "graph") await renderGraph(content, { signal });
+      else if (id === "status") await renderStatus(content, { signal });
+      else if (PLANNED[id]) renderPlanned(content, id);
+      else content.replaceChildren(statusBox("error", "Unknown page", "Use the Intelligence navigation."));
+      if (signal.aborted) return;
+      content.focus();
+    } catch (error) {
+      if (signal.aborted || isAbortError(error)) return;
+      content.replaceChildren(errorBox(error, "Could not load this page."));
+    }
   }
   window.addEventListener("hashchange", () => {
     show();

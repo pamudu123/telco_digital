@@ -1,11 +1,12 @@
-import { api } from "./api.js";
+import { api, isAbortError } from "./api.js";
 import { badge, el, statusBox } from "./dom.js";
 import { errorBox } from "./customer-360.js";
 
-export async function renderWalkthroughs(root) {
-  root.append(statusBox("loading", "Loading guided demonstrations…"));
+export async function renderWalkthroughs(root, { signal } = {}) {
+  root.replaceChildren(statusBox("loading", "Loading guided demonstrations…"));
   try {
-    const data = await api.walkthroughs();
+    const data = await api.walkthroughs({ signal });
+    if (signal?.aborted) return;
     root.replaceChildren(
       el("div", { className: "page-header" }, [
         el("div", {}, [
@@ -48,6 +49,7 @@ export async function renderWalkthroughs(root) {
       ),
     );
   } catch (error) {
+    if (signal?.aborted || isAbortError(error)) return;
     root.replaceChildren(errorBox(error, "Could not load walkthroughs."));
   }
 }
