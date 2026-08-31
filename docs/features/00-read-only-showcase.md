@@ -67,7 +67,7 @@ frontend files.
 
 If this UI is deployed beyond localhost, protect it (Vercel deployment
 protection, basic-auth gateway, or a restricted preview). All records are
-synthetic and the banner must remain visible.
+synthetic; the persistent footer disclosure must remain visible.
 
 ## Verification
 
