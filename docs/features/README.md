@@ -11,7 +11,7 @@ scenario works in the shared demo environment; it does not mean production ready
 | 03 | Event memory | POC complete | [03-event-memory.md](./03-event-memory.md) |
 | 04 | Behaviour intelligence | POC complete | [04-behaviour-intelligence.md](./04-behaviour-intelligence.md) |
 | 05 | Churn prediction | POC complete | [05-churn-prediction.md](./05-churn-prediction.md) |
-| 06 | Recommendations and uncertainty | Not started | — |
+| 06 | Recommendations and uncertainty | POC complete | [06-recommendations-uncertainty.md](./06-recommendations-uncertainty.md) |
 | 07 | Graph fraud | Not started | — |
 | 08 | SFA forecasting | Not started | — |
 | 09 | Digital twins | Not started | — |

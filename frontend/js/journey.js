@@ -153,7 +153,7 @@ export async function renderJourney(root, { signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Journey and Event Memory" }),
         el("p", {
-          text: "Derived travel episodes and similar-event matches. Recommendations stay POC planned.",
+          text: "Derived travel episodes, similar-event matches and uncertainty-aware catalogue offers.",
         }),
       ]),
       badge("Live evidence", "live"),
@@ -163,33 +163,86 @@ export async function renderJourney(root, { signal } = {}) {
   );
 
   results.replaceChildren(statusBox("loading", "Recalling similar historical episodes…"));
-  try {
-    const data = await api.eventMemory(selected, asOf || undefined, destination || undefined, { signal });
-    if (stale(signal)) return;
-    const matches = data.matches || [];
-    results.replaceChildren(
-      situationCard(data),
-      el("section", { className: "card" }, [
-        el("header", {}, [el("h2", { text: "Retrieved episodes" }), badge("Derived", "derived")]),
-        matches.length
-          ? el(
-              "div",
-              { className: "grid grid-2" },
-              matches.map((match) => episodeCard(match)),
-            )
-          : statusBox("empty", "No similar episodes retrieved."),
-      ]),
-      el("section", { className: "card" }, [
-        el("header", {}, [el("h2", { text: "Historical travel episodes" }), badge("Derived", "derived")]),
-        historyList(data.historical_episodes || []),
-      ]),
-      el("section", { className: "card" }, [
-        el("header", {}, [el("h3", { text: "Recommendation" }), badge("POC planned", "planned")]),
-        el("p", { text: "Candidate ranking and uncertainty-aware offers are not implemented." }),
-      ]),
-    );
-  } catch (error) {
-    if (stale(signal) || isAbortError(error)) return;
-    results.replaceChildren(errorBox(error, `Could not recall episodes for ${selected}.`));
+  const [memoryOutcome, recsOutcome] = await Promise.allSettled([
+    api.eventMemory(selected, asOf || undefined, destination || undefined, { signal }),
+    api.customerRecommendations(selected, asOf || undefined, destination || undefined, { signal }),
+  ]);
+  if (stale(signal)) return;
+  if (memoryOutcome.status === "rejected") {
+    if (isAbortError(memoryOutcome.reason)) return;
+    results.replaceChildren(errorBox(memoryOutcome.reason, `Could not recall episodes for ${selected}.`));
+    return;
   }
+  const data = memoryOutcome.value;
+  const matches = data.matches || [];
+  const recs = recsOutcome.status === "fulfilled" ? recsOutcome.value : null;
+  const recsError =
+    recsOutcome.status === "rejected" && !isAbortError(recsOutcome.reason) ? recsOutcome.reason : null;
+  results.replaceChildren(
+    situationCard(data),
+    el("section", { className: "card" }, [
+      el("header", {}, [el("h2", { text: "Retrieved episodes" }), badge("Derived", "derived")]),
+      matches.length
+        ? el(
+            "div",
+            { className: "grid grid-2" },
+            matches.map((match) => episodeCard(match)),
+          )
+        : statusBox("empty", "No similar episodes retrieved."),
+    ]),
+    el("section", { className: "card" }, [
+      el("header", {}, [el("h2", { text: "Historical travel episodes" }), badge("Derived", "derived")]),
+      historyList(data.historical_episodes || []),
+    ]),
+    recommendationPanel(recs, recsError),
+  );
+}
+
+function recommendationPanel(data, error) {
+  if (error) {
+    return el("section", { className: "card" }, [
+      el("header", {}, [el("h3", { text: "Recommendation" }), badge("Unavailable", "unknown")]),
+      el("p", { text: "Catalogue ranking could not be loaded. Retrieved episodes remain live." }),
+    ]);
+  }
+  if (!data) {
+    return el("section", { className: "card" }, [
+      el("header", {}, [el("h3", { text: "Recommendation" }), badge("Recommend", "recommend")]),
+      el("p", { text: "Ranked catalogue offers appear when a destination is known." }),
+    ]);
+  }
+  const ranked = data.ranked || [];
+  return el("section", { className: "card" }, [
+    el("header", {}, [el("h3", { text: "Recommendation" }), badge("Recommend", "recommend")]),
+    el("p", {
+      text: data.primary
+        ? `${data.mode.replaceAll("_", " ")} • ${data.primary.plan_code} (${data.primary.scenario_label})`
+        : `${data.mode.replaceAll("_", " ")} • no catalogue offer`,
+    }),
+    ranked.length
+      ? el(
+          "ol",
+          { className: "timeline" },
+          ranked.map((item) =>
+            el("li", {}, [
+              el("div", {}, [
+                el("div", { text: `${item.plan_code} • ${item.plan_name}` }),
+                el("small", {
+                  text: `${item.scenario_label} • score ${item.score} • ${(item.reasons || []).join(" • ")}`,
+                }),
+              ]),
+              badge("Recommend", "recommend"),
+            ]),
+          ),
+        )
+      : el("p", { text: "No active roaming catalogue offer was ranked." }),
+    el("p", { className: "meta", text: data.recommendation_set_version }),
+    ...(data.uncertainty || []).map((item) =>
+      el("p", {}, [
+        badge(item.status, item.status === "unknown" ? "unknown" : "recommend"),
+        " ",
+        `${item.name.replaceAll("_", " ")}: ${item.value || item.note || item.status}`,
+      ]),
+    ),
+  ]);
 }

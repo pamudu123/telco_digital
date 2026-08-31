@@ -3,6 +3,7 @@
 Each capability owns one numbered folder. Notebooks contain analysis, training,
 evaluation, and plots; runtime services remain under `src/telco_digital`.
 Capability 05 trains the served churn artifact in `05_churn`.
+Capability 06 ranks catalogue offers in `06_recommendations`.
 
 Install and execute with:
 

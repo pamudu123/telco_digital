@@ -1,0 +1,22 @@
+[
+  {
+    "case":"U001 SG duration unknown",
+    "mode":"SCENARIO_BASED",
+    "primary":"ROAM_15"
+  },
+  {
+    "case":"U001 after March trip ended",
+    "mode":"SCENARIO_BASED",
+    "primary":"ROAM_15"
+  },
+  {
+    "case":"U003 no destination",
+    "mode":"ASK_FOR_INFORMATION",
+    "primary":null
+  },
+  {
+    "case":"U001 US no roam catalogue",
+    "mode":"NO_RECOMMENDATION",
+    "primary":null
+  }
+]

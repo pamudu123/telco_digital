@@ -47,6 +47,14 @@ export const api = {
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/behaviour`, asOf), options),
   customerChurn: (ref, asOf, options) =>
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/churn`, asOf), options),
+  customerRecommendations: (ref, asOf, destination, options) => {
+    const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/recommendations`, asOf);
+    const separator = path.includes("?") ? "&" : "?";
+    return request(
+      destination ? `${path}${separator}destination=${encodeURIComponent(destination)}` : path,
+      options,
+    );
+  },
   eventMemory: (ref, asOf, destination, options) => {
     const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/event-memory`, asOf);
     const separator = path.includes("?") ? "&" : "?";

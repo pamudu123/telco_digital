@@ -1,0 +1,39 @@
+{
+  "mode": "SCENARIO_BASED",
+  "primary": "ROAM_15",
+  "ranked": [
+    "ROAM_15",
+    "ROAM_30",
+    "ROAM_5"
+  ],
+  "uncertainty": [
+    {
+      "name": "destination",
+      "status": "known"
+    },
+    {
+      "name": "trip_duration",
+      "status": "unknown"
+    },
+    {
+      "name": "historical_duration",
+      "status": "inferred"
+    },
+    {
+      "name": "historical_plan",
+      "status": "inferred"
+    },
+    {
+      "name": "historical_usage",
+      "status": "inferred"
+    },
+    {
+      "name": "catalogue",
+      "status": "known"
+    },
+    {
+      "name": "churn_offer_rule",
+      "status": "unknown"
+    }
+  ]
+}

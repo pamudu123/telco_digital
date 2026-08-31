@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–05. Customer 360 includes amber derived features and behaviour traits plus a trained churn score, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Recommendations, twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–06. Customer 360 includes amber derived features and behaviour traits plus a trained churn score and catalogue recommendations. Journey ranks ROAM_15 with uncertainty. Twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 

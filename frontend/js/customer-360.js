@@ -115,9 +115,38 @@ function churnPanel(data) {
   ]);
 }
 
-function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError) {
+function recommendationPanel(data, customerRef) {
+  const primary = data.primary;
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Recommendation" }),
+      badge("Recommend", "recommend"),
+    ]),
+    el("p", {
+      text: primary
+        ? `${data.mode.replaceAll("_", " ")} • ${primary.plan_code} for ${primary.scenario_label}`
+        : `${(data.mode || "NO_RECOMMENDATION").replaceAll("_", " ")} • no catalogue offer`,
+    }),
+    el("p", { className: "meta", text: data.recommendation_set_version }),
+    el("a", {
+      href: `#/journey?ref=${encodeURIComponent(customerRef || data.customer_ref || "U001")}`,
+      text: "Open ranked offers on Journey",
+    }),
+  ]);
+}
+
+function plannedRail(
+  eventMemory,
+  eventMemoryError,
+  behaviour,
+  behaviourError,
+  churn,
+  churnError,
+  recommendation,
+  recommendationError,
+  customerRef,
+) {
   const items = [
-    ["Recommendation", "No recommended action generated."],
     ["Digital twin", "No derived twin in this showcase."],
   ];
   return el("aside", { className: "planned-rail", "aria-label": "Intelligence readiness" }, [
@@ -173,6 +202,23 @@ function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, c
               badge("Prediction", "prediction"),
             ]),
             el("p", { text: "A trained score appears when feature evidence is available." }),
+          ]),
+    recommendationError
+      ? el("div", { className: "card" }, [
+          el("header", { className: "page-header" }, [
+            el("h3", { text: "Recommendation" }),
+            badge("Unavailable", "unknown"),
+          ]),
+          el("p", { text: "Catalogue ranking could not be loaded. Recorded facts remain live." }),
+        ])
+      : recommendation
+        ? recommendationPanel(recommendation, customerRef)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Recommendation" }),
+              badge("Recommend", "recommend"),
+            ]),
+            el("p", { text: "Ranked catalogue offers appear when a travel destination is known." }),
           ]),
     ...items.map(([title, detail]) =>
       el("div", { className: "card" }, [
@@ -263,7 +309,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Customer 360" }),
         el("p", {
-          text: "Recorded facts plus derived features, episodes, behaviour traits and a trained churn score. Recommendations stay POC planned.",
+          text: "Recorded facts plus derived features, episodes, behaviour traits, a trained churn score and catalogue recommendations. The decision engine stays POC planned.",
         }),
       ]),
     ]),
@@ -289,12 +335,15 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
   }
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
-  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome] = await Promise.allSettled([
+  const recDestination = selected === "U001" ? "SG" : undefined;
+  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, recsOutcome] =
+    await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
-    api.eventMemory(selected, asOf || undefined, undefined, { signal }),
+    api.eventMemory(selected, asOf || undefined, recDestination, { signal }),
     api.customerBehaviour(selected, asOf || undefined, { signal }),
     api.customerChurn(selected, asOf || undefined, { signal }),
+    api.customerRecommendations(selected, asOf || undefined, recDestination, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -324,6 +373,11 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     churnOutcome.status === "rejected" && !isAbortError(churnOutcome.reason)
       ? churnOutcome.reason
       : null;
+  const recommendation = recsOutcome.status === "fulfilled" ? recsOutcome.value : null;
+  const recommendationError =
+    recsOutcome.status === "rejected" && !isAbortError(recsOutcome.reason)
+      ? recsOutcome.reason
+      : null;
   results.replaceChildren(
     renderFacts(
       factsOutcome.value,
@@ -336,6 +390,8 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       behaviourError,
       churn,
       churnError,
+      recommendation,
+      recommendationError,
     ),
   );
 }
@@ -385,6 +441,8 @@ function renderFacts(
   behaviourError,
   churn,
   churnError,
+  recommendation,
+  recommendationError,
 ) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
@@ -420,7 +478,17 @@ function renderFacts(
     ]),
     el("aside", {}, [
       featuresError ? featureErrorPanel(featuresError) : features ? featurePanel(features) : null,
-      plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError),
+      plannedRail(
+        eventMemory,
+        eventMemoryError,
+        behaviour,
+        behaviourError,
+        churn,
+        churnError,
+        recommendation,
+        recommendationError,
+        data.customer_ref,
+      ),
     ]),
   ]);
 }

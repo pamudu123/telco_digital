@@ -100,5 +100,6 @@ lineage, monitoring and drift checks, and only then persist prediction records.
 
 ## 13. Dependency for the next capability
 
-Capability 06 may consume this score as one input to candidate ranking. It
-remains not started and no offer is generated from a HIGH band.
+Capability 06 ranks catalogue offers from travel memory and does not turn a
+HIGH band into a discount. See
+[06-recommendations-uncertainty.md](./06-recommendations-uncertainty.md).

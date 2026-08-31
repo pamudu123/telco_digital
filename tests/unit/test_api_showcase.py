@@ -42,6 +42,7 @@ def test_capability_02_routes_are_registered() -> None:
         assert "/api/v1/customers/{customer_ref}/event-memory" in paths
         assert "/api/v1/customers/{customer_ref}/behaviour" in paths
         assert "/api/v1/customers/{customer_ref}/churn" in paths
+        assert "/api/v1/customers/{customer_ref}/recommendations" in paths
         assert "/api/v1/showcase/graph/summary" in paths
         assert "/api/v1/showcase/graph/customers/{customer_ref}" in paths
 
@@ -50,7 +51,7 @@ def test_frontend_index_is_served() -> None:
     with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert "capabilities 00–05 showcase" in response.text
+        assert "capabilities 00–06 showcase" in response.text
         assert "vendor/chart.umd.min.js" in response.text
         assert "js/app.js" in response.text
 
@@ -62,6 +63,12 @@ def test_walkthroughs_are_metadata_not_predictions() -> None:
         assert len(body["walkthroughs"]) == 6
         for item in body["walkthroughs"]:
             planned = [step for step in item["steps"] if not step["live"]]
+            if item["id"] == "singapore-travel":
+                assert any(
+                    step["live"] and "recommend" in step["title"].lower() for step in item["steps"]
+                )
+                assert "decision" in item["later_intelligence"].lower()
+                continue
             assert planned
             assert any(
                 "infer" in step["title"].lower() or "recommend" in step["title"].lower()

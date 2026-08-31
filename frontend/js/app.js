@@ -23,7 +23,7 @@ const NAV = [
 const PLANNED = {
   models: {
     title: "Models and Decisions",
-    body: "Churn scores are live on Customer 360. Recommendations, twins and the decision engine are not started. This page does not display those later scores.",
+    body: "Churn scores are live on Customer 360. Travel recommendations are live on Journey. Twins and the decision engine are not started. This page does not display those later scores.",
   },
   copilot: {
     title: "Copilot",
@@ -54,7 +54,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–05 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–06 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -72,7 +72,7 @@ function renderShell(root) {
         el("h2", { text: "Intelligence" }),
         nav,
         el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capabilities 00–05." }),
+          el("div", { text: "POC environment: Live evidence = capabilities 00–06." }),
           el("div", { text: "Planned capability = not implemented." }),
         ]),
       ]),
