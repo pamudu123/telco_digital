@@ -1,5 +1,5 @@
 {
-  "title": "Omobio Intelligence POC \u2014 FastAPI",
+  "title": "Company Intelligence POC \u2014 FastAPI",
   "commands": [
     "/api/v1/commands/plan-purchase",
     "/api/v1/commands/recharge",

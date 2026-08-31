@@ -42,7 +42,7 @@ async def test_live_customer_twin_ranks_u001_roam_15() -> None:
     factory = create_session_factory(engine)
     try:
         async with factory() as session:
-            uow = SqlAlchemyUnitOfWork(session)
+            uow = SqlAlchemyUnitOfWork(factory)
             features = CustomerFeatureService(
                 TemporalFeatureService(PostgresTemporalFeatureQueries(session)),
                 GraphFeatureService(_UnavailableGraph()),
@@ -56,6 +56,7 @@ async def test_live_customer_twin_ranks_u001_roam_15() -> None:
     finally:
         await engine.dispose()
 
+    assert result.kind == "CUSTOMER"
     assert result.customer_ref == "U001"
     assert result.historical.top_plan == "ROAM_15"
     assert result.recommended.primary_plan_code == "ROAM_15"

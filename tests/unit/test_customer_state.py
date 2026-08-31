@@ -101,6 +101,14 @@ async def test_plan_at_point_in_time(uow, clock) -> None:
     march_10 = await get_customer_state(
         uow, GetCustomerStateQuery(customer_ref="U101", as_of=utc("2026-03-10T12:00:00+00:00"))
     )
+    march_26 = await get_customer_state(
+        uow, GetCustomerStateQuery(customer_ref="U101", as_of=utc("2026-03-26T00:00:00+00:00"))
+    )
+    april = await get_customer_state(
+        uow, GetCustomerStateQuery(customer_ref="U101", as_of=utc("2026-04-02T00:00:00+00:00"))
+    )
     assert march_2.current_plan_code == "PLAN_A"
     assert march_10.current_plan_code == "ROAM_15"
+    assert march_26.current_plan_code == "PLAN_A"
+    assert april.current_plan_code is None
     assert march_10.balance_amount == Decimal("1000") - Decimal("300") - Decimal("350")

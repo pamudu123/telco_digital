@@ -90,7 +90,8 @@ class PostgresTemporalFeatureQueries:
             (
                 plan
                 for subscription, plan in subscriptions
-                if subscription.ended_at is None or subscription.ended_at > as_of
+                if (subscription.ended_at is None or subscription.ended_at > as_of)
+                and subscription.started_at + timedelta(days=plan.validity_days) > as_of
             ),
             None,
         )
@@ -190,9 +191,7 @@ class PostgresTemporalFeatureQueries:
                         row.interaction_type == "COMPLAINT" for row in service
                     ),
                     "open_count": sum(
-                        row.status == "OPEN"
-                        and (row.resolved_at is None or row.resolved_at > as_of)
-                        for row in service
+                        row.resolved_at is None or row.resolved_at > as_of for row in service
                     ),
                 },
             },

@@ -22,7 +22,13 @@ from telco_digital.application.services.service_interaction import record_servic
 from telco_digital.application.services.travel import end_travel, record_travel
 from telco_digital.application.services.usage import record_usage
 from telco_digital.application.unit_of_work.protocol import UnitOfWork
-from telco_digital.domain.enums import AccountType, UsageType
+from telco_digital.domain.enums import (
+    AccountType,
+    InteractionStatus,
+    InteractionType,
+    PlanType,
+    UsageType,
+)
 from telco_digital.domain.value_objects import normalize_country
 
 
@@ -34,7 +40,7 @@ CATALOGUE = [
     CreatePlanCommand(
         plan_code="PLAN_A",
         name="Local Data A",
-        plan_type="LOCAL",
+        plan_type=PlanType.LOCAL,
         data_mb=10240,
         validity_days=30,
         price=Decimal("300"),
@@ -44,7 +50,7 @@ CATALOGUE = [
     CreatePlanCommand(
         plan_code="ROAM_5",
         name="Roaming 5GB",
-        plan_type="ROAMING",
+        plan_type=PlanType.ROAMING,
         data_mb=5120,
         validity_days=5,
         price=Decimal("150"),
@@ -55,7 +61,7 @@ CATALOGUE = [
     CreatePlanCommand(
         plan_code="ROAM_15",
         name="Roaming 15GB",
-        plan_type="ROAMING",
+        plan_type=PlanType.ROAMING,
         data_mb=15360,
         validity_days=15,
         price=Decimal("350"),
@@ -66,7 +72,7 @@ CATALOGUE = [
     CreatePlanCommand(
         plan_code="ROAM_30",
         name="Roaming 30GB",
-        plan_type="ROAMING",
+        plan_type=PlanType.ROAMING,
         data_mb=30720,
         validity_days=30,
         price=Decimal("600"),
@@ -305,10 +311,10 @@ async def _seed_u004(uow: UnitOfWork, clock: Clock) -> None:
         uow,
         RecordServiceInteractionCommand(
             customer_ref="U004",
-            interaction_type="NETWORK_ISSUE",
+            interaction_type=InteractionType.NETWORK_ISSUE,
             occurred_at=_dt("2026-08-12T11:00:00+00:00"),
             severity="HIGH",
-            status="OPEN",
+            status=InteractionStatus.OPEN,
             correlation_id="seed-u004",
         ),
         clock=clock,
@@ -317,10 +323,10 @@ async def _seed_u004(uow: UnitOfWork, clock: Clock) -> None:
         uow,
         RecordServiceInteractionCommand(
             customer_ref="U004",
-            interaction_type="COMPLAINT",
+            interaction_type=InteractionType.COMPLAINT,
             occurred_at=_dt("2026-08-18T11:00:00+00:00"),
             severity="MEDIUM",
-            status="OPEN",
+            status=InteractionStatus.OPEN,
             correlation_id="seed-u004",
         ),
         clock=clock,

@@ -128,9 +128,10 @@ def decide(
     validate_as_of(recommendation.as_of)
     traits = tuple(sorted(_traits(behaviour)))
     primary = recommendation.primary
+    codes: list[str]
     if _needs_support(behaviour, churn):
         action = DecisionAction.SUPPORT_FOLLOW_UP
-        codes = ("CHURN_HIGH", "NETWORK_OR_COMPLAINT", "NO_AUTO_DISCOUNT")
+        codes = ["CHURN_HIGH", "NETWORK_OR_COMPLAINT", "NO_AUTO_DISCOUNT"]
         what = "Follow up on the open service issue. Do not issue a retention discount."
         why = (
             "Churn is HIGH with declining engagement or open network/complaint "
@@ -152,10 +153,9 @@ def decide(
         )
         confidence = primary.confidence
         target = primary.plan_code
-        codes = tuple(codes)
     elif recommendation.mode == DecisionMode.ASK_FOR_INFORMATION and "PRICE_SENSITIVE" in traits:
         action = DecisionAction.NO_INVENTED_OFFER
-        codes = ("PRICE_SENSITIVE", "NO_CATALOGUE_TRAVEL_CONTEXT")
+        codes = ["PRICE_SENSITIVE", "NO_CATALOGUE_TRAVEL_CONTEXT"]
         what = "Do not invent a discount or roam plan."
         why = (
             "PRICE_SENSITIVE evidence is present, but there is no travel catalogue "
@@ -165,21 +165,19 @@ def decide(
         target = None
     elif recommendation.mode == DecisionMode.ASK_FOR_INFORMATION:
         action = DecisionAction.REQUEST_INFORMATION
-        codes = ("DESTINATION_UNKNOWN",)
+        codes = ["DESTINATION_UNKNOWN"]
         what = "Ask for the travel destination before ranking an offer."
         why = "Catalogue roam plans are destination-scoped and duration is unknown."
         confidence = 0.7
         target = None
     else:
         action = DecisionAction.NO_INVENTED_OFFER
-        codes = ("NO_CATALOGUE_MATCH",)
+        codes = ["NO_CATALOGUE_MATCH"]
         what = "Do not invent a plan or discount."
         why = "No active catalogue offer is available for this situation."
         confidence = 0.65
         target = None
 
-    if isinstance(codes, list):
-        codes = tuple(codes)
     unknowns = _shared_unknowns(recommendation)
     explanation = DecisionExplanation(
         what=what,
@@ -205,7 +203,7 @@ def decide(
         computed_at=datetime.now(tz=UTC),
         action=action,
         target_plan_code=target,
-        reason_codes=codes,
+        reason_codes=tuple(codes),
         confidence=confidence,
         explanation=explanation,
         recommendation_mode=str(recommendation.mode),

@@ -1,8 +1,8 @@
-Yes. I would connect the new **Unified Intelligence Platform features directly into Omobio’s existing applications**, instead of positioning them as separate products.
+Yes. I would connect the new **Unified Intelligence Platform features directly into the company's existing applications**, instead of positioning them as separate products.
 
-Omobio’s current digital service set in your source includes Mobile Selfcare, Mobile Sales Force Automation, Loyalty Management, Viber Campaign Manager, Mobile Money, Mobile Lottery and adReach.   
+The company's current digital service set in your source includes Mobile Selfcare, Mobile Sales Force Automation, Loyalty Management, Viber Campaign Manager, Mobile Money, Mobile Lottery and adReach.
 
-# Feature → Existing Omobio Application
+# Feature → Existing Company Application
 
 | New intelligence feature          | Selfcare | Loyalty | adReach | Viber | Mobile Money | SFA | Lottery |
 | --------------------------------- | :------: | :-----: | :-----: | :---: | :----------: | :-: | :-----: |
@@ -765,7 +765,7 @@ Network Twin
 # 12. Final connection architecture
 
 ```text
-                    EXISTING OMOBIO APPLICATIONS
+                    EXISTING COMPANY APPLICATIONS
 
  Selfcare   Loyalty   adReach   Viber   Mobile Money   SFA   Lottery
      │         │         │        │          │          │       │
@@ -806,12 +806,12 @@ Network Twin
                │                │                │
                └────────────────┼────────────────┘
                                 ▼
-                    EXISTING OMOBIO APPLICATIONS
+                    EXISTING COMPANY APPLICATIONS
 ```
 
 ## For your POC, I would demonstrate these exact connections
 
-| Demo                                              | AI capability                                     | Existing Omobio application            |
+| Demo                                              | AI capability                                     | Existing company application           |
 | ------------------------------------------------- | ------------------------------------------------- | -------------------------------------- |
 | **User 1 travels to Singapore**                   | Event Memory + uncertainty-aware recommendation   | **Mobile Selfcare**                    |
 | **User 2 repeatedly makes small recharges**       | Behaviour intelligence + personalised reward/plan | **Selfcare + Loyalty**                 |
@@ -820,4 +820,4 @@ Network Twin
 | **Retailer stock falls while demand rises**       | Forecast + retailer twin + recommendation         | **Mobile SFA**                         |
 | **Campaign response history changes**             | Campaign intelligence                             | **adReach + Viber**                    |
 
-That gives you a very clear story: **we are not creating new applications to compete with Omobio’s existing products. We are creating a shared AI intelligence layer that makes the existing Omobio products smarter.** 
+That gives you a very clear story: **we are not creating new applications to compete with the company's existing products. We are creating a shared AI intelligence layer that makes the existing company products smarter.** 

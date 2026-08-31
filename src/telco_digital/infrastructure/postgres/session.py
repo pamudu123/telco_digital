@@ -13,7 +13,7 @@ from sqlalchemy.sql import text
 from telco_digital.config import Settings, get_settings
 
 
-def _async_database_url(database_url: str):
+def async_database_url(database_url: str):
     """Accept provider PostgreSQL URLs while always using the asyncpg driver."""
     url = make_url(database_url)
     if url.drivername in {"postgres", "postgresql"}:
@@ -23,7 +23,7 @@ def _async_database_url(database_url: str):
 
 def create_engine(settings: Settings | None = None) -> AsyncEngine:
     settings = settings or get_settings()
-    database_url = _async_database_url(settings.database_url)
+    database_url = async_database_url(settings.database_url)
     engine_options: dict = {"pool_pre_ping": True}
 
     if settings.database_pool_mode == "transaction":

@@ -1,6 +1,6 @@
-# Omobio Intelligence POC
+# Company Intelligence POC
 
-Shared intelligence across Omobio applications: **PostgreSQL** is the system of record, **Neo4j** is a rebuildable relationship projection, and digital twins are computed from facts, inference, and predictions.
+Shared intelligence across company applications: **PostgreSQL** is the system of record, **Neo4j** is a rebuildable relationship projection, and digital twins are computed from facts, inference, and predictions.
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12" />
@@ -70,12 +70,12 @@ flowchart LR
 | Graph projection | Neo4j 5, official Neo4j driver, outbox worker |
 | Hosted POC | Supabase (Postgres), Neo4j Aura, Vercel (one origin for UI + API) |
 | Local runtime | Docker Compose |
-| Quality | pytest, Ruff |
+| Quality | pytest, Ruff, mypy, pre-commit |
 | Intelligence (later) | scikit-learn, pandas — derived, never authoritative |
 
 ## What this POC proves
 
-Omobio applications (Selfcare, Loyalty, adReach, Viber, Mobile Money, SFA) can contribute events to **one shared intelligence layer** instead of each keeping isolated AI.
+Company applications (Selfcare, Loyalty, adReach, Viber, Mobile Money, SFA) can contribute events to **one shared intelligence layer** instead of each keeping isolated AI.
 
 - Facts and history live in PostgreSQL.
 - Relationships are projected into Neo4j and can be rebuilt from Postgres.
@@ -106,6 +106,7 @@ Business logic lives in `application` and `domain`. SQL stays in PostgreSQL repo
 docker compose up -d
 cp .env.example .env
 poetry install --extras "dev"
+poetry run pre-commit install
 poetry run alembic upgrade head
 poetry run python scripts/seed_demo_data.py
 poetry run uvicorn telco_digital.api.app:app --reload

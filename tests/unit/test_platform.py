@@ -62,6 +62,13 @@ def test_projection_lag_uses_oldest_pending_event() -> None:
     assert lag.lag_seconds == 60.0
 
 
+def test_projection_lag_is_unknown_while_events_are_processing() -> None:
+    now = utc("2026-08-20T12:00:00+00:00")
+    lag = assemble_projection_lag(OutboxLagSnapshot(processing=2), now=now)
+    assert lag.processing_count == 2
+    assert lag.lag_seconds is None
+
+
 def test_model_catalog_serves_churn_and_forecast_versions() -> None:
     catalog = get_model_catalog(clock=FixedClock(utc("2026-08-20T12:00:00+00:00")))
     by_name = {item.name: item for item in catalog.models}

@@ -39,8 +39,8 @@ from telco_digital.intelligence.recommendations import (
 from telco_digital.intelligence.recommendations.catalogue import CatalogueReader
 
 TWIN_SET_VERSION = "digital-twin-v1"
-ENTITY_CUSTOMER = "CUSTOMER"
-ENTITY_RETAILER = "RETAILER"
+ENTITY_CUSTOMER: Literal["CUSTOMER"] = "CUSTOMER"
+ENTITY_RETAILER: Literal["RETAILER"] = "RETAILER"
 
 FRAUD_UNKNOWN = "Graph fraud scoring is not implemented (capability 07)."
 DEMAND_UNKNOWN = "Retailer demand forecast is not implemented (capability 08)."
@@ -495,9 +495,7 @@ class DigitalTwinService:
         country = situation.destination if situation.destination_known else None
         catalogue = await self.catalogue.list_roaming(country_code=country)
         recommendation = build_recommendation(context, catalogue)
-        return assemble_customer_twin(
-            observed, features, context, behaviour, churn, recommendation
-        )
+        return assemble_customer_twin(observed, features, context, behaviour, churn, recommendation)
 
     async def build_retailer(self, retailer_ref: str, as_of: datetime) -> RetailerDigitalTwin:
         validate_as_of(as_of)

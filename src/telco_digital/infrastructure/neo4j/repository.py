@@ -3,9 +3,14 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
+from functools import partial
 from typing import Any
 
 from neo4j import Driver
+
+
+def _run_statement(transaction: Any, *, statement: str) -> Any:
+    return transaction.run(statement).consume()
 
 
 class GraphRepository:
@@ -32,9 +37,7 @@ class GraphRepository:
         )
         with self.driver.session() as session:
             for statement in statements:
-                session.execute_write(
-                    lambda transaction, query=statement: transaction.run(query).consume()
-                )
+                session.execute_write(partial(_run_statement, statement=statement))
 
     def clear_managed_projection(self) -> None:
         with self.driver.session() as session:

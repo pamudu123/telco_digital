@@ -321,6 +321,7 @@ async def test_service_dispatches_customer_and_retailer() -> None:
     service = DigitalTwinService(State(), Features(), Memory(), Catalogue(), retailers=Retailers())
     customer = await service.build("U001", AS_OF, destination="SG")
     store = await service.build("RET-001", AS_OF)
+    assert customer.kind == "CUSTOMER"
     assert customer.recommended.primary_plan_code == "ROAM_15"
     assert store.kind == "RETAILER"
     assert store.predicted.status == "unknown"

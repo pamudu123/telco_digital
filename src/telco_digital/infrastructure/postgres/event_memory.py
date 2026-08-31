@@ -154,11 +154,11 @@ class PostgresEventMemoryQueries:
         ).all()
 
         travels_by: dict[UUID, list[TravelModel]] = defaultdict(list)
-        for row in travel_rows:
-            travels_by[row.customer_id].append(row)
+        for travel_row in travel_rows:
+            travels_by[travel_row.customer_id].append(travel_row)
         usage_by: dict[UUID, list[UsageEventModel]] = defaultdict(list)
-        for row in usage_rows:
-            usage_by[row.customer_id].append(row)
+        for usage_row in usage_rows:
+            usage_by[usage_row.customer_id].append(usage_row)
         subscriptions_by: dict[UUID, list[tuple[SubscriptionModel, PlanModel]]] = defaultdict(list)
         for subscription, plan in subscription_rows:
             subscriptions_by[subscription.customer_id].append((subscription, plan))

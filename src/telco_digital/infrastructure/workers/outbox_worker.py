@@ -7,13 +7,14 @@ from collections.abc import Awaitable, Callable
 from datetime import UTC, datetime
 from uuid import UUID
 
-from sqlalchemy import select, update
+from sqlalchemy import select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from telco_digital.domain.enums import OutboxStatus
 from telco_digital.infrastructure.postgres.models import OutboxEventModel
 
 Projection = Callable[[], Awaitable[dict[str, int]]]
+WORKER_ADVISORY_LOCK_ID = 8_640_215
 
 
 async def process_batch(
@@ -24,14 +25,70 @@ async def process_batch(
     max_attempts: int = 3,
     clock: Callable[[], datetime] | None = None,
 ) -> int:
-    """Claim one batch, rebuild the graph, and checkpoint only after success."""
+    """Serialize projection batches and recover claims left by a crashed worker."""
+    async with session_factory() as lock_session:
+        acquired = bool(
+            await lock_session.scalar(
+                text("SELECT pg_try_advisory_lock(:lock_id)"),
+                {"lock_id": WORKER_ADVISORY_LOCK_ID},
+            )
+        )
+        if not acquired:
+            return 0
+        try:
+            return await _process_batch_locked(
+                session_factory,
+                project,
+                batch_size=batch_size,
+                max_attempts=max_attempts,
+                clock=clock,
+            )
+        finally:
+            await lock_session.execute(
+                text("SELECT pg_advisory_unlock(:lock_id)"),
+                {"lock_id": WORKER_ADVISORY_LOCK_ID},
+            )
+
+
+async def _process_batch_locked(
+    session_factory: async_sessionmaker[AsyncSession],
+    project: Projection,
+    *,
+    batch_size: int = 500,
+    max_attempts: int = 3,
+    clock: Callable[[], datetime] | None = None,
+) -> int:
+    """Claim one batch, rebuild the graph, and checkpoint only after success.
+
+    This is deliberately a single-worker POC. Reclaiming PROCESSING rows makes
+    a later invocation recover work left behind if the previous process died.
+    """
     now = clock or (lambda: datetime.now(tz=UTC))
     async with session_factory() as session, session.begin():
+        await session.execute(
+            update(OutboxEventModel)
+            .where(
+                OutboxEventModel.status == OutboxStatus.PROCESSING.value,
+                OutboxEventModel.attempt_count >= max_attempts,
+            )
+            .values(
+                status=OutboxStatus.FAILED.value,
+                last_error="Worker stopped before checkpoint and retry limit was reached",
+            )
+        )
         rows = list(
             (
                 await session.execute(
                     select(OutboxEventModel)
-                    .where(OutboxEventModel.status == OutboxStatus.PENDING.value)
+                    .where(
+                        OutboxEventModel.status.in_(
+                            [
+                                OutboxStatus.PENDING.value,
+                                OutboxStatus.PROCESSING.value,
+                            ]
+                        ),
+                        OutboxEventModel.attempt_count < max_attempts,
+                    )
                     .order_by(OutboxEventModel.created_at, OutboxEventModel.id)
                     .limit(batch_size)
                     .with_for_update(skip_locked=True)
@@ -71,7 +128,10 @@ async def process_batch(
                 )
                 await session.execute(
                     update(OutboxEventModel)
-                    .where(OutboxEventModel.id == event_id)
+                    .where(
+                        OutboxEventModel.id == event_id,
+                        OutboxEventModel.status == OutboxStatus.PROCESSING.value,
+                    )
                     .values(status=status, last_error=error)
                 )
         raise
@@ -79,7 +139,10 @@ async def process_batch(
     async with session_factory() as session, session.begin():
         await session.execute(
             update(OutboxEventModel)
-            .where(OutboxEventModel.id.in_(ids))
+            .where(
+                OutboxEventModel.id.in_(ids),
+                OutboxEventModel.status == OutboxStatus.PROCESSING.value,
+            )
             .values(
                 status=OutboxStatus.PROCESSED.value,
                 processed_at=now(),

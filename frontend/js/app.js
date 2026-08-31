@@ -51,8 +51,8 @@ function renderShell(root) {
     el("div", { className: "app-shell" }, [
       el("header", { className: "topbar" }, [
         el("div", { className: "brand" }, [
-          el("strong", { text: "omobio INTELLIGENCE" }),
-          el("span", { text: "NG Application Shell • Omobio Intelligence POC" }),
+          el("strong", { text: "COMPANY INTELLIGENCE" }),
+          el("span", { text: "NG Application Shell • Company Intelligence POC" }),
         ]),
         el("div", { className: "topbar-tools" }, [
           el("span", { text: "A. Demo" }),
@@ -69,7 +69,7 @@ function renderShell(root) {
       ]),
       content,
     ]),
-    el("footer", { className: "footer", text: "© 2026 Omobio. Shared-intelligence POC. Synthetic data only." }),
+    el("footer", { className: "footer", text: "© 2026 Company. Shared-intelligence POC. Synthetic data only." }),
   );
   return { nav, content };
 }

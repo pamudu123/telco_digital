@@ -3,7 +3,7 @@ For the design document, the **first stage should be “POC Scope and Problem De
 I would structure Stage 1 like this:
 
 1. **Problem Statement**
-   Omobio has multiple digital applications such as Selfcare, Loyalty, adReach, Viber Campaign Manager, Mobile Money and SFA. These applications can generate useful customer and business data, but the POC explores how combining that information into a shared intelligence platform can enable cross application AI capabilities.
+   The company has multiple digital applications such as Selfcare, Loyalty, adReach, Viber Campaign Manager, Mobile Money and SFA. These applications can generate useful customer and business data, but the POC explores how combining that information into a shared intelligence platform can enable cross application AI capabilities.
 
 2. **POC Objective**
    Prove that customer and business events from multiple systems can be combined, relationships analysed, historical behaviour remembered, and AI/ML used to generate explainable recommendations, predictions and warnings.

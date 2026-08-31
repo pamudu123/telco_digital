@@ -13,7 +13,10 @@ from telco_digital.application.services.common import (
 from telco_digital.application.unit_of_work.protocol import UnitOfWork
 from telco_digital.domain.entities import ActivityEvent, BalanceLedgerEntry, Recharge, Warning
 from telco_digital.domain.enums import EventType, LedgerEntryType, WarningSeverity, WarningType
-from telco_digital.domain.rules.recharge import frequent_small_recharge_pattern
+from telco_digital.domain.rules.recharge import (
+    frequent_small_recharge_pattern,
+    small_recharges_in_window,
+)
 
 
 async def record_recharge(
@@ -77,6 +80,7 @@ async def record_recharge(
 
         history = list(await uow.recharges.list_as_of(customer.id, command.occurred_at))
         if frequent_small_recharge_pattern(history, as_of=command.occurred_at):
+            matched = small_recharges_in_window(history, as_of=command.occurred_at)
             warning = Warning(
                 customer_id=customer.id,
                 warning_type=WarningType.FREQUENT_SMALL_RECHARGE_PATTERN,
@@ -85,7 +89,7 @@ async def record_recharge(
                 as_of=command.occurred_at,
                 related_event_id=event.id,
                 evidence={
-                    "count_30d": len(history),
+                    "small_recharge_count_30d": len(matched),
                     "latest_amount": str(command.amount),
                 },
             )

@@ -43,8 +43,8 @@ async def record_service_interaction(
             source=command.source,
             correlation_id=correlation_id,
             payload={
-                "interaction_type": command.interaction_type,
-                "status": command.status,
+                "interaction_type": command.interaction_type.value,
+                "status": command.status.value,
                 "severity": command.severity,
             },
         )

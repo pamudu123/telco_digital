@@ -148,7 +148,7 @@ def score_offer(
     reasons: list[str] = ["Present in the active catalogue"]
     score = 0.10
     historical_plan = _historical_plan(episode)
-    if historical_plan == plan.plan_code:
+    if episode is not None and historical_plan == plan.plan_code:
         score += 0.50
         reasons.append(f"Same plan as the retrieved {episode.destination_name} episode")
     duration = situation.duration_days if situation.duration_known else None

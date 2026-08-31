@@ -5,18 +5,28 @@ from __future__ import annotations
 import json
 import re
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Protocol
 
 import requests
 from pydantic import BaseModel, ConfigDict
 
 from telco_digital.config import Settings
-from telco_digital.decisioning import CustomerDecision, DecisionEngine
+from telco_digital.decisioning import CustomerDecision
 from telco_digital.intelligence.features.service import validate_as_of
 
 COPILOT_SET_VERSION = "customer-copilot-v1"
 PLAN_TOKEN = re.compile(r"\b(?:ROAM|PLAN|POC)_[A-Z0-9]+\b")
 AnswerSource = Literal["deterministic_fallback", "openrouter_glm"]
+
+
+class DecisionEvaluator(Protocol):
+    async def evaluate(
+        self,
+        customer_ref: str,
+        as_of: datetime,
+        *,
+        destination: str | None = None,
+    ) -> CustomerDecision: ...
 
 
 class CopilotAnswer(BaseModel):
@@ -193,7 +203,7 @@ def answer_from_decision(
 
 
 class CopilotService:
-    def __init__(self, engine: DecisionEngine, settings: Settings | None = None) -> None:
+    def __init__(self, engine: DecisionEvaluator, settings: Settings | None = None) -> None:
         self.engine = engine
         self.settings = settings
 
