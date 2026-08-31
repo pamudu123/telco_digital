@@ -76,9 +76,40 @@ function behaviourPanel(data) {
   ]);
 }
 
-function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError) {
+function churnPanel(data) {
+  const drivers = data.drivers || [];
+  const percent = Math.round(Number(data.probability) * 100);
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Churn prediction" }),
+      badge("Prediction", "prediction"),
+    ]),
+    el("p", {
+      text: `${data.risk_band} risk • ${percent}% probability (${data.model_version})`,
+    }),
+    drivers.length
+      ? el(
+          "ul",
+          { className: "timeline" },
+          drivers.map((item) =>
+            el("li", {}, [
+              el("div", {}, [
+                el("div", { text: item.feature.replaceAll("_", " ") }),
+                el("small", {
+                  text: `value ${item.value} • ${item.direction.replaceAll("_", " ")} (${item.contribution})`,
+                }),
+              ]),
+              badge("Prediction", "prediction"),
+            ]),
+          ),
+        )
+      : el("p", { text: "No drivers were returned for this score." }),
+    el("p", { className: "meta", text: `${data.prediction_set_version} • as_of ${formatDate(data.as_of)}` }),
+  ]);
+}
+
+function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError) {
   const items = [
-    ["Churn prediction", "No prediction generated."],
     ["Recommendation", "No recommended action generated."],
     ["Digital twin", "No derived twin in this showcase."],
   ];
@@ -118,6 +149,23 @@ function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError) {
               badge("Derived", "derived"),
             ]),
             el("p", { text: "Derived traits appear when feature evidence is available." }),
+          ]),
+    churnError
+      ? el("div", { className: "card" }, [
+          el("header", { className: "page-header" }, [
+            el("h3", { text: "Churn prediction" }),
+            badge("Unavailable", "unknown"),
+          ]),
+          el("p", { text: "The trained churn model could not be scored. Recorded facts remain live." }),
+        ])
+      : churn
+        ? churnPanel(churn)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Churn prediction" }),
+              badge("Prediction", "prediction"),
+            ]),
+            el("p", { text: "A trained score appears when feature evidence is available." }),
           ]),
     ...items.map(([title, detail]) =>
       el("div", { className: "card" }, [
@@ -208,7 +256,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Customer 360" }),
         el("p", {
-          text: "Recorded facts plus derived features, episodes and behaviour traits. Predictions and recommendations stay POC planned.",
+          text: "Recorded facts plus derived features, episodes, behaviour traits and a trained churn score. Recommendations stay POC planned.",
         }),
       ]),
     ]),
@@ -234,11 +282,12 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
   }
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
-  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome] = await Promise.allSettled([
+  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome] = await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
     api.eventMemory(selected, asOf || undefined, undefined, { signal }),
     api.customerBehaviour(selected, asOf || undefined, { signal }),
+    api.customerChurn(selected, asOf || undefined, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -263,6 +312,11 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     behaviourOutcome.status === "rejected" && !isAbortError(behaviourOutcome.reason)
       ? behaviourOutcome.reason
       : null;
+  const churn = churnOutcome.status === "fulfilled" ? churnOutcome.value : null;
+  const churnError =
+    churnOutcome.status === "rejected" && !isAbortError(churnOutcome.reason)
+      ? churnOutcome.reason
+      : null;
   results.replaceChildren(
     renderFacts(
       factsOutcome.value,
@@ -273,6 +327,8 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       eventMemoryError,
       behaviour,
       behaviourError,
+      churn,
+      churnError,
     ),
   );
 }
@@ -320,6 +376,8 @@ function renderFacts(
   eventMemoryError,
   behaviour,
   behaviourError,
+  churn,
+  churnError,
 ) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
@@ -355,7 +413,7 @@ function renderFacts(
     ]),
     el("aside", {}, [
       featuresError ? featureErrorPanel(featuresError) : features ? featurePanel(features) : null,
-      plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError),
+      plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError),
     ]),
   ]);
 }

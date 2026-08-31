@@ -10,7 +10,7 @@ scenario works in the shared demo environment; it does not mean production ready
 | 02 | Temporal and graph features | POC complete | [Feature layer](./02-feature-layer.md) |
 | 03 | Event memory | POC complete | [03-event-memory.md](./03-event-memory.md) |
 | 04 | Behaviour intelligence | POC complete | [04-behaviour-intelligence.md](./04-behaviour-intelligence.md) |
-| 05 | Churn prediction | Not started | — |
+| 05 | Churn prediction | POC complete | [05-churn-prediction.md](./05-churn-prediction.md) |
 | 06 | Recommendations and uncertainty | Not started | — |
 | 07 | Graph fraud | Not started | — |
 | 08 | SFA forecasting | Not started | — |

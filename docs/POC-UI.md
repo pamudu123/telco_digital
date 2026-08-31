@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–04. Customer 360 includes amber derived features and behaviour traits, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Models, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–05. Customer 360 includes amber derived features and behaviour traits plus a trained churn score, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Recommendations, twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -38,9 +38,9 @@ capability status without presenting planned models as live.
 
 ![Customer 360 concept](./assets/ui/02-customer-360.png)
 
-The Customer 360 view leads with recorded facts and provenance. Future event
-memory, churn, recommendations and digital-twin panels remain explicitly marked
-as planned until their capabilities are verified.
+The Customer 360 view leads with recorded facts and provenance. Event memory,
+behaviour traits and churn scores are live derived or predicted panels.
+Recommendations and digital-twin panels remain explicitly marked as planned.
 
 ### POC status and application impact
 

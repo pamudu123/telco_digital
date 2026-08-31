@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""Training entrypoint for later milestones.
-
-Behaviour clustering experiments live in
-``notebooks/04_behaviour/04_behaviour.ipynb``. Churn training is capability 05.
-"""
+"""Training entrypoint. Capability 05 trains in the churn notebook."""
 
 raise SystemExit(
-    "Behaviour clustering is a notebook experiment (capability 04). "
-    "Churn training is not implemented until capability 05."
+    "Train the churn model in notebooks/05_churn/05_churn.ipynb:\n"
+    "  poetry run jupyter nbconvert --execute --to notebook --inplace "
+    "notebooks/05_churn/05_churn.ipynb"
 )

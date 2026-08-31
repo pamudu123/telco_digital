@@ -185,7 +185,6 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
         not_implemented=(
             "Persisted trait store",
             "Online clustering in the API",
-            "Churn prediction",
         ),
         limitations=(
             "Deterministic rules over synthetic history",
@@ -195,10 +194,35 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="05",
         name="Churn prediction",
-        status="Not started",
-        demonstrated_scenario="Churn risk with drivers for declining-engagement customers.",
+        status="POC complete",
+        document="docs/features/05-churn-prediction.md",
+        demonstrated_scenario=(
+            "U004 declining usage and open network/complaint tickets score HIGH "
+            "churn risk from a notebook-trained logistic regression, with drivers."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber"),
-        not_implemented=("Churn model", "Prediction records"),
+        evidence=(
+            "docs/features/05-churn-prediction.md",
+            "notebooks/05_churn/05_churn.ipynb",
+            "notebooks/05_churn/outputs/metrics.json",
+            "notebooks/05_churn/outputs/tables/",
+            "notebooks/05_churn/outputs/plots/",
+            "notebooks/05_churn/artifacts/churn-model-v1.json",
+        ),
+        implemented=(
+            "Notebook training comparing logistic regression and gradient-boosted trees",
+            "Served logistic-regression artifact with probability, risk band and drivers",
+            "Read-only churn API and Customer 360 prediction panel",
+        ),
+        not_implemented=(
+            "Persisted prediction store",
+            "Next-best action from a churn score",
+            "Online retraining",
+        ),
+        limitations=(
+            "Synthetic labelled population, not a live churn outcome table",
+            "Gradient boosting is compared in the notebook and is not served",
+        ),
     ),
     CapabilityRecord(
         number="06",
@@ -467,11 +491,42 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling usage with complaints",
         customer_ref="U004",
         applications=("Selfcare", "Loyalty", "adReach", "Viber"),
-        current_evidence="Usage and service events",
-        later_intelligence="Churn risk and next-best action",
-        steps=_fact_steps(
-            unknown="No churn score is produced in this showcase.",
-            consumer="Mobile Selfcare, Loyalty, adReach and Viber",
+        current_evidence="Usage and service events plus a trained churn score",
+        later_intelligence="Next-best action from the decision engine",
+        steps=(
+            WalkthroughStep(
+                number=1, title="What happened", live=True, summary="Authoritative recorded facts."
+            ),
+            WalkthroughStep(
+                number=2,
+                title="What the platform knows",
+                live=True,
+                summary="Reconstructed context from facts at as_of.",
+            ),
+            WalkthroughStep(
+                number=3,
+                title="What it infers or predicts",
+                live=True,
+                summary="Notebook-trained logistic regression scores U004 HIGH with drivers.",
+            ),
+            WalkthroughStep(
+                number=4,
+                title="What it recommends",
+                live=False,
+                summary="Decisions and reason codes are POC planned.",
+            ),
+            WalkthroughStep(
+                number=5,
+                title="What remains unknown",
+                live=True,
+                summary="No next-best action is generated in this showcase.",
+            ),
+            WalkthroughStep(
+                number=6,
+                title="Which existing application consumes the result",
+                live=True,
+                summary="Mobile Selfcare, Loyalty, adReach and Viber",
+            ),
         ),
     ),
     Walkthrough(

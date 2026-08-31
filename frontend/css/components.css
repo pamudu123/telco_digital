@@ -83,6 +83,11 @@
   color: var(--derived);
 }
 
+.badge-prediction {
+  background: #fff2e8;
+  color: var(--prediction);
+}
+
 .feature-list {
   display: grid;
   gap: 0.35rem;

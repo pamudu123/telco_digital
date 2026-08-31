@@ -81,8 +81,8 @@ Read live results at
 
 ## 10. What is not implemented
 
-A persisted trait store, online clustering in the API, churn prediction,
-recommendations, twins and Copilot are not implemented.
+A persisted trait store, online clustering in the API, recommendations, twins
+and Copilot are not implemented.
 
 ## 11. POC limitations
 
@@ -98,6 +98,5 @@ store or a served clustering model.
 
 ## 13. Dependency for the next capability
 
-Capability 05 may consume declining-engagement traits and the same feature
-windows as churn inputs. It remains not started and no churn score is included
-here.
+Capability 05 consumes the same feature windows as churn inputs and serves a
+notebook-trained score. See [05-churn-prediction.md](./05-churn-prediction.md).
