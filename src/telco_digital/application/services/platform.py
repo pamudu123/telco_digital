@@ -68,7 +68,7 @@ def assemble_projection_lag(
 ) -> ProjectionLag:
     if snapshot.oldest_pending_at is not None:
         lag_seconds = max(0.0, (now - snapshot.oldest_pending_at).total_seconds())
-    elif snapshot.pending == 0:
+    elif snapshot.pending == 0 and snapshot.processing == 0:
         lag_seconds = 0.0
     else:
         lag_seconds = None

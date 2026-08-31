@@ -42,35 +42,40 @@ def neo4j_value(value: Any) -> Any:
 
 
 async def load_graph_snapshot(engine: AsyncEngine, *, retries: int = 3) -> GraphSnapshot:
-    async def rows(model: Any) -> list[dict[str, Any]]:
-        for attempt in range(1, retries + 1):
-            try:
-                async with engine.connect() as connection:
-                    result = await connection.execute(select(model.__table__))
-                    return [
-                        {key: neo4j_value(value) for key, value in row.items()}
-                        for row in result.mappings()
-                    ]
-            except DBAPIError:
-                if attempt == retries:
-                    raise
-                await asyncio.sleep(attempt)
-        raise AssertionError("unreachable")
-
-    return GraphSnapshot(
-        customers=await rows(CustomerModel),
-        accounts=await rows(AccountModel),
-        devices=await rows(DeviceModel),
-        customer_devices=await rows(CustomerDeviceModel),
-        plans=await rows(PlanModel),
-        subscriptions=await rows(SubscriptionModel),
-        wallets=await rows(WalletModel),
-        merchants=await rows(MerchantModel),
-        transactions=await rows(MoneyTransactionModel),
-        distributors=await rows(DistributorModel),
-        retailers=await rows(RetailerModel),
-        sales_agents=await rows(SalesAgentModel),
-        products=await rows(SfaProductModel),
-        sales=await rows(SaleModel),
-        inventory_events=await rows(InventoryEventModel),
-    )
+    models = {
+        "customers": CustomerModel,
+        "accounts": AccountModel,
+        "devices": DeviceModel,
+        "customer_devices": CustomerDeviceModel,
+        "plans": PlanModel,
+        "subscriptions": SubscriptionModel,
+        "wallets": WalletModel,
+        "merchants": MerchantModel,
+        "transactions": MoneyTransactionModel,
+        "distributors": DistributorModel,
+        "retailers": RetailerModel,
+        "sales_agents": SalesAgentModel,
+        "products": SfaProductModel,
+        "sales": SaleModel,
+        "inventory_events": InventoryEventModel,
+    }
+    for attempt in range(1, retries + 1):
+        try:
+            async with engine.connect() as raw_connection:
+                connection = await raw_connection.execution_options(
+                    isolation_level="REPEATABLE READ"
+                )
+                async with connection.begin():
+                    snapshot_rows: dict[str, list[dict[str, Any]]] = {}
+                    for name, model in models.items():
+                        result = await connection.execute(select(model.__table__))
+                        snapshot_rows[name] = [
+                            {key: neo4j_value(value) for key, value in row.items()}
+                            for row in result.mappings()
+                        ]
+            return GraphSnapshot(**snapshot_rows)
+        except DBAPIError:
+            if attempt == retries:
+                raise
+            await asyncio.sleep(attempt)
+    raise AssertionError("unreachable")

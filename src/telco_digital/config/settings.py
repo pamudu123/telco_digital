@@ -26,6 +26,14 @@ class Settings(BaseSettings):
             return [part.strip() for part in value.split(",") if part.strip()]
         return value
 
+    @field_validator("log_level")
+    @classmethod
+    def normalize_log_level(cls, value: str) -> str:
+        normalized = value.upper()
+        if normalized not in {"CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"}:
+            raise ValueError(f"Unknown log level: {value}")
+        return normalized
+
 
 def get_settings() -> Settings:
     return Settings()

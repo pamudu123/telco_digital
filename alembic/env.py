@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from telco_digital.config import get_settings
 from telco_digital.infrastructure.postgres.models import Base
+from telco_digital.infrastructure.postgres.session import async_database_url
 
 config = context.config
 if config.config_file_name is not None:
@@ -14,7 +15,8 @@ if config.config_file_name is not None:
 # ConfigParser treats percent-encoded URL characters as interpolation tokens.
 # Escape them for Alembic's configuration layer; the resolved engine URL still
 # contains the original percent-encoded database credentials.
-config.set_main_option("sqlalchemy.url", get_settings().database_url.replace("%", "%%"))
+database_url = str(async_database_url(get_settings().database_url))
+config.set_main_option("sqlalchemy.url", database_url.replace("%", "%%"))
 target_metadata = Base.metadata
 
 
