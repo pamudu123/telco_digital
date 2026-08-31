@@ -1,4 +1,5 @@
 import { api, ApiError, isAbortError } from "./api.js";
+import { decisionPanel } from "./decision.js";
 import { badge, el, formatDate, formatNumber, provenanceLine, statusBox, text } from "./dom.js";
 
 const LENSES = {
@@ -144,6 +145,8 @@ function plannedRail(
   churnError,
   recommendation,
   recommendationError,
+  decision,
+  decisionError,
   customerRef,
 ) {
   const items = [
@@ -219,6 +222,17 @@ function plannedRail(
               badge("Recommend", "recommend"),
             ]),
             el("p", { text: "Ranked catalogue offers appear when a travel destination is known." }),
+          ]),
+    decisionError
+      ? decisionPanel(null, decisionError)
+      : decision
+        ? decisionPanel(decision)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Decision" }),
+              badge("Recommend", "recommend"),
+            ]),
+            el("p", { text: "A next-best action appears when recommendations, traits and churn are available." }),
           ]),
     ...items.map(([title, detail]) =>
       el("div", { className: "card" }, [
@@ -309,7 +323,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Customer 360" }),
         el("p", {
-          text: "Recorded facts plus derived features, episodes, behaviour traits, a trained churn score and catalogue recommendations. The decision engine stays POC planned.",
+          text: "Recorded facts plus derived features, episodes, behaviour traits, a trained churn score, catalogue recommendations and a next-best action. Digital twins stay POC planned.",
         }),
       ]),
     ]),
@@ -336,7 +350,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
   const recDestination = selected === "U001" ? "SG" : undefined;
-  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, recsOutcome] =
+  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, recsOutcome, decisionOutcome] =
     await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
@@ -344,6 +358,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     api.customerBehaviour(selected, asOf || undefined, { signal }),
     api.customerChurn(selected, asOf || undefined, { signal }),
     api.customerRecommendations(selected, asOf || undefined, recDestination, { signal }),
+    api.customerDecision(selected, asOf || undefined, recDestination, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -378,6 +393,11 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     recsOutcome.status === "rejected" && !isAbortError(recsOutcome.reason)
       ? recsOutcome.reason
       : null;
+  const decision = decisionOutcome.status === "fulfilled" ? decisionOutcome.value : null;
+  const decisionError =
+    decisionOutcome.status === "rejected" && !isAbortError(decisionOutcome.reason)
+      ? decisionOutcome.reason
+      : null;
   results.replaceChildren(
     renderFacts(
       factsOutcome.value,
@@ -392,6 +412,8 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       churnError,
       recommendation,
       recommendationError,
+      decision,
+      decisionError,
     ),
   );
 }
@@ -443,6 +465,8 @@ function renderFacts(
   churnError,
   recommendation,
   recommendationError,
+  decision,
+  decisionError,
 ) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
@@ -487,6 +511,8 @@ function renderFacts(
         churnError,
         recommendation,
         recommendationError,
+        decision,
+        decisionError,
         data.customer_ref,
       ),
     ]),

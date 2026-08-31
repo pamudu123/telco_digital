@@ -22,10 +22,17 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
     assert "customerBehaviour" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerChurn" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerRecommendations" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "customerDecision" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "copilotAsk" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "OPENROUTER" not in (ROOT / "js" / "config.js").read_text(encoding="utf-8")
     assert "badge-recommend" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "Derived features" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Behaviour traits" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Churn prediction" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "Decision" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "decisionPanel" in (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
+    assert "Fallback" in (ROOT / "js" / "copilot.js").read_text(encoding="utf-8")
+    assert "Digital twins" in (ROOT / "js" / "models.js").read_text(encoding="utf-8")
     assert "badge-prediction" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "Graph projection" in (ROOT / "js" / "graph.js").read_text(encoding="utf-8")
 
@@ -59,7 +66,11 @@ def test_nav_distinguishes_live_and_planned_pages() -> None:
     assert "duration unknown" in customer_js
     assert "formatEpisodeSummary" in customer_js
     assert '["overview", "Overview", "live"]' in app_js
-    assert "No LLM answers" in app_js or "not connected" in app_js
+    assert '["models", "Models and Decisions", "live"]' in app_js
+    assert '["copilot", "Copilot", "live"]' in app_js
+    assert "00–06 and 10–11" in app_js
+    assert "renderCopilot" in app_js
+    assert "renderModels" in app_js
 
 
 def test_customer_360_does_not_paint_stale_loads() -> None:

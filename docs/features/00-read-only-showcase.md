@@ -24,14 +24,14 @@ implemented.
 
 - Open Overview, Customer 360, application fact lenses, walkthroughs, and POC Status.
 - See live counts from PostgreSQL with explicit `source: live_database`.
-- See planned pages (Models, Copilot) with **POC planned** badges and no fabricated metrics.
-- Open Journey and Event Memory for derived travel-episode matches.
+- See live Models (NBA only; twins stay planned) and Copilot with a Fallback or Model badge.
+- Open Journey and Event Memory for derived travel-episode matches and decisions.
 
 ## What they cannot do
 
 - Issue writes or run the simulator.
 - Query Neo4j from the browser.
-- See predictions, twins, decisions, or Copilot answers as live output.
+- See digital twins, fraud scores or forecasts as live output.
 - Treat notebook plots as live metric cards.
 
 ## Public services
@@ -43,6 +43,8 @@ implemented.
 - `GET /api/v1/showcase/status` (structured manifest, not Markdown parsing)
 - `GET /api/v1/showcase/walkthroughs`
 - `GET /api/v1/customers/{ref}/360?as_of=`
+- `GET /api/v1/customers/{ref}/decision?as_of=&destination=`
+- `POST /api/v1/copilot/ask`
 - `GET /api/v1/showcase/sfa/retailers/{ref}?as_of=`
 
 Routes 404 unless `SHOWCASE_ENABLED` is true. Invalid `as_of` returns 422.

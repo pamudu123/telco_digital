@@ -88,7 +88,7 @@ Read live results at
 ## 10. What is not implemented
 
 Outcome recording, a persisted recommendation store, a learned ranker, churn
-discounts, digital twins, the decision engine and Copilot are not implemented.
+discounts and digital twins are not implemented in this capability.
 
 ## 11. POC limitations
 
@@ -104,5 +104,5 @@ learned scorer that still cannot invent catalogue codes.
 ## 13. Dependency for the next capability
 
 Capability 07 is graph fraud and does not consume these offers. Capability 10
-may later turn a ranked offer plus churn into a next-best action. Both remain
-not started.
+turns a ranked offer plus churn and traits into a next-best action. See
+[10-decision-engine.md](./10-decision-engine.md).

@@ -1,6 +1,7 @@
 import { api, isAbortError } from "./api.js";
 import { badge, el, formatDate, provenanceLine, statusBox } from "./dom.js";
 import { errorBox } from "./customer-360.js";
+import { decisionPanel } from "./decision.js";
 
 function stale(signal) {
   return Boolean(signal?.aborted);
@@ -153,7 +154,7 @@ export async function renderJourney(root, { signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Journey and Event Memory" }),
         el("p", {
-          text: "Derived travel episodes, similar-event matches and uncertainty-aware catalogue offers.",
+          text: "Derived travel episodes, similar-event matches, catalogue offers and a next-best action.",
         }),
       ]),
       badge("Live evidence", "live"),
@@ -163,9 +164,10 @@ export async function renderJourney(root, { signal } = {}) {
   );
 
   results.replaceChildren(statusBox("loading", "Recalling similar historical episodes…"));
-  const [memoryOutcome, recsOutcome] = await Promise.allSettled([
+  const [memoryOutcome, recsOutcome, decisionOutcome] = await Promise.allSettled([
     api.eventMemory(selected, asOf || undefined, destination || undefined, { signal }),
     api.customerRecommendations(selected, asOf || undefined, destination || undefined, { signal }),
+    api.customerDecision(selected, asOf || undefined, destination || undefined, { signal }),
   ]);
   if (stale(signal)) return;
   if (memoryOutcome.status === "rejected") {
@@ -178,6 +180,11 @@ export async function renderJourney(root, { signal } = {}) {
   const recs = recsOutcome.status === "fulfilled" ? recsOutcome.value : null;
   const recsError =
     recsOutcome.status === "rejected" && !isAbortError(recsOutcome.reason) ? recsOutcome.reason : null;
+  const decision = decisionOutcome.status === "fulfilled" ? decisionOutcome.value : null;
+  const decisionError =
+    decisionOutcome.status === "rejected" && !isAbortError(decisionOutcome.reason)
+      ? decisionOutcome.reason
+      : null;
   results.replaceChildren(
     situationCard(data),
     el("section", { className: "card" }, [
@@ -195,6 +202,7 @@ export async function renderJourney(root, { signal } = {}) {
       historyList(data.historical_episodes || []),
     ]),
     recommendationPanel(recs, recsError),
+    decisionPanel(decision, decisionError),
   );
 }
 

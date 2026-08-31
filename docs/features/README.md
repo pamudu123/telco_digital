@@ -15,8 +15,8 @@ scenario works in the shared demo environment; it does not mean production ready
 | 07 | Graph fraud | Not started | — |
 | 08 | SFA forecasting | Not started | — |
 | 09 | Digital twins | Not started | — |
-| 10 | Decision engine and explanations | Not started | — |
-| 11 | OpenRouter GLM Copilot | Not started | — |
+| 10 | Decision engine and explanations | POC complete | [10-decision-engine.md](./10-decision-engine.md) |
+| 11 | OpenRouter GLM Copilot | POC complete | [11-copilot.md](./11-copilot.md) |
 | 12 | FastAPI | Not started | — |
 | 13 | POC simulator | Not started | — |
 

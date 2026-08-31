@@ -1,11 +1,13 @@
 import { api, isAbortError } from "./api.js";
 import { renderBarChart, renderDoughnut } from "./charts.js";
+import { renderCopilot } from "./copilot.js";
 import { renderCustomer360, errorBox } from "./customer-360.js";
 import { badge, el, formatDate, formatNumber, provenanceLine, statusBox } from "./dom.js";
-import { renderStatus } from "./status.js";
-import { renderWalkthroughs } from "./walkthroughs.js";
 import { renderGraph } from "./graph.js";
 import { renderJourney } from "./journey.js";
+import { renderModels } from "./models.js";
+import { renderStatus } from "./status.js";
+import { renderWalkthroughs } from "./walkthroughs.js";
 
 const NAV = [
   ["overview", "Overview", "live"],
@@ -15,21 +17,10 @@ const NAV = [
   ["money", "Money and Fraud", "live"],
   ["retail", "Retail and SFA", "live"],
   ["graph", "Graph Explorer", "live"],
-  ["models", "Models and Decisions", "planned"],
-  ["copilot", "Copilot", "planned"],
+  ["models", "Models and Decisions", "live"],
+  ["copilot", "Copilot", "live"],
   ["status", "POC Status", "live"],
 ];
-
-const PLANNED = {
-  models: {
-    title: "Models and Decisions",
-    body: "Churn scores are live on Customer 360. Travel recommendations are live on Journey. Twins and the decision engine are not started. This page does not display those later scores.",
-  },
-  copilot: {
-    title: "Copilot",
-    body: "A grounded Copilot is not connected. No LLM answers are generated in this showcase.",
-  },
-};
 
 function route() {
   const hash = window.location.hash.replace(/^#\/?/, "") || "overview";
@@ -54,7 +45,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–06 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–06 and 10–11 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator. 07–09 remain not started.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -72,13 +63,13 @@ function renderShell(root) {
         el("h2", { text: "Intelligence" }),
         nav,
         el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capabilities 00–06." }),
-          el("div", { text: "Planned capability = not implemented." }),
+          el("div", { text: "POC environment: Live evidence = capabilities 00–06 and 10–11." }),
+          el("div", { text: "Planned capability = 07–09, FastAPI complete, and the simulator." }),
         ]),
       ]),
       content,
-      el("footer", { className: "footer", text: "© 2026 Omobio. Shared-intelligence POC. Synthetic data only." }),
     ]),
+    el("footer", { className: "footer", text: "© 2026 Omobio. Shared-intelligence POC. Synthetic data only." }),
   );
   return { nav, content };
 }
@@ -95,7 +86,7 @@ async function renderOverview(root, { signal } = {}) {
     el("div", { className: "page-header" }, [
       el("div", {}, [
         el("h1", { text: "Intelligence overview" }),
-        el("p", { text: "Live facts, Neo4j projection, point-in-time features and travel event memory. Later capabilities are labeled as planned." }),
+        el("p", { text: "Live facts, projection, features, memory, recommendations, decisions and Copilot. 07–09 stay planned." }),
       ]),
       el("a", { href: "#/status", text: "POC status" }),
     ]),
@@ -148,7 +139,7 @@ async function renderOverview(root, { signal } = {}) {
         el(
           "div",
           { className: "stepper" },
-          manifest.capabilities.slice(0, 8).map((capability) => {
+          manifest.capabilities.map((capability) => {
             const complete = capability.status === "POC complete";
             return el("div", { className: `step ${complete ? "complete" : "planned"}` }, [
               el("div", { className: "dot", text: capability.number }),
@@ -156,7 +147,6 @@ async function renderOverview(root, { signal } = {}) {
               badge(capability.status, complete ? "live" : "planned"),
             ]);
           }),
-          ),
         ),
       ]),
       el("section", { className: "card" }, [
@@ -235,23 +225,6 @@ function chartCard(title, canvas, points, doughnut = false) {
   ]);
 }
 
-function renderPlanned(root, id) {
-  const copy = PLANNED[id];
-  root.replaceChildren(
-    el("div", { className: "page-header" }, [
-      el("div", {}, [
-        el("h1", { text: copy.title }),
-        el("p", { text: copy.body }),
-      ]),
-      badge("POC planned", "planned"),
-    ]),
-    el("section", { className: "card" }, [
-      el("p", { text: "This page remains visible so the roadmap is honest. It does not display fabricated metrics or simulated model output." }),
-      el("a", { href: "#/status", text: "See capability status" }),
-    ]),
-  );
-}
-
 export function start() {
   const { nav, content } = renderShell(document.body);
   let active = new AbortController();
@@ -273,8 +246,9 @@ export function start() {
       else if (id === "walkthroughs") await renderWalkthroughs(content, { signal });
       else if (id === "journey") await renderJourney(content, { signal });
       else if (id === "graph") await renderGraph(content, { signal });
+      else if (id === "models") await renderModels(content, { signal });
+      else if (id === "copilot") await renderCopilot(content, { signal });
       else if (id === "status") await renderStatus(content, { signal });
-      else if (PLANNED[id]) renderPlanned(content, id);
       else content.replaceChildren(statusBox("error", "Unknown page", "Use the Intelligence navigation."));
       if (signal.aborted) return;
       content.focus();

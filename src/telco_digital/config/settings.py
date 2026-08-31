@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["http://localhost:8000", "http://127.0.0.1:8000"]
     api_environment: str = "local"
     showcase_enabled: bool = True
+    openrouter_api_key: str | None = None
+    openrouter_model: str = "z-ai/glm-4.5-flash"
 
     @field_validator("cors_origins", mode="before")
     @classmethod

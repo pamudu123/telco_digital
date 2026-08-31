@@ -1,0 +1,10 @@
+[
+  {
+    "source":"deterministic_fallback",
+    "answer":"Question: Why is U001 receiving this recommendation?\nPresent catalogue offer ROAM_15. Retrieved travel memory ranks ROAM_15 for the 4\u20137 days scenario. Reason codes: HISTORICAL_EPISODE, CATALOGUE_MATCH, DURATION_UNKNOWN. Historical plan: ROAM_15. Historical usage: 11.4 GB. Catalogue alternatives: ROAM_30, ROAM_5. Churn band: MEDIUM. Trip duration is unknown unless a later trip has already ended. No plan is invented outside the catalogue, and a churn score is not a discount.",
+    "used_facts":"action=PRESENT_OFFER | target=ROAM_15 | HISTORICAL_EPISODE | CATALOGUE_MATCH | DURATION_UNKNOWN | historical_plan=ROAM_15 | historical_usage_gb=11.4",
+    "mentions_roam_15":true,
+    "mentions_duration_unknown":true,
+    "mentions_fake_plan":false
+  }
+]
