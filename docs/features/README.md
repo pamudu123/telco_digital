@@ -13,7 +13,7 @@ scenario works in the shared demo environment; it does not mean production ready
 | 05 | Churn prediction | POC complete | [05-churn-prediction.md](./05-churn-prediction.md) |
 | 06 | Recommendations and uncertainty | POC complete | [06-recommendations-uncertainty.md](./06-recommendations-uncertainty.md) |
 | 07 | Graph fraud | Not started | — |
-| 08 | SFA forecasting | Not started | — |
+| 08 | SFA forecasting | POC complete | [08-sfa-forecasting.md](./08-sfa-forecasting.md) |
 | 09 | Digital twins | Not started | — |
 | 10 | Decision engine and explanations | Not started | — |
 | 11 | OpenRouter GLM Copilot | Not started | — |

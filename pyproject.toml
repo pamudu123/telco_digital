@@ -42,6 +42,8 @@ notebooks = [
     "matplotlib (>=3.10.0,<4.0.0)",
     "seaborn (>=0.13.0,<1.0.0)",
     "scikit-learn (>=1.6.0,<2.0.0)",
+    "statsmodels (>=0.14.0,<0.15.0)",
+    "prophet (>=1.1.6,<2.0.0)",
 ]
 
 [tool.poetry]
@@ -80,3 +82,6 @@ select = ["E", "F", "I", "UP", "B"]
 "notebooks/05_churn/*.ipynb" = ["E402", "E501", "I001", "F401"]
 "notebooks/05_churn/dataset.py" = ["E402"]
 "notebooks/06_recommendations/*.ipynb" = ["E402", "E501", "I001", "F401"]
+"notebooks/08_sfa_forecasting/*.ipynb" = ["E402", "E501", "I001", "F401"]
+"notebooks/08_sfa_forecasting/dataset.py" = ["E402", "E501"]
+"notebooks/08_sfa_forecasting/train.py" = ["E402", "E501", "I001"]

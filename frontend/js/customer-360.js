@@ -493,10 +493,43 @@ function renderFacts(
   ]);
 }
 
+function forecastPanel(data) {
+  const hero = (data.products || []).find((item) => item.product_code === data.hero_product) || (data.products || [])[0];
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Demand forecast" }),
+      badge("Forecast", "forecast"),
+    ]),
+    hero
+      ? el("div", {}, [
+          el("p", {
+            text: `${hero.product_name}: ${hero.on_hand} on hand, ${hero.forecast_7d} forecast in ${data.horizon_days} days.`,
+          }),
+          el("p", {
+            text: `${hero.risk_band} cover ${hero.cover_days} days • ${hero.action}${hero.warning ? ` • ${hero.warning}` : ""}`,
+          }),
+        ])
+      : el("p", { text: "No product forecast at this as_of." }),
+    el("p", { className: "meta", text: `${data.forecast_set_version} • ${data.model_type}` }),
+  ]);
+}
+
 async function renderRetail(root, asOf, signal) {
   try {
-    const data = await api.retailer("RET-001", asOf || undefined, { signal });
+    const [factsOutcome, forecastOutcome] = await Promise.allSettled([
+      api.retailer("RET-001", asOf || undefined, { signal }),
+      api.retailerForecast("RET-001", asOf || undefined, { signal }),
+    ]);
     if (stale(signal)) return;
+    if (factsOutcome.status !== "fulfilled") {
+      throw factsOutcome.reason;
+    }
+    const data = factsOutcome.value;
+    const forecast = forecastOutcome.status === "fulfilled" ? forecastOutcome.value : null;
+    const forecastError =
+      forecastOutcome.status === "rejected" && !isAbortError(forecastOutcome.reason)
+        ? forecastOutcome.reason
+        : null;
     root.replaceChildren(
       el("div", {}, [
         el("section", { className: "card fact-card" }, [
@@ -506,10 +539,17 @@ async function renderRetail(root, asOf, signal) {
         ]),
         factList("Sales", data.sales, "No sales at this as_of."),
         factList("Inventory events", data.inventory, "No inventory events at this as_of."),
-        el("div", { className: "card" }, [
-          el("header", {}, [el("h3", { text: "Forecast and retailer twin" }), badge("POC planned", "planned")]),
-          el("p", { text: "Demand forecasts and stockout warnings are not implemented." }),
-        ]),
+        forecastError
+          ? el("div", { className: "card" }, [
+              el("header", {}, [el("h3", { text: "Demand forecast" }), badge("Unavailable", "unknown")]),
+              el("p", { text: "The trained forecast model could not be scored. Recorded facts remain live." }),
+            ])
+          : forecast
+            ? forecastPanel(forecast)
+            : el("div", { className: "card" }, [
+                el("header", {}, [el("h3", { text: "Demand forecast" }), badge("Unavailable", "unknown")]),
+                el("p", { text: "No forecast is available at this as_of." }),
+              ]),
       ]),
     );
   } catch (error) {
