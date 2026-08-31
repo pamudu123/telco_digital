@@ -12,6 +12,7 @@ from telco_digital.config import Settings
 from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
 from telco_digital.infrastructure.postgres.event_memory import PostgresEventMemoryQueries
 from telco_digital.infrastructure.postgres.features import PostgresTemporalFeatureQueries
+from telco_digital.infrastructure.postgres.repositories import SqlPlanRepository
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
 from telco_digital.intelligence.behaviour import BehaviourService
@@ -21,6 +22,10 @@ from telco_digital.intelligence.features import (
     CustomerFeatureService,
     GraphFeatureService,
     TemporalFeatureService,
+)
+from telco_digital.intelligence.recommendations import (
+    PlanRepositoryCatalogue,
+    RecommendationService,
 )
 
 router = APIRouter(
@@ -114,6 +119,29 @@ async def customer_churn(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
+
+
+@router.get("/{customer_ref}/recommendations")
+async def customer_recommendations(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    destination: str | None = Query(default=None),
+) -> dict:
+    as_of, queries = context
+    try:
+        result = await RecommendationService(
+            EventMemoryService(PostgresEventMemoryQueries(queries.session)),
+            PlanRepositoryCatalogue(SqlPlanRepository(queries.session)),
+        ).recommend(customer_ref, as_of, destination=destination)
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except NotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except LookupError as exc:
