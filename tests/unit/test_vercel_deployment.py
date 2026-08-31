@@ -47,6 +47,37 @@ def test_transaction_pool_mode_disables_application_and_statement_pools() -> Non
         engine.sync_engine.dispose()
 
 
+def test_pooler_urls_disable_statement_caching_without_an_explicit_pool_mode() -> None:
+    settings = Settings(
+        database_url=(
+            "postgresql+asyncpg://postgres.project:password@"
+            "aws-0-region.pooler.supabase.com:6543/postgres"
+        ),
+        database_pool_mode="direct",
+    )
+
+    engine = create_engine(settings)
+    try:
+        assert isinstance(engine.sync_engine.pool, NullPool)
+        assert engine.url.query["prepared_statement_cache_size"] == "0"
+    finally:
+        engine.sync_engine.dispose()
+
+
+def test_serverless_runtime_never_reuses_connections_across_invocations(monkeypatch) -> None:
+    monkeypatch.setenv("VERCEL", "1")
+    settings = Settings(
+        database_url="postgresql+asyncpg://postgres:password@db.project.supabase.co:5432/postgres",
+        database_pool_mode="direct",
+    )
+
+    engine = create_engine(settings)
+    try:
+        assert isinstance(engine.sync_engine.pool, NullPool)
+    finally:
+        engine.sync_engine.dispose()
+
+
 def test_vercel_accepts_a_provider_postgresql_url_without_driver_suffix() -> None:
     settings = Settings(
         database_url=(

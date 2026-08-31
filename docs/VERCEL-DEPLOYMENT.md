@@ -49,6 +49,12 @@ runtime uses Supavisor transaction mode. The application selects SQLAlchemy
 `NullPool` and disables asyncpg statement caching when
 `DATABASE_POOL_MODE=transaction`.
 
+The same settings apply automatically when the URL points at a Supavisor
+pooler host or port 6543, and connection reuse is disabled on any serverless
+runtime. Setting `DATABASE_POOL_MODE=transaction` explicitly remains preferred,
+but a missing value no longer produces intermittent `PostgreSQL is unreachable`
+responses.
+
 The application accepts Supabase's copied `postgresql://` scheme and normalizes
 it to `postgresql+asyncpg://`. Do not include surrounding quotes, an environment
 variable name, or whitespace in the Vercel value.
