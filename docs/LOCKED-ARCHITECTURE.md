@@ -1,4 +1,4 @@
-# Omobio Intelligence POC — Locked Architecture
+# Company Intelligence POC — Locked Architecture
 
 **Status:** LOCKED — this is the initial plan and the source of truth for implementation.  
 **Date locked:** 2026-08-27  
@@ -18,7 +18,7 @@ Digital Twins combine facts, inference and predictions.
 ML predicts.  
 The Decision Engine determines what to do.
 
-This supports Omobio **shared intelligence**: multiple applications contribute signals to reusable intelligence rather than maintaining isolated AI inside each application. See [SHARED-INTELLIGENCE.md](./SHARED-INTELLIGENCE.md).
+This supports company **shared intelligence**: multiple applications contribute signals to reusable intelligence rather than maintaining isolated AI inside each application. See [SHARED-INTELLIGENCE.md](./SHARED-INTELLIGENCE.md).
 
 ---
 

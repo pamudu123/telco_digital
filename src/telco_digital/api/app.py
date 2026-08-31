@@ -35,7 +35,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
     configure_logging(settings.log_level)
     application = FastAPI(
-        title="Omobio Intelligence POC — FastAPI",
+        title="Company Intelligence POC — FastAPI",
         version="0.1.0",
         description=(
             "Thin HTTP adapters over application services. PostgreSQL is the source "

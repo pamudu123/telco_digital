@@ -25,7 +25,7 @@ POC complete. Graph fraud, SFA forecasting and twins stay as separate live
 panels from the decision engine. Later package scaffolds must not be interpreted
 as implemented behavior.
 
-The planned presentation of these capabilities inside the existing Omobio/NG
+The planned presentation of these capabilities inside the existing company/NG
 application family is documented in [POC-UI.md](../POC-UI.md). UI labels must
 use this status table and must not present planned capabilities as live output.
 

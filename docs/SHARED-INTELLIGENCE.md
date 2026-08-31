@@ -1,6 +1,6 @@
-# Shared intelligence (Omobio)
+# Shared intelligence (company)
 
-This POC implements the shared intelligence concept already defined for Omobio: **multiple applications contribute signals to reusable intelligence**, rather than each product maintaining isolated AI.
+This POC implements the shared intelligence concept already defined for the company: **multiple applications contribute signals to reusable intelligence**, rather than each product maintaining isolated AI.
 
 Referenced product framing: *Digital Service Solutions*. The PDF is not checked into this repository; this document records the architectural implication that the locked plan must support.
 
@@ -37,4 +37,4 @@ Applications **consume** twins, warnings, recommendations, and explanations. The
 - **integration** — outbox for projections
 - **intelligence** — feature snapshots, model predictions, recommendations, outcomes (derived, not source of truth)
 
-New Omobio applications should add facts and events into these schemas (or a new bounded schema) and reuse the same intelligence pipeline.
+New company applications should add facts and events into these schemas (or a new bounded schema) and reuse the same intelligence pipeline.

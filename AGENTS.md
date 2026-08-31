@@ -1,6 +1,6 @@
 # Agent Instructions
 
-Omobio shared-intelligence POC (`telco-digital`). PostgreSQL is source of truth; Neo4j is a rebuildable projection. Architecture is locked — follow `docs/`, do not invert the stack.
+Company shared-intelligence POC (`telco-digital`). PostgreSQL is source of truth; Neo4j is a rebuildable projection. Architecture is locked — follow `docs/`, do not invert the stack.
 
 ## What's Included
 
@@ -44,13 +44,14 @@ poetry run pytest
 poetry run alembic upgrade head
 ```
 
-Extras: `dev` (pytest, ruff), `api` (FastAPI), `ml` (sklearn, pandas).
+Extras: `dev` (pytest, ruff, mypy, pre-commit), `api` (FastAPI), `ml` (sklearn, pandas).
 
 ## File-Scoped Commands
 | Task | Command |
 |------|---------|
 | Lint file | `poetry run ruff check path/to/file.py` |
 | Format file | `poetry run ruff format path/to/file.py` |
+| Pre-commit | `poetry run pre-commit run --all-files` |
 | One test | `poetry run pytest tests/unit/test_travel_rules.py -q` |
 | Scenario | `poetry run pytest tests/scenarios/test_impossible_travel.py -q` |
 

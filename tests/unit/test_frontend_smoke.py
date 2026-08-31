@@ -7,12 +7,16 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     assert 'lang="en"' in html
     assert "css/variables.css" in html
+    assert "Company Intelligence POC" in html
+    assert "omobio" not in html.lower()
     assert "vendor/chart.umd.min.js" in html
     assert "js/app.js" in html
     assert (ROOT / "vendor" / "chart.umd.min.js").stat().st_size > 10_000
 
     app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
     assert "Synthetic data" in app_js or "synthetic" in app_js.lower()
+    assert "COMPANY INTELLIGENCE" in app_js
+    assert "omobio" not in app_js.lower()
     assert "Customer 360" in app_js
     assert "POC planned" in app_js
     assert "Graph Explorer" in app_js

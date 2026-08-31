@@ -5,7 +5,7 @@
 ## Purpose
 
 The POC UI should help a visitor understand what the shared-intelligence platform
-does in a few minutes. It is not a replacement for Omobio's existing products.
+does in a few minutes. It is not a replacement for the company's existing products.
 It is an **Intelligence Showcase** that demonstrates how one shared data and
 decision layer can make the existing applications smarter.
 
@@ -53,12 +53,12 @@ evidence such as documentation, notebooks, tables, plots and metrics.
 
 ## Product position
 
-The UI should appear inside the existing Omobio/NG application shell as a new
+The UI should appear inside the existing company/NG application shell as a new
 top-level **Intelligence** workspace. Existing applications remain the places
 where operational users work:
 
 ```text
-Existing Omobio applications
+Existing company applications
   Selfcare | Loyalty | adReach | Viber | Mobile Money | SFA | Lottery
                               |
                               v
@@ -209,7 +209,7 @@ Each walkthrough should use the same presentation order:
 3. What it infers or predicts — derived output with version and confidence.
 4. What it recommends — decision plus reason codes.
 5. What remains unknown — missing evidence and uncertainty.
-6. Which existing Omobio application consumes the result.
+6. Which existing company application consumes the result.
 
 ## 5. Visual language and trust
 
@@ -257,7 +257,7 @@ The POC frontend will use framework-free web technologies:
 - The browser `fetch` API for FastAPI requests.
 - Chart.js for the small number of interactive charts.
 
-The frontend keeps the visual language of the existing Omobio/NG application
+The frontend keeps the visual language of the existing company/NG application
 shell, but it does not require Angular or another frontend framework. This keeps
 the POC easy to build, inspect, deploy and hand over.
 
