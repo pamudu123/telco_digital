@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from sqlalchemy.engine import make_url
+import os
+
+from sqlalchemy.engine import URL, make_url
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -21,17 +23,29 @@ def async_database_url(database_url: str):
     return url
 
 
+def uses_transaction_pooler(url: URL) -> bool:
+    """Detect a Supavisor transaction-pooler target, which cannot cache statements."""
+    host = (url.host or "").lower()
+    return "pooler.supabase.com" in host or url.port == 6543
+
+
+def running_serverless() -> bool:
+    return bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
+
+
 def create_engine(settings: Settings | None = None) -> AsyncEngine:
     settings = settings or get_settings()
     database_url = async_database_url(settings.database_url)
     engine_options: dict = {"pool_pre_ping": True}
 
-    if settings.database_pool_mode == "transaction":
+    if settings.database_pool_mode == "transaction" or uses_transaction_pooler(database_url):
         database_url = database_url.update_query_dict({"prepared_statement_cache_size": "0"})
         engine_options.update(
             connect_args={"statement_cache_size": 0},
             poolclass=NullPool,
         )
+    elif running_serverless():
+        engine_options["poolclass"] = NullPool
 
     return create_async_engine(database_url, **engine_options)
 
