@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import SQLAlchemyError
 
 from telco_digital.api.deps import attach_runtime
-from telco_digital.api.routes import copilot, customers, health, showcase
+from telco_digital.api.routes import commands, copilot, customers, health, retailers, showcase
 from telco_digital.config import Settings, get_settings
 
 
@@ -33,11 +33,12 @@ async def lifespan(application: FastAPI) -> AsyncIterator[None]:
 def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
     application = FastAPI(
-        title="Omobio Intelligence POC — read-only showcase",
+        title="Omobio Intelligence POC — FastAPI",
         version="0.1.0",
         description=(
-            "Early read-only showcase for capability-00 evidence. "
-            "This is not the complete FastAPI or simulator capability."
+            "Thin HTTP adapters over application services. PostgreSQL is the source "
+            "of truth. Routes contain no SQL, Cypher, or ML. The simulator write UI "
+            "is capability 13."
         ),
         lifespan=lifespan,
     )
@@ -62,9 +63,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
     application.include_router(health.router, prefix="/api/v1")
-    application.include_router(showcase.router, prefix="/api/v1")
+    application.include_router(commands.router, prefix="/api/v1")
     application.include_router(customers.router, prefix="/api/v1")
+    application.include_router(retailers.router, prefix="/api/v1")
     application.include_router(copilot.router, prefix="/api/v1")
+    application.include_router(showcase.router, prefix="/api/v1")
 
     frontend = repo_root() / "frontend"
     if frontend.is_dir():

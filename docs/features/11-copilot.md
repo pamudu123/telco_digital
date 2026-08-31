@@ -91,5 +91,6 @@ never let the model write facts.
 
 ## 13. Dependency for the next capability
 
-Capability 12 is the complete FastAPI surface and remains not started. Copilot
-does not complete that milestone.
+Capability 12 is the complete FastAPI surface. See
+[12-fastapi.md](./12-fastapi.md). Copilot does not complete that milestone by
+itself; it remains a presentation layer over structured intelligence.

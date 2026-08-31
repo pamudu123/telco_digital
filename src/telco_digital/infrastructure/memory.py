@@ -332,6 +332,19 @@ class InMemoryOutboxRepository:
         pending.sort(key=lambda e: e.created_at)
         return pending[:limit]
 
+    async def list_all(self) -> list[OutboxEvent]:
+        return self._store.all()
+
+
+class InMemoryProjectionLagQueries:
+    def __init__(self, outbox: InMemoryOutboxRepository) -> None:
+        self._outbox = outbox
+
+    async def snapshot(self):
+        from telco_digital.application.services.platform import snapshot_from_events
+
+        return snapshot_from_events(await self._outbox.list_all())
+
 
 class InMemoryWarningRepository:
     def __init__(self, store: _Store[Warning]) -> None:

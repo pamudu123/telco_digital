@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 
 from telco_digital.application.demo_dataset import END_AT
 from telco_digital.config import Settings
+from telco_digital.infrastructure.postgres.platform import PostgresProjectionLagQueries
 from telco_digital.infrastructure.postgres.session import create_engine, create_session_factory
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
@@ -67,3 +68,9 @@ async def get_as_of_queries(
 
 def get_uow(request: Request) -> SqlAlchemyUnitOfWork:
     return SqlAlchemyUnitOfWork(request.app.state.session_factory)
+
+
+async def get_lag_queries(request: Request) -> AsyncIterator[PostgresProjectionLagQueries]:
+    factory: async_sessionmaker = request.app.state.session_factory
+    async with factory() as session:
+        yield PostgresProjectionLagQueries(session)

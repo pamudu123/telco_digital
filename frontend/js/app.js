@@ -45,7 +45,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–11 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–12 are a FastAPI POC surface — not production, and not the simulator.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -63,8 +63,8 @@ function renderShell(root) {
         el("h2", { text: "Intelligence" }),
         nav,
         el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capabilities 00–11." }),
-          el("div", { text: "Planned capability = FastAPI complete and the simulator." }),
+          el("div", { text: "POC environment: Live evidence = capabilities 00–12." }),
+          el("div", { text: "Planned capability = the simulator write path." }),
         ]),
       ]),
       content,
@@ -86,7 +86,7 @@ async function renderOverview(root, { signal } = {}) {
     el("div", { className: "page-header" }, [
       el("div", {}, [
         el("h1", { text: "Intelligence overview" }),
-        el("p", { text: "Live facts, Neo4j projection, point-in-time features, travel event memory, catalogue recommendations, graph fraud scores, SFA forecasts, computed twins, next-best actions and Copilot. FastAPI complete and the simulator stay planned." }),
+        el("p", { text: "Live facts, Neo4j projection, point-in-time features, travel event memory, catalogue recommendations, graph fraud scores, SFA forecasts, computed twins, next-best actions, Copilot and the FastAPI service boundary. The simulator stays planned." }),
       ]),
       el("a", { href: "#/status", text: "POC status" }),
     ]),

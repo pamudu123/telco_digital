@@ -4,18 +4,18 @@ from telco_digital.api.app import create_app
 from telco_digital.config import Settings
 
 
-def test_health_and_status_do_not_mark_api_complete() -> None:
+def test_health_and_status_mark_fastapi_complete() -> None:
     with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
         health = client.get("/api/v1/health")
         assert health.status_code == 200
-        assert health.json()["slice"] == "capability-00-read-only-showcase"
+        assert health.json()["slice"] == "capability-12-fastapi"
 
         status = client.get("/api/v1/showcase/status")
         assert status.status_code == 200
         body = status.json()
         by_number = {item["number"]: item for item in body["capabilities"]}
         assert by_number["00"]["status"] == "POC complete"
-        assert by_number["12"]["status"] == "Not started"
+        assert by_number["12"]["status"] == "POC complete"
         assert by_number["13"]["status"] == "Not started"
         assert body["source"] == "capability_manifest"
         for artifact in body["artifacts"]:
@@ -48,6 +48,16 @@ def test_capability_02_routes_are_registered() -> None:
         assert "/api/v1/customers/{customer_ref}/twin" in paths
         assert "/api/v1/showcase/sfa/retailers/{retailer_ref}/twin" in paths
         assert "/api/v1/customers/{customer_ref}/decision" in paths
+        assert "/api/v1/customers/{customer_ref}/state" in paths
+        assert "/api/v1/customers/{customer_ref}/timeline" in paths
+        assert "/api/v1/commands/recharge" in paths
+        assert "/api/v1/commands/travel" in paths
+        assert "/api/v1/commands/plan-purchase" in paths
+        assert "/api/v1/commands/usage" in paths
+        assert "/api/v1/projection/lag" in paths
+        assert "/api/v1/models" in paths
+        assert "/api/v1/ready" in paths
+        assert "/api/v1/retailers/{retailer_ref}/forecast" in paths
         assert "/api/v1/copilot/ask" in paths
         assert "/api/v1/showcase/graph/summary" in paths
         assert "/api/v1/showcase/graph/customers/{customer_ref}" in paths
@@ -70,7 +80,7 @@ def test_frontend_index_is_served() -> None:
     with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert "capabilities 00–11 showcase" in response.text
+        assert "capabilities 00–12 FastAPI" in response.text
         assert "vendor/chart.umd.min.js" in response.text
         assert "js/app.js" in response.text
 

@@ -17,10 +17,10 @@ scenario works in the shared demo environment; it does not mean production ready
 | 09 | Digital twins | POC complete | [09-digital-twins.md](./09-digital-twins.md) |
 | 10 | Decision engine and explanations | POC complete | [10-decision-engine.md](./10-decision-engine.md) |
 | 11 | OpenRouter GLM Copilot | POC complete | [11-copilot.md](./11-copilot.md) |
-| 12 | FastAPI | Not started | — |
+| 12 | FastAPI | POC complete | [12-fastapi.md](./12-fastapi.md) |
 | 13 | POC simulator | Not started | — |
 
-Capabilities are implemented and accepted sequentially. Capabilities 00–11 are
+Capabilities are implemented and accepted sequentially. Capabilities 00–12 are
 POC complete. Graph fraud, SFA forecasting and twins stay as separate live
 panels from the decision engine. Later package scaffolds must not be interpreted
 as implemented behavior.
@@ -30,5 +30,6 @@ application family is documented in [POC-UI.md](../POC-UI.md). UI labels must
 use this status table and must not present planned capabilities as live output.
 
 An early **read-only showcase** for capability-00 evidence is documented in
-[00-read-only-showcase.md](./00-read-only-showcase.md). That slice does not
-change the status of capabilities 12 or 13.
+[00-read-only-showcase.md](./00-read-only-showcase.md). That slice did not
+complete FastAPI; capability 12 now wraps the application services. Capability
+13 (simulator) remains not started.

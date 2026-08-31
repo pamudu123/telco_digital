@@ -1,0 +1,32 @@
+{
+  "title": "Omobio Intelligence POC \u2014 FastAPI",
+  "commands": [
+    "/api/v1/commands/plan-purchase",
+    "/api/v1/commands/recharge",
+    "/api/v1/commands/travel",
+    "/api/v1/commands/travel/end",
+    "/api/v1/commands/usage"
+  ],
+  "platform": [
+    "/api/v1/health",
+    "/api/v1/models",
+    "/api/v1/projection/lag",
+    "/api/v1/ready"
+  ],
+  "queries": [
+    "/api/v1/copilot/ask",
+    "/api/v1/customers/{customer_ref}/360",
+    "/api/v1/customers/{customer_ref}/behaviour",
+    "/api/v1/customers/{customer_ref}/churn",
+    "/api/v1/customers/{customer_ref}/decision",
+    "/api/v1/customers/{customer_ref}/event-memory",
+    "/api/v1/customers/{customer_ref}/features",
+    "/api/v1/customers/{customer_ref}/fraud",
+    "/api/v1/customers/{customer_ref}/recommendations",
+    "/api/v1/customers/{customer_ref}/state",
+    "/api/v1/customers/{customer_ref}/timeline",
+    "/api/v1/customers/{customer_ref}/twin",
+    "/api/v1/retailers/{retailer_ref}/forecast",
+    "/api/v1/retailers/{retailer_ref}/twin"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "slice": "capability-12-fastapi",
+  "openapi_path_count": 33,
+  "command_adapter_count": 5,
+  "platform_endpoint_count": 4,
+  "customer_query_count": 11,
+  "served_model_count": 5,
+  "churn_model_version": "churn-lr-v1",
+  "forecast_model_version": "sfa-forecast-v1",
+  "routes_contain_sql": false,
+  "routes_contain_cypher": false
+}

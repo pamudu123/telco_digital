@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–11. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations, graph-fraud scores, a computed digital twin and a next-best action. Journey ranks ROAM_15 and shows the decision. Retail and SFA shows a demand forecast and retailer twin. Copilot is live with a deterministic fallback. The complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–12. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations, graph-fraud scores, a computed digital twin and a next-best action. Journey ranks ROAM_15 and shows the decision. Retail and SFA shows a demand forecast and retailer twin. Copilot is live with a deterministic fallback. FastAPI wraps application services (health, projection lag, model versions, command adapters). The simulator remains planned.
 
 ## Purpose
 
@@ -342,7 +342,7 @@ backend behaviour:
 2. Capabilities 01–10: add verified graph, feature, memory, model, twin and
    decision outputs to their relevant page contracts.
 3. Capability 11: add a read-only grounded Copilot with deterministic fallback.
-4. Capability 12: implement the thin FastAPI boundary.
+4. Capability 12: implement the thin FastAPI boundary (health, lag, models, command adapters).
 5. Capability 13: implement the framework-free POC simulator using the existing
    NG application's visual language.
 
@@ -355,13 +355,12 @@ backend behaviour:
 - Documentation showing how the shared layer connects to existing applications.
 - An early **read-only HTML/CSS/JavaScript showcase** for capability-00
   evidence, documented in [features/00-read-only-showcase.md](./features/00-read-only-showcase.md).
-  Live pages call a minimal FastAPI read slice. Capabilities 12 and 13 remain
-  not started.
+  Live pages call FastAPI read adapters and the capability-12 command surface.
+  The POC simulator (capability 13) remains not started.
 
 ## What is not implemented now
 
-- The complete FastAPI capability (all application services, projection lag,
-  model versions) and the POC simulator / write path.
+- The POC simulator / write path from the UI.
 - Authentication, roles, permissions or multi-tenant UI isolation.
 - Outcome recording of the chosen action.
 - Production UX, accessibility validation, telemetry or operational support.
