@@ -1,0 +1,22 @@
+[
+  {
+    "customer_ref":"U001",
+    "probability":0.016322,
+    "risk_band":"LOW"
+  },
+  {
+    "customer_ref":"U002",
+    "probability":0.067145,
+    "risk_band":"LOW"
+  },
+  {
+    "customer_ref":"U003",
+    "probability":0.065075,
+    "risk_band":"LOW"
+  },
+  {
+    "customer_ref":"U004",
+    "probability":0.995039,
+    "risk_band":"HIGH"
+  }
+]

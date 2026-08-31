@@ -1,0 +1,50 @@
+{
+  "model_version": "churn-lr-v1",
+  "selected_model": "logistic_regression",
+  "selection_reason": "Logistic regression is selected because the hold-out ROC-AUC gap versus gradient boosting is 0.0170, below the 0.03 simplicity threshold.",
+  "n_rows": 1600,
+  "positive_rate": 0.3312,
+  "holdout": [
+    {
+      "model": "logistic_regression",
+      "roc_auc": 0.9348,
+      "pr_auc": 0.9145,
+      "brier": 0.0531,
+      "log_loss": 0.2281
+    },
+    {
+      "model": "gradient_boosting",
+      "roc_auc": 0.9178,
+      "pr_auc": 0.8992,
+      "brier": 0.0564,
+      "log_loss": 0.2525
+    }
+  ],
+  "golden_scores": [
+    {
+      "customer_ref": "U001",
+      "probability": 0.016322,
+      "risk_band": "LOW"
+    },
+    {
+      "customer_ref": "U002",
+      "probability": 0.067145,
+      "risk_band": "LOW"
+    },
+    {
+      "customer_ref": "U003",
+      "probability": 0.065075,
+      "risk_band": "LOW"
+    },
+    {
+      "customer_ref": "U004",
+      "probability": 0.995039,
+      "risk_band": "HIGH"
+    }
+  ],
+  "risk_bands": {
+    "HIGH": 0.6,
+    "MEDIUM": 0.35
+  },
+  "exported_artifact": "notebooks/05_churn/artifacts/churn-model-v1.json"
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "model":"logistic_regression",
+    "roc_auc":0.9348,
+    "pr_auc":0.9145,
+    "brier":0.0531,
+    "log_loss":0.2281
+  },
+  {
+    "model":"gradient_boosting",
+    "roc_auc":0.9178,
+    "pr_auc":0.8992,
+    "brier":0.0564,
+    "log_loss":0.2525
+  }
+]

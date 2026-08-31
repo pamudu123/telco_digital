@@ -16,7 +16,7 @@ Postgres repositories, outbox, Neo4j projection, graph queries.
 |---|---|
 | `scenario_travel_recommendation.py` | Historical Singapore trip retrieved; ROAM_15 ranks highest; duration unknown |
 | `scenario_impossible_travel.py` | Event stored; `IMPOSSIBLE_TRAVEL` warning |
-| `scenario_churn.py` | Usage decline + complaints + falling engagement → churn up, drivers, NBA change |
+| `scenario_churn.py` | Usage decline + complaints + falling engagement → HIGH score and drivers (NBA stays later) |
 | `scenario_graph_fraud.py` | Shared device + suspicious merchant → graph risk + evidence |
 | `scenario_retailer_stockout.py` | Inventory 18, 7d demand 47 → stockout risk + restock |
 

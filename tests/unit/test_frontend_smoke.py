@@ -20,8 +20,11 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
     assert 'import { renderGraph } from "./graph.js"' in app_js
     assert "customerFeatures" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerBehaviour" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "customerChurn" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "Derived features" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Behaviour traits" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "Churn prediction" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "badge-prediction" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "Graph projection" in (ROOT / "js" / "graph.js").read_text(encoding="utf-8")
 
 
