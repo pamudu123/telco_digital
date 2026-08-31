@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from telco_digital.application.commands.commands import GetCustomerStateQuery
 from telco_digital.application.queries.dtos import ObservedCustomerState
-from telco_digital.application.services.common import require_customer
+from telco_digital.application.services.common import primary_account, require_customer
 from telco_digital.application.unit_of_work.protocol import UnitOfWork
 from telco_digital.domain.rules.travel import location_at
 from telco_digital.domain.value_objects import display_country
@@ -16,10 +16,7 @@ async def get_customer_state(
     async with uow:
         customer = await require_customer(uow, query.customer_ref)
         as_of = query.as_of
-        accounts = await uow.accounts.list_by_customer(customer.id)
-        if not accounts:
-            raise LookupError(f"No account for {customer.customer_ref}")
-        account = accounts[0]
+        account = await primary_account(uow, customer.id)
         balance = await uow.ledgers.balance_at(account.id, as_of)
 
         travels = list(await uow.travels.list_as_of(customer.id, as_of))

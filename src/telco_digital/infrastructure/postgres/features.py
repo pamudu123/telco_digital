@@ -90,7 +90,8 @@ class PostgresTemporalFeatureQueries:
             (
                 plan
                 for subscription, plan in subscriptions
-                if subscription.ended_at is None or subscription.ended_at > as_of
+                if (subscription.ended_at is None or subscription.ended_at > as_of)
+                and subscription.started_at + timedelta(days=plan.validity_days) > as_of
             ),
             None,
         )

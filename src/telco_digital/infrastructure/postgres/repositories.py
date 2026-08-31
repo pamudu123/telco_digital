@@ -27,6 +27,8 @@ from telco_digital.domain.enums import (
     AccountStatus,
     AccountType,
     CustomerStatus,
+    InteractionStatus,
+    InteractionType,
     LedgerEntryType,
     OutboxStatus,
     PlanType,
@@ -113,7 +115,9 @@ class SqlAccountRepository:
 
     async def list_by_customer(self, customer_id: UUID) -> list[Account]:
         result = await self.session.execute(
-            select(AccountModel).where(AccountModel.customer_id == customer_id)
+            select(AccountModel)
+            .where(AccountModel.customer_id == customer_id)
+            .order_by(AccountModel.created_at, AccountModel.account_ref, AccountModel.id)
         )
         return [_to_account(r) for r in result.scalars()]
 
@@ -267,15 +271,19 @@ class SqlSubscriptionRepository:
     ) -> Subscription | None:
         stmt = (
             select(SubscriptionModel)
+            .join(PlanModel, PlanModel.id == SubscriptionModel.plan_id)
             .where(
                 SubscriptionModel.customer_id == customer_id,
                 SubscriptionModel.started_at <= as_of,
                 (SubscriptionModel.ended_at.is_(None)) | (SubscriptionModel.ended_at > as_of),
+                SubscriptionModel.started_at
+                + func.make_interval(0, 0, 0, PlanModel.validity_days)
+                > as_of,
             )
             .order_by(SubscriptionModel.started_at.desc())
         )
         if plan_type is not None:
-            stmt = stmt.join(PlanModel).where(PlanModel.plan_type == plan_type.value)
+            stmt = stmt.where(PlanModel.plan_type == plan_type.value)
         result = await self.session.execute(stmt.limit(1))
         row = result.scalar_one_or_none()
         return _to_subscription(row) if row else None
@@ -283,7 +291,7 @@ class SqlSubscriptionRepository:
     async def update(self, subscription: Subscription) -> None:
         row = await self.session.get(SubscriptionModel, subscription.id)
         if row is None:
-            return
+            raise LookupError(f"Unknown subscription: {subscription.id}")
         row.ended_at = subscription.ended_at
         row.status = subscription.status.value
         row.source_event_id = subscription.source_event_id
@@ -467,7 +475,7 @@ class SqlTravelRepository:
     async def update(self, travel: Travel) -> None:
         row = await self.session.get(TravelModel, travel.id)
         if row is None:
-            return
+            raise LookupError(f"Unknown travel: {travel.id}")
         row.ended_at = travel.ended_at
         row.end_event_id = travel.end_event_id
 
@@ -481,11 +489,11 @@ class SqlServiceInteractionRepository:
             ServiceInteractionModel(
                 id=interaction.id,
                 customer_id=interaction.customer_id,
-                interaction_type=interaction.interaction_type,
+                interaction_type=interaction.interaction_type.value,
                 occurred_at=interaction.occurred_at,
                 category=interaction.category,
                 severity=interaction.severity,
-                status=interaction.status,
+                status=interaction.status.value,
                 resolved_at=interaction.resolved_at,
                 source_event_id=interaction.source_event_id,
             )
@@ -737,11 +745,11 @@ def _to_interaction(row: ServiceInteractionModel) -> ServiceInteraction:
     return ServiceInteraction(
         id=row.id,
         customer_id=row.customer_id,
-        interaction_type=row.interaction_type,
+        interaction_type=InteractionType(row.interaction_type),
         occurred_at=row.occurred_at,
         category=row.category,
         severity=row.severity,
-        status=row.status,
+        status=InteractionStatus(row.status),
         resolved_at=row.resolved_at,
         source_event_id=row.source_event_id,
     )

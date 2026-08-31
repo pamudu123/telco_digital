@@ -73,10 +73,18 @@ def location_at(
             since=current.started_at,
             travel=current,
         )
+    latest_return = max(
+        (
+            travel.ended_at
+            for travel in travels
+            if travel.ended_at is not None and travel.ended_at <= as_of
+        ),
+        default=None,
+    )
     return LocationAtTime(
         country_code=normalize_country(home_country),
         source="home",
-        since=None,
+        since=latest_return,
         travel=None,
     )
 

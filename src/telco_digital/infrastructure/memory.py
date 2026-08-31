@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 from uuid import UUID
 
@@ -70,7 +69,8 @@ class InMemoryAccountRepository:
         return self._store.items.get(account_id)
 
     async def list_by_customer(self, customer_id: UUID) -> list[Account]:
-        return [a for a in self._store.all() if a.customer_id == customer_id]
+        accounts = [a for a in self._store.all() if a.customer_id == customer_id]
+        return sorted(accounts, key=lambda account: (account.created_at, account.account_ref))
 
 
 class InMemoryDeviceRepository:
@@ -142,8 +142,9 @@ class InMemoryPlanRepository:
 
 
 class InMemorySubscriptionRepository:
-    def __init__(self, store: _Store[Subscription]) -> None:
+    def __init__(self, store: _Store[Subscription], plans: _Store[Plan]) -> None:
         self._store = store
+        self._plans = plans
 
     async def add(self, subscription: Subscription) -> None:
         await self._store.add(subscription)
@@ -157,21 +158,27 @@ class InMemorySubscriptionRepository:
         as_of: datetime,
         *,
         plan_type: PlanType | None = None,
-        plans: Iterable[Plan] | None = None,
     ) -> Subscription | None:
         matches = [
             s
             for s in await self.list_by_customer(customer_id)
-            if s.started_at <= as_of and (s.ended_at is None or s.ended_at > as_of)
+            if s.started_at <= as_of
+            and (s.ended_at is None or s.ended_at > as_of)
+            and (
+                (plan := self._plans.items.get(s.plan_id)) is not None
+                and s.started_at + timedelta(days=plan.validity_days) > as_of
+            )
         ]
-        if plan_type is not None and plans is not None:
-            plan_ids = {p.id for p in plans if p.plan_type == plan_type}
+        if plan_type is not None:
+            plan_ids = {p.id for p in self._plans.all() if p.plan_type == plan_type}
             matches = [s for s in matches if s.plan_id in plan_ids]
         if not matches:
             return None
         return max(matches, key=lambda s: s.started_at)
 
     async def update(self, subscription: Subscription) -> None:
+        if subscription.id not in self._store.items:
+            raise LookupError(f"Unknown subscription: {subscription.id}")
         self._store.items[subscription.id] = subscription
 
 
@@ -278,6 +285,8 @@ class InMemoryTravelRepository:
         return ordered[:limit]
 
     async def update(self, travel: Travel) -> None:
+        if travel.id not in self._store.items:
+            raise LookupError(f"Unknown travel: {travel.id}")
         self._store.items[travel.id] = travel
 
 
@@ -292,16 +301,11 @@ class InMemoryServiceInteractionRepository:
         return [i for i in self._store.all() if i.customer_id == customer_id]
 
     async def open_count(self, customer_id: UUID, as_of: datetime) -> int:
-        count = 0
-        for item in await self.list_by_customer(customer_id):
-            if item.occurred_at > as_of:
-                continue
-            if item.status != "OPEN":
-                if item.resolved_at is None or item.resolved_at <= as_of:
-                    continue
-            if item.status == "OPEN" or (item.resolved_at is not None and item.resolved_at > as_of):
-                count += 1
-        return count
+        return sum(
+            item.occurred_at <= as_of
+            and (item.resolved_at is None or item.resolved_at > as_of)
+            for item in await self.list_by_customer(customer_id)
+        )
 
 
 class InMemoryEventRepository:
@@ -385,7 +389,7 @@ class InMemoryUnitOfWork:
         self.devices = InMemoryDeviceRepository(self._devices)
         self.customer_devices = InMemoryCustomerDeviceRepository(self._customer_devices)
         self.plans = InMemoryPlanRepository(self._plans)
-        self.subscriptions = InMemorySubscriptionRepository(self._subscriptions)
+        self.subscriptions = InMemorySubscriptionRepository(self._subscriptions, self._plans)
         self.ledgers = InMemoryLedgerRepository(self._ledgers)
         self.recharges = InMemoryRechargeRepository(self._recharges)
         self.usage_events = InMemoryUsageRepository(self._usage)

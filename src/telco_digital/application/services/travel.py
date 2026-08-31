@@ -58,7 +58,7 @@ async def evaluate_travel_warnings(
     overlapping = [
         t
         for t in previous
-        if t.started_at <= new_travel.started_at
+        if (new_travel.ended_at is None or t.started_at < new_travel.ended_at)
         and (t.ended_at is None or t.ended_at > new_travel.started_at)
     ]
     if overlapping:
@@ -115,6 +115,20 @@ async def record_travel(
             },
         )
         travel.start_event_id = event.id
+        end_event = None
+        if travel.ended_at is not None:
+            end_event = ActivityEvent(
+                entity_type="travel",
+                entity_id=travel.id,
+                customer_id=customer.id,
+                event_type=EventType.TRAVEL_ENDED,
+                occurred_at=travel.ended_at,
+                recorded_at=recorded_at,
+                source=command.source,
+                correlation_id=correlation_id,
+                payload={"country": travel.country_code},
+            )
+            travel.end_event_id = end_event.id
         existing = list(await uow.travels.list_by_customer(customer.id))
         await uow.travels.add(travel)
         await record_activity(
@@ -124,6 +138,14 @@ async def record_travel(
             aggregate_id=travel.id,
             recorded_at=recorded_at,
         )
+        if end_event is not None:
+            await record_activity(
+                uow,
+                event=end_event,
+                aggregate_type="travel",
+                aggregate_id=travel.id,
+                recorded_at=recorded_at,
+            )
         for warning in await evaluate_travel_warnings(
             customer=customer,
             existing_travels=existing,
@@ -175,6 +197,10 @@ async def end_travel(
             match = max(open_trips, key=lambda t: t.started_at) if open_trips else None
         if match is None:
             raise NotFoundError("No open travel to end")
+        if match.ended_at is not None:
+            raise ValueError("Travel has already ended")
+        if command.ended_at < match.started_at:
+            raise ValueError("ended_at must be greater than or equal to started_at")
 
         event = ActivityEvent(
             entity_type="travel",

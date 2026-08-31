@@ -11,6 +11,8 @@ from telco_digital.domain.enums import (
     AccountType,
     CustomerStatus,
     EventType,
+    InteractionStatus,
+    InteractionType,
     LedgerEntryType,
     OutboxStatus,
     PlanType,
@@ -149,9 +151,9 @@ class Travel:
 @dataclass(slots=True)
 class ServiceInteraction:
     customer_id: UUID
-    interaction_type: str
+    interaction_type: InteractionType
     occurred_at: datetime
-    status: str
+    status: InteractionStatus
     category: str | None = None
     severity: str | None = None
     resolved_at: datetime | None = None

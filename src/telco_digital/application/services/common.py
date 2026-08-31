@@ -6,7 +6,7 @@ from uuid import uuid4
 from telco_digital.application.clock import Clock
 from telco_digital.application.unit_of_work.protocol import UnitOfWork
 from telco_digital.domain.entities import ActivityEvent, Customer, OutboxEvent, Warning
-from telco_digital.domain.enums import EventType, OutboxStatus
+from telco_digital.domain.enums import AccountStatus, EventType, OutboxStatus
 
 
 class NotFoundError(LookupError):
@@ -26,9 +26,10 @@ async def require_customer(uow: UnitOfWork, customer_ref: str) -> Customer:
 
 async def primary_account(uow: UnitOfWork, customer_id):
     accounts = await uow.accounts.list_by_customer(customer_id)
-    if not accounts:
+    active = [account for account in accounts if account.status == AccountStatus.ACTIVE]
+    if not active:
         raise NotFoundError(f"No account for customer {customer_id}")
-    return accounts[0]
+    return min(active, key=lambda account: (account.created_at, account.account_ref, account.id))
 
 
 def new_correlation_id(existing: str | None) -> str:
