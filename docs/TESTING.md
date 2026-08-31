@@ -20,6 +20,7 @@ Postgres repositories, outbox, Neo4j projection, graph queries.
 | `scenario_churn.py` | Usage decline + complaints + falling engagement → HIGH score and drivers |
 | `scenario_graph_fraud.py` | Shared device + wallet funnel → graph risk exceeds transaction-only risk |
 | `scenario_decision.py` | U001 PRESENT_OFFER ROAM_15; U004 SUPPORT_FOLLOW_UP with no discount; Copilot fallback names ROAM_15 and duration unknown |
+| `scenario_api.py` | Command adapter writes recharge through UnitOfWork; state query sees the new balance; correlation_id is returned |
 | `scenario_retailer_stockout.py` | Inventory 18, 7d demand 47 → stockout risk + restock |
 
 ### Travel

@@ -3,6 +3,11 @@ from telco_digital.application.queries.dtos import (
     ObservedCustomerState,
     TimelineEntry,
 )
+from telco_digital.application.queries.platform import (
+    ModelCatalog,
+    ProjectionLag,
+    Readiness,
+)
 from telco_digital.application.queries.showcase import (
     Customer360,
     EvidenceSeries,
@@ -13,7 +18,10 @@ __all__ = [
     "CommandResult",
     "Customer360",
     "EvidenceSeries",
+    "ModelCatalog",
     "ObservedCustomerState",
     "OverviewCounts",
+    "ProjectionLag",
+    "Readiness",
     "TimelineEntry",
 ]

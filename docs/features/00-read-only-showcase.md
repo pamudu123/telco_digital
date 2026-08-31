@@ -12,13 +12,13 @@ graph, models, Copilot, the full API, or the simulator.
 | Capability | Status after this slice |
 |---|---|
 | 00 Expanded POC dataset | POC complete |
-| 12 FastAPI | **Not started** |
+| 12 FastAPI | **POC complete** (see [12-fastapi.md](./12-fastapi.md); this slice did not complete it) |
 | 13 POC simulator | **Not started** |
 
-A few read endpoints do not complete FastAPI. FastAPI later must expose all
-stable application services, health, projection lag, and model versions. The
-simulator document name remains `13-poc-simulator.md` when that capability is
-implemented.
+A few read endpoints did not complete FastAPI. Capability 12 now exposes the
+stable application services, health, projection lag, model versions and
+command adapters. The simulator document name remains `13-poc-simulator.md`
+when that capability is implemented.
 
 ## What visitors can do
 

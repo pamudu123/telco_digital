@@ -8,7 +8,7 @@ from telco_digital.application.capability_status import (
 )
 
 
-def test_manifest_keeps_fastapi_and_simulator_not_started() -> None:
+def test_manifest_marks_fastapi_complete_and_simulator_not_started() -> None:
     by_number = {item.number: item for item in CAPABILITIES}
     assert by_number["00"].status == "POC complete"
     assert by_number["01"].status == "POC complete"
@@ -22,8 +22,9 @@ def test_manifest_keeps_fastapi_and_simulator_not_started() -> None:
     assert by_number["09"].status == "POC complete"
     assert by_number["10"].status == "POC complete"
     assert by_number["11"].status == "POC complete"
-    assert by_number["12"].status == "Not started"
+    assert by_number["12"].status == "POC complete"
     assert by_number["12"].name == "FastAPI"
+    assert by_number["12"].document == "docs/features/12-fastapi.md"
     assert by_number["13"].status == "Not started"
     assert by_number["13"].name == "POC simulator"
 
@@ -46,7 +47,8 @@ def test_manifest_does_not_claim_showcase_completes_later_capabilities() -> None
     assert all(
         item.status != "POC complete"
         for item in CAPABILITIES
-        if item.number not in {
+        if item.number
+        not in {
             "00",
             "01",
             "02",
@@ -59,5 +61,6 @@ def test_manifest_does_not_claim_showcase_completes_later_capabilities() -> None
             "09",
             "10",
             "11",
+            "12",
         }
     )

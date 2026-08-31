@@ -99,4 +99,12 @@ export const api = {
   },
   retailerTwin: (ref, asOf, options) =>
     request(asOfQuery(`/showcase/sfa/retailers/${encodeURIComponent(ref)}/twin`, asOf), options),
+  health: (options) => request("/health", options),
+  ready: (options) => request("/ready", options),
+  projectionLag: (options) => request("/projection/lag", options),
+  models: (options) => request("/models", options),
+  customerState: (ref, asOf, options) =>
+    request(asOfQuery(`/customers/${encodeURIComponent(ref)}/state`, asOf), options),
+  customerTimeline: (ref, asOf, options) =>
+    request(asOfQuery(`/customers/${encodeURIComponent(ref)}/timeline`, asOf), options),
 };

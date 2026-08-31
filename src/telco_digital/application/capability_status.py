@@ -30,9 +30,9 @@ class CapabilityManifest(BaseModel):
     capabilities: tuple[CapabilityRecord, ...]
     notes: str = (
         "POC complete means the documented scenario works in the shared demo "
-        "environment; it does not mean production ready. An early read-only "
-        "showcase may present capability-00 facts without completing FastAPI "
-        "or the simulator."
+        "environment; it does not mean production ready. The FastAPI surface "
+        "wraps application services. A read-only showcase presents evidence; "
+        "the simulator write path remains planned."
     )
 
 
@@ -428,18 +428,37 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="12",
         name="FastAPI",
-        status="Not started",
+        status="POC complete",
+        document="docs/features/12-fastapi.md",
         demonstrated_scenario=(
-            "Stable application-service API including health, projection lag, and model versions."
+            "Stable application-service API: health and readiness, outbox projection "
+            "lag, served model versions, command adapters (recharge, travel, plan "
+            "purchase, usage), and query adapters for state, timeline, twin, churn, "
+            "recommendations, fraud and retailer forecast."
         ),
         consuming_applications=("All applications",),
-        implemented=(),
-        not_implemented=(
-            "Complete FastAPI surface",
-            "Projection lag and model-version endpoints",
-            "Command adapters",
+        evidence=(
+            "docs/features/12-fastapi.md",
+            "notebooks/12_fastapi/12_fastapi.ipynb",
+            "notebooks/12_fastapi/outputs/metrics.json",
+            "notebooks/12_fastapi/outputs/tables/",
+            "notebooks/12_fastapi/outputs/plots/",
         ),
-        limitations=("A minimal read-only showcase slice must not be labelled FastAPI complete",),
+        implemented=(
+            "Thin FastAPI adapters over application services with no SQL or Cypher in routes",
+            "Command adapters that write fact + activity + outbox through UnitOfWork",
+            "Health, readiness, projection-lag and model-version endpoints",
+            "GetCustomerState and GetTimeline query adapters plus existing intelligence reads",
+        ),
+        not_implemented=(
+            "Write path from the UI simulator",
+            "Authentication, authorization or rate limiting",
+            "Outcome recording of the chosen action",
+        ),
+        limitations=(
+            "POC surface without production auth or multi-tenant isolation",
+            "The early read-only showcase is not the simulator",
+        ),
     ),
     CapabilityRecord(
         number="13",
@@ -742,8 +761,7 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         retailer_ref="RET-001",
         applications=("SFA",),
         current_evidence=(
-            "Sales, inventory events, a trained 7-day demand forecast "
-            "and a computed retailer twin"
+            "Sales, inventory events, a trained 7-day demand forecast and a computed retailer twin"
         ),
         later_intelligence="Decision-engine visit plan",
         steps=(

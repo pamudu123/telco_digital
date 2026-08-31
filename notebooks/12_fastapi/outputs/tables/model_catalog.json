@@ -1,0 +1,51 @@
+{
+  "source": "served_artifacts",
+  "queried_at": "2026-08-20T12:00:00Z",
+  "models": [
+    {
+      "name": "churn",
+      "version": "churn-lr-v1",
+      "kind": "prediction",
+      "served": true,
+      "artifact": "src/telco_digital/intelligence/churn/artifacts/churn-model-v1.json",
+      "algorithm": "logistic_regression",
+      "notes": "Notebook-trained logistic regression. Not a live outcome table."
+    },
+    {
+      "name": "sfa_forecast",
+      "version": "sfa-forecast-v1",
+      "kind": "forecast",
+      "served": true,
+      "artifact": "src/telco_digital/intelligence/forecasting/artifacts/sfa-forecast-v1.json",
+      "algorithm": "arima",
+      "notes": "Notebook-trained retailer demand artifact."
+    },
+    {
+      "name": "features",
+      "version": "customer-features-v1",
+      "kind": "feature_contract",
+      "served": true,
+      "artifact": null,
+      "algorithm": null,
+      "notes": "Point-in-time temporal and graph feature contract."
+    },
+    {
+      "name": "fraud_rules",
+      "version": "fraud-rules-v1",
+      "kind": "rules",
+      "served": true,
+      "artifact": null,
+      "algorithm": null,
+      "notes": "Deterministic graph-fraud scorer. Not a trained embedding."
+    },
+    {
+      "name": "decision",
+      "version": "customer-decision-v1",
+      "kind": "decision_contract",
+      "served": true,
+      "artifact": null,
+      "algorithm": null,
+      "notes": "Next-best-action document version. Predictions are not discounts."
+    }
+  ]
+}

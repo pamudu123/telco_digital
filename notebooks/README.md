@@ -9,6 +9,7 @@ Capability 08 trains the served SFA forecast artifact in `08_sfa_forecasting`.
 Capability 09 assembles computed twins in `09_digital_twins`.
 Capability 10 evaluates next-best actions in `10_decisioning`.
 Capability 11 demonstrates Copilot fallback in `11_copilot`.
+Capability 12 inspects the FastAPI adapter surface in `12_fastapi`.
 
 Install and execute with:
 

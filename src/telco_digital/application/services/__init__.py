@@ -2,6 +2,12 @@ from telco_digital.application.services.catalog import create_plan
 from telco_digital.application.services.customer import create_customer
 from telco_digital.application.services.customer_state import get_customer_state
 from telco_digital.application.services.plan_purchase import purchase_plan
+from telco_digital.application.services.platform import (
+    assemble_readiness,
+    get_model_catalog,
+    get_projection_lag,
+    liveness,
+)
 from telco_digital.application.services.recharge import record_recharge
 from telco_digital.application.services.service_interaction import record_service_interaction
 from telco_digital.application.services.showcase import (
@@ -18,6 +24,7 @@ from telco_digital.application.services.travel import end_travel, record_travel
 from telco_digital.application.services.usage import record_usage
 
 __all__ = [
+    "assemble_readiness",
     "capability_manifest",
     "create_customer",
     "create_plan",
@@ -25,9 +32,12 @@ __all__ = [
     "get_customer_360",
     "get_customer_state",
     "get_evidence",
+    "get_model_catalog",
     "get_overview",
+    "get_projection_lag",
     "get_retailer_360",
     "get_timeline",
+    "liveness",
     "list_personas",
     "purchase_plan",
     "record_recharge",
