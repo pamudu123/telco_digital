@@ -18,11 +18,15 @@ PostgreSQL is the system of record. Neo4j is a rebuildable projection. Domain co
 | Neo4j | Relationship projection (Bolt) | Docker Compose `:7687` / Browser `:7474` | Neo4j Aura or self-hosted (not Supabase) |
 | App env | `DATABASE_URL`, Neo4j credentials | `.env` from `.env.example` | Same vars; secrets in host / CI / Supabase |
 
-The FastAPI adapter can be served with `SHOWCASE_ENABLED=true` and
-`poetry run uvicorn telco_digital.api.app:app --reload`. ML remains optional
-(`--extras ml`), and capability-11 Copilot makes external calls only when
-`OPENROUTER_API_KEY` is configured. For deployment, see
+The early read-only showcase already uses FastAPI. ML remains optional
+(`--extras ml`), and no LLM is connected before its accepted capability.
+For the single-project Vercel package, see
 [VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md).
+
+An early read-only capability-00 showcase can be served with
+`SHOWCASE_ENABLED=true` and `poetry run uvicorn telco_digital.api.app:app --reload`.
+That slice does not complete capability 12. See
+[features/00-read-only-showcase.md](./features/00-read-only-showcase.md).
 
 ---
 
@@ -116,11 +120,6 @@ Copy `.env.example` → `.env` and fill:
 | `NEO4J_USER` | Yes (for graph) | Usually `neo4j` |
 | `NEO4J_PASSWORD` | Yes (for graph) | Match Compose / Aura |
 | `LOG_LEVEL` | No | Default `INFO` |
-| `SHOWCASE_ENABLED` | No | Enables the POC HTTP routes; default `true` |
-| `API_ENVIRONMENT` | No | Environment label returned by health endpoints; default `local` |
-| `CORS_ORIGINS` | No | Comma-separated allowed browser origins |
-| `OPENROUTER_API_KEY` | No | Enables optional capability-11 model calls when set |
-| `OPENROUTER_MODEL` | No | Default `z-ai/glm-4.5-flash` |
 
 Settings class: `src/telco_digital/config/settings.py`.
 
@@ -170,7 +169,7 @@ Predictions stored as Neo4j “facts”                   # forbidden by locked 
 
 - [SUPABASE-CONNECTION.md](./SUPABASE-CONNECTION.md) — hosted PostgreSQL setup and verification
 - [VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md) — one Vercel project for frontend and FastAPI
-- [DATA-MODEL.md](./DATA-MODEL.md) — schemas and tables
-- [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md) — step 62 Supabase deploy
-- [TESTING.md](./TESTING.md) — when Postgres/Neo4j are required for tests
-- [README.md](../README.md) — quick local start
+- [DATA-MODEL.md](./DATA-MODEL.md) — schemas and tables  
+- [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md) — step 62 Supabase deploy  
+- [TESTING.md](./TESTING.md) — when Postgres/Neo4j are required for tests  
+- [README.md](../README.md) — quick local start  
