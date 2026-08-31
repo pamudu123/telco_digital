@@ -379,13 +379,12 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
         ),
       ),
     ]),
-    el("label", { text: "As of (optional ISO-8601)" }, [
+    el("label", { text: "As of date (optional)" }, [
       el("input", {
         name: "as_of",
-        type: "text",
-        value: asOf,
-        placeholder: "2026-08-31T23:59:00+00:00",
-        "aria-label": "As of timestamp",
+        type: "date",
+        value: asOf.slice(0, 10),
+        "aria-label": "As of date",
       }),
     ]),
     el("label", { text: "Application lens" }, [
@@ -725,7 +724,7 @@ async function renderRetail(root, asOf, signal) {
 
 export function errorBox(error, fallback) {
   if (error instanceof ApiError && error.status === 422) {
-    return statusBox("error", "Invalid as_of", "Use a timezone-aware ISO-8601 timestamp.");
+    return statusBox("error", "Invalid date", "Choose a valid calendar date.");
   }
   if (error instanceof ApiError && error.status === 404) {
     return statusBox("error", "Not found", error.message);

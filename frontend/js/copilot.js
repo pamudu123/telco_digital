@@ -36,13 +36,12 @@ export async function renderCopilot(root, { signal } = {}) {
         ),
       ),
     ]),
-    el("label", { text: "As of (optional ISO-8601)" }, [
+    el("label", { text: "As of date (optional)" }, [
       el("input", {
         name: "as_of",
-        type: "text",
-        value: asOf,
-        placeholder: "2026-08-20T12:00:00+00:00",
-        "aria-label": "As of timestamp",
+        type: "date",
+        value: asOf.slice(0, 10),
+        "aria-label": "As of date",
       }),
     ]),
     el("label", { text: "Query destination" }, [

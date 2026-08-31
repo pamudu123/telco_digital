@@ -42,12 +42,6 @@ function renderShell(root) {
   const content = el("main", { id: "main", className: "content", tabindex: "-1" });
   root.replaceChildren(
     el("a", { className: "skip-link", href: "#main", text: "Skip to content" }),
-    el("div", { className: "banner", role: "note" }, [
-      el("strong", { text: "Synthetic data" }),
-      el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–12 are a FastAPI POC surface — not production, and not the simulator.",
-      }),
-    ]),
     el("div", { className: "app-shell" }, [
       el("header", { className: "topbar" }, [
         el("div", { className: "brand" }, [
