@@ -443,6 +443,27 @@ class SqlTravelRepository:
         )
         return [_to_travel(r) for r in result.scalars()]
 
+    async def list_peer_customer_ids(
+        self,
+        *,
+        exclude_customer_id: UUID,
+        as_of: datetime,
+        destination: str | None = None,
+        limit: int = 25,
+    ) -> list[UUID]:
+        stmt = select(TravelModel.customer_id).where(
+            TravelModel.customer_id != exclude_customer_id,
+            TravelModel.started_at <= as_of,
+        )
+        if destination is not None:
+            stmt = stmt.where(TravelModel.country_code == destination)
+        result = await self.session.execute(
+            stmt.group_by(TravelModel.customer_id)
+            .order_by(func.max(TravelModel.started_at).desc())
+            .limit(limit)
+        )
+        return list(result.scalars())
+
     async def update(self, travel: Travel) -> None:
         row = await self.session.get(TravelModel, travel.id)
         if row is None:
