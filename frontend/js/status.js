@@ -1,4 +1,5 @@
 import { api, isAbortError } from "./api.js";
+import { SOURCE_REPOSITORY_URL } from "./config.js";
 import { badge, el, statusBox } from "./dom.js";
 import { errorBox } from "./customer-360.js";
 
@@ -11,6 +12,40 @@ const IMPACT = [
   ["SFA", "Demand forecasts and retailer twins are live; visit priorities stay later."],
   ["Lottery", "Secondary lens; abuse investigation later."],
 ];
+
+function evidenceLabel(path) {
+  if (path.endsWith(".ipynb")) return "Executed notebook";
+  if (path.endsWith("metrics.json")) return "Metrics";
+  if (path.includes("/artifacts/")) return "Model artifact";
+  if (path.endsWith("/tables/")) return "Tables";
+  if (path.endsWith("/plots/")) return "Plots";
+  if (path.endsWith(".md")) return "Documentation";
+  return path.split("/").pop() || path;
+}
+
+function evidenceUrl(path) {
+  const view = path.endsWith("/") ? "tree" : "blob";
+  return `${SOURCE_REPOSITORY_URL}/${view}/main/${path.replace(/\/$/, "")}`;
+}
+
+function evidenceList(paths) {
+  const submitted = (paths || []).filter((path) => !path.endsWith("/plots/"));
+  if (!submitted.length) return badge("Not submitted", "planned");
+  return el(
+    "ul",
+    { className: "evidence-list" },
+    submitted.map((path) =>
+      el("li", {}, [
+        el("a", {
+          href: evidenceUrl(path),
+          target: "_blank",
+          rel: "noopener noreferrer",
+          text: evidenceLabel(path),
+        }),
+      ]),
+    ),
+  );
+}
 
 export async function renderStatus(root, { signal } = {}) {
   root.replaceChildren(statusBox("loading", "Loading capability status…"));
@@ -31,6 +66,7 @@ export async function renderStatus(root, { signal } = {}) {
           el("th", { text: "Status" }),
           el("th", { text: "Demonstrated scenario" }),
           el("th", { text: "Applications" }),
+          el("th", { text: "Live evidence" }),
         ]),
       ]),
       el(
@@ -45,6 +81,7 @@ export async function renderStatus(root, { signal } = {}) {
             ]),
             el("td", { text: item.demonstrated_scenario }),
             el("td", { text: (item.consuming_applications || []).join(", ") }),
+            el("td", {}, [evidenceList(item.evidence)]),
           ]),
         ),
       ),
@@ -59,7 +96,13 @@ export async function renderStatus(root, { signal } = {}) {
           ]);
     const lagCard =
       lag instanceof Error
-        ? errorBox(lag, "Projection lag unavailable.")
+        ? el("article", { className: "card" }, [
+            el("h3", { text: "Projection lag" }),
+            badge("Not connected", "unknown"),
+            el("p", {
+              text: "Connect PostgreSQL to view pending events and projection timing.",
+            }),
+          ])
         : el("article", { className: "card" }, [
             el("h3", { text: "Projection lag" }),
             badge("Graph projection", "live"),
@@ -90,6 +133,7 @@ export async function renderStatus(root, { signal } = {}) {
           el("h1", { text: "POC status and application impact" }),
           el("p", { text: data.notes }),
         ]),
+        badge("Live evidence", "live"),
       ]),
       el("section", { className: "card" }, [
         el("h2", { text: "FastAPI platform" }),
@@ -98,7 +142,10 @@ export async function renderStatus(root, { signal } = {}) {
       ]),
       el("section", { className: "card" }, [
         el("h2", { text: "Capability status" }),
-        table,
+        el("p", {
+          text: "Open the retained documentation, executed notebooks, metrics, tables and model artifacts for each completed capability.",
+        }),
+        el("div", { className: "table-scroll" }, [table]),
       ]),
       el("section", { className: "card" }, [
         el("h2", { text: "Application impact examples" }),
@@ -111,26 +158,6 @@ export async function renderStatus(root, { signal } = {}) {
               el("h3", { text: title }),
               badge("POC planned", "planned"),
               el("p", { text: detail }),
-            ]),
-          ),
-        ),
-      ]),
-      el("section", { className: "card" }, [
-        el("h2", { text: "Retained capability-00 artifacts" }),
-        el("p", { text: "These links are labeled artifacts. They do not backfill live metric cards." }),
-        el(
-          "ul",
-          {},
-          (data.artifacts || []).map((item) =>
-            el("li", {}, [
-              el("strong", { text: item.title }),
-              " — ",
-              item.description,
-              " (",
-              badge(item.source, "unknown"),
-              " ",
-              item.path,
-              ")",
             ]),
           ),
         ),

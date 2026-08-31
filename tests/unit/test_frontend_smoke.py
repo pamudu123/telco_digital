@@ -3,7 +3,7 @@ from pathlib import Path
 ROOT = Path("frontend")
 
 
-def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
+def test_shell_has_landmarks_and_vendored_chart() -> None:
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     assert 'lang="en"' in html
     assert "css/variables.css" in html
@@ -15,6 +15,7 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
 
     app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
     assert "Synthetic data" in app_js or "synthetic" in app_js.lower()
+    assert 'className: "banner"' not in app_js
     assert "COMPANY INTELLIGENCE" in app_js
     assert "omobio" not in app_js.lower()
     assert "Customer 360" in app_js
@@ -46,11 +47,37 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
     assert "Decision" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "decisionPanel" in (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
     assert "Fallback" in (ROOT / "js" / "copilot.js").read_text(encoding="utf-8")
+    assert 'className: "question-field"' in (ROOT / "js" / "copilot.js").read_text(encoding="utf-8")
+    assert ".toolbar .question-field" in (ROOT / "css" / "components.css").read_text(
+        encoding="utf-8"
+    )
     assert "Digital twins" in (ROOT / "js" / "models.js").read_text(encoding="utf-8")
     assert "badge-prediction" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "badge-forecast" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "FastAPI platform" in (ROOT / "js" / "status.js").read_text(encoding="utf-8")
     assert "projectionLag" in (ROOT / "js" / "status.js").read_text(encoding="utf-8")
+
+
+def test_status_links_all_submitted_capability_evidence() -> None:
+    status_js = (ROOT / "js" / "status.js").read_text(encoding="utf-8")
+    assert "SOURCE_REPOSITORY_URL" in status_js
+    assert 'el("th", { text: "Live evidence" })' in status_js
+    assert 'target: "_blank"' in status_js
+    assert "item.evidence" in status_js
+    assert "Retained capability-00 artifacts" not in status_js
+    assert 'badge("Not connected", "unknown")' in status_js
+    assert 'errorBox(lag, "Projection lag unavailable.")' not in status_js
+
+
+def test_as_of_controls_accept_dates_without_a_time_component() -> None:
+    for filename in ("customer-360.js", "journey.js", "models.js", "copilot.js"):
+        source = (ROOT / "js" / filename).read_text(encoding="utf-8")
+        assert 'text: "As of date (optional)"' in source
+        assert 'type: "date"' in source
+        assert "ISO-8601" not in source
+
+    api_js = (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "T23:59:59Z" in api_js
 
 
 def test_frontend_does_not_assign_untrusted_inner_html() -> None:

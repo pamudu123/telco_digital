@@ -14,7 +14,12 @@ export function isAbortError(error) {
 }
 
 function asOfQuery(path, asOf) {
-  return asOf ? `${path}?as_of=${encodeURIComponent(asOf)}` : path;
+  return asOf ? `${path}?as_of=${encodeURIComponent(normalizeAsOf(asOf))}` : path;
+}
+
+function normalizeAsOf(asOf) {
+  if (!asOf) return asOf;
+  return /^\d{4}-\d{2}-\d{2}$/.test(asOf) ? `${asOf}T23:59:59Z` : asOf;
 }
 
 async function request(path, options = {}) {
@@ -73,7 +78,12 @@ export const api = {
       options,
     );
   },
-  copilotAsk: (payload, options) => request("/copilot/ask", { ...options, method: "POST", body: payload }),
+  copilotAsk: (payload, options) =>
+    request("/copilot/ask", {
+      ...options,
+      method: "POST",
+      body: { ...payload, as_of: normalizeAsOf(payload.as_of) },
+    }),
   eventMemory: (ref, asOf, destination, options) => {
     const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/event-memory`, asOf);
     const separator = path.includes("?") ? "&" : "?";
