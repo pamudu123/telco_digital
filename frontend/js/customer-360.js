@@ -173,6 +173,40 @@ function recommendationPanel(data, customerRef) {
   ]);
 }
 
+function twinPanel(data) {
+  const traits = (data.inferred?.traits || []).map((item) => item.trait.replaceAll("_", " "));
+  const unknowns = data.unknowns || [];
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Digital twin" }),
+      badge("Derived", "derived"),
+    ]),
+    el("p", {
+      text: `Observed ${data.observed?.country_name || data.observed?.country || "unknown country"} • ${data.observed?.current_plan_code || "no plan"}`,
+    }),
+    el("p", {
+      text: data.historical?.top_plan
+        ? `Historical ${data.historical.top_destination || "trip"}: ${data.historical.top_duration_days || "?"} days, ${data.historical.top_usage_gb || "?"} GB, ${data.historical.top_plan}.`
+        : "No historical travel episode in this twin.",
+    }),
+    el("p", {
+      text: traits.length ? `Inferred ${traits.join(", ")}` : "No inferred traits at this as_of.",
+    }),
+    el("p", {
+      text: data.predicted?.churn_risk_band
+        ? `Predicted churn ${data.predicted.churn_risk_band} • fraud ${data.predicted.fraud_status} • demand ${data.predicted.demand_status}`
+        : "Predicted churn is unavailable.",
+    }),
+    el("p", {
+      text: data.recommended?.primary_plan_code
+        ? `Recommended ${(data.recommended.mode || "").replaceAll("_", " ")} • ${data.recommended.primary_plan_code}`
+        : `Recommended ${(data.recommended?.mode || "NO_RECOMMENDATION").replaceAll("_", " ")}`,
+    }),
+    unknowns[0] ? el("p", { className: "meta", text: unknowns[0] }) : null,
+    el("p", { className: "meta", text: data.twin_set_version }),
+  ]);
+}
+
 function plannedRail(
   eventMemory,
   eventMemoryError,
@@ -184,11 +218,10 @@ function plannedRail(
   recommendationError,
   fraud,
   fraudError,
+  twin,
+  twinError,
   customerRef,
 ) {
-  const items = [
-    ["Digital twin", "No derived twin in this showcase."],
-  ];
   return el("aside", { className: "planned-rail", "aria-label": "Intelligence readiness" }, [
     el("h2", { text: "Intelligence readiness" }),
     eventMemoryError
@@ -277,15 +310,23 @@ function plannedRail(
             ]),
             el("p", { text: "Transaction-only and graph risk appear when money or projection evidence is available." }),
           ]),
-    ...items.map(([title, detail]) =>
-      el("div", { className: "card" }, [
-        el("header", { className: "page-header" }, [
-          el("h3", { text: title }),
-          badge("POC planned", "planned"),
-        ]),
-        el("p", { text: detail }),
-      ]),
-    ),
+    twinError
+      ? el("div", { className: "card" }, [
+          el("header", { className: "page-header" }, [
+            el("h3", { text: "Digital twin" }),
+            badge("Unavailable", "unknown"),
+          ]),
+          el("p", { text: "The computed twin could not be loaded. Recorded facts remain live." }),
+        ])
+      : twin
+        ? twinPanel(twin)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Digital twin" }),
+              badge("Derived", "derived"),
+            ]),
+            el("p", { text: "A computed twin appears when observed facts and derived layers are available." }),
+          ]),
   ]);
 }
 
@@ -366,7 +407,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Customer 360" }),
         el("p", {
-          text: "Recorded facts plus derived features, episodes, behaviour traits, a trained churn score, catalogue recommendations and graph fraud risk. The decision engine stays POC planned.",
+          text: "Recorded facts plus derived features, episodes, behaviour traits, a trained churn score, catalogue recommendations, graph fraud risk and a computed digital twin. The decision engine stays POC planned.",
         }),
       ]),
     ]),
@@ -393,7 +434,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
   const recDestination = selected === "U001" ? "SG" : undefined;
-  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, recsOutcome, fraudOutcome] =
+  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, recsOutcome, fraudOutcome, twinOutcome] =
     await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
@@ -402,6 +443,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     api.customerChurn(selected, asOf || undefined, { signal }),
     api.customerRecommendations(selected, asOf || undefined, recDestination, { signal }),
     api.customerFraud(selected, asOf || undefined, { signal }),
+    api.customerTwin(selected, asOf || undefined, recDestination, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -441,6 +483,11 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     fraudOutcome.status === "rejected" && !isAbortError(fraudOutcome.reason)
       ? fraudOutcome.reason
       : null;
+  const twin = twinOutcome.status === "fulfilled" ? twinOutcome.value : null;
+  const twinError =
+    twinOutcome.status === "rejected" && !isAbortError(twinOutcome.reason)
+      ? twinOutcome.reason
+      : null;
   results.replaceChildren(
     renderFacts(
       factsOutcome.value,
@@ -457,6 +504,8 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       recommendationError,
       fraud,
       fraudError,
+      twin,
+      twinError,
     ),
   );
 }
@@ -510,6 +559,8 @@ function renderFacts(
   recommendationError,
   fraud,
   fraudError,
+  twin,
+  twinError,
 ) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
@@ -556,6 +607,8 @@ function renderFacts(
         recommendationError,
         fraud,
         fraudError,
+        twin,
+        twinError,
         data.customer_ref,
       ),
     ]),
@@ -585,9 +638,10 @@ function forecastPanel(data) {
 
 async function renderRetail(root, asOf, signal) {
   try {
-    const [factsOutcome, forecastOutcome] = await Promise.allSettled([
+    const [factsOutcome, forecastOutcome, twinOutcome] = await Promise.allSettled([
       api.retailer("RET-001", asOf || undefined, { signal }),
       api.retailerForecast("RET-001", asOf || undefined, { signal }),
+      api.retailerTwin("RET-001", asOf || undefined, { signal }),
     ]);
     if (stale(signal)) return;
     if (factsOutcome.status !== "fulfilled") {
@@ -599,6 +653,7 @@ async function renderRetail(root, asOf, signal) {
       forecastOutcome.status === "rejected" && !isAbortError(forecastOutcome.reason)
         ? forecastOutcome.reason
         : null;
+    const twin = twinOutcome.status === "fulfilled" ? twinOutcome.value : null;
     root.replaceChildren(
       el("div", {}, [
         el("section", { className: "card fact-card" }, [
@@ -619,6 +674,21 @@ async function renderRetail(root, asOf, signal) {
                 el("header", {}, [el("h3", { text: "Demand forecast" }), badge("Unavailable", "unknown")]),
                 el("p", { text: "No forecast is available at this as_of." }),
               ]),
+        twin
+          ? el("div", { className: "card" }, [
+              el("header", {}, [el("h3", { text: "Retailer twin" }), badge("Derived", "derived")]),
+              el("p", {
+                text: `Observed ${twin.observed.sale_count} sales • Historical quantity ${twin.historical.total_quantity}`,
+              }),
+              el("p", {
+                text: `Predicted ${twin.predicted.status} • Recommended ${twin.recommended.status}`,
+              }),
+              el("p", { className: "meta", text: (twin.unknowns || [])[0] || twin.twin_set_version }),
+            ])
+          : el("div", { className: "card" }, [
+              el("header", {}, [el("h3", { text: "Retailer twin" }), badge("Unavailable", "unknown")]),
+              el("p", { text: "The computed retailer twin could not be loaded. Recorded facts remain live." }),
+            ]),
       ]),
     );
   } catch (error) {

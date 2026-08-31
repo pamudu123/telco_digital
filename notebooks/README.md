@@ -6,6 +6,7 @@ Capability 05 trains the served churn artifact in `05_churn`.
 Capability 06 ranks catalogue offers in `06_recommendations`.
 Capability 07 analyses transaction-only versus graph fraud scores in `07_graph_fraud`.
 Capability 08 trains the served SFA forecast artifact in `08_sfa_forecasting`.
+Capability 09 assembles computed twins in `09_digital_twins`.
 
 Install and execute with:
 

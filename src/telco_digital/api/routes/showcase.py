@@ -18,6 +18,7 @@ from telco_digital.config import Settings
 from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
 from telco_digital.infrastructure.postgres.forecasting import PostgresRetailerDemandQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
+from telco_digital.intelligence.digital_twin import assemble_retailer_twin
 from telco_digital.intelligence.forecasting import ForecastingService
 
 router = APIRouter(
@@ -154,6 +155,25 @@ async def retailer(
             queries, retailer_ref=retailer_ref, as_of=as_of, queried_at=_now()
         )
         return result.model_dump(mode="json")
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise _unavailable(exc) from exc
+
+
+@router.get("/sfa/retailers/{retailer_ref}/twin")
+async def retailer_twin(
+    retailer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+) -> dict:
+    as_of, queries = context
+    try:
+        facts = await showcase_service.get_retailer_360(
+            queries, retailer_ref=retailer_ref, as_of=as_of, queried_at=_now()
+        )
+        return assemble_retailer_twin(facts).model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except NotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except SQLAlchemyError as exc:

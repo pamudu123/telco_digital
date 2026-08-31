@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–08. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations and graph-fraud scores. Journey ranks ROAM_15 with uncertainty. Retail and SFA shows a demand forecast. Twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–09. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations, graph-fraud scores and a computed digital twin. Journey ranks ROAM_15 with uncertainty. Retail and SFA shows a demand forecast and retailer twin. Decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -39,9 +39,9 @@ capability status without presenting planned models as live.
 ![Customer 360 concept](./assets/ui/02-customer-360.png)
 
 The Customer 360 view leads with recorded facts and provenance. Event memory,
-behaviour traits, churn scores, catalogue recommendations and graph-fraud risk
-are live derived or predicted panels. Digital-twin panels remain explicitly
-marked as planned.
+behaviour traits, churn scores, catalogue recommendations, graph-fraud risk
+and the computed digital twin are live derived or predicted panels.
+Decision-engine panels remain explicitly marked as planned.
 
 ### POC status and application impact
 
@@ -147,9 +147,10 @@ view. The first version should provide:
 - Wallet activity and known devices.
 - Data provenance for every section.
 
-Until temporal features and digital twins are implemented, this page must show
-only recorded facts. Derived traits, predictions and recommendations appear as
-**POC planned**, not as empty or invented values.
+Recorded facts remain the lead evidence. Derived features, event memory,
+behaviour traits, churn scores, catalogue recommendations, graph-fraud scores
+and the computed digital twin are live when those services succeed.
+Decision-engine output stays **POC planned**, not empty or invented values.
 
 ## 3. Existing-application lenses
 
@@ -179,8 +180,8 @@ graph fraud scores. Review recommendations stay later.
 ### Mobile SFA
 
 Show distributors, retailers, agents, product sales and inventory events plus a
-7-day demand forecast and stockout warning. Retailer twins and visit priorities
-stay later.
+7-day demand forecast, stockout warning and a computed retailer twin. Visit
+priorities stay later.
 
 ### Mobile Lottery
 
@@ -198,7 +199,7 @@ meaningful records manually.
 | Repeated small recharges | Selfcare, Loyalty | Recharge history plus PRICE_SENSITIVE | Personalised offer |
 | Falling usage with complaints | Selfcare, Loyalty, adReach/Viber | Usage and service events | Churn risk and next-best action |
 | Shared device and suspicious transfers | Mobile Money | Wallet transfers plus transaction-only vs graph fraud scores | Review recommendation |
-| Falling retailer stock with rising sales | SFA | Sales, inventory events and a trained 7-day demand forecast | Retailer twin and visit plan |
+| Falling retailer stock with rising sales | SFA | Sales, inventory, 7-day forecast and a computed retailer twin | Decision-engine visit plan |
 | Changing campaign responses | adReach, Viber | Campaign interaction history | Campaign intelligence and channel decision |
 
 Each walkthrough should use the same presentation order:

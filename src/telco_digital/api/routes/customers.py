@@ -19,6 +19,7 @@ from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueri
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
 from telco_digital.intelligence.behaviour import BehaviourService
 from telco_digital.intelligence.churn import ChurnService
+from telco_digital.intelligence.digital_twin import DigitalTwinService, UnitOfWorkStateReader
 from telco_digital.intelligence.event_memory import EventMemoryService
 from telco_digital.intelligence.features import (
     CustomerFeatureService,
@@ -150,6 +151,39 @@ async def customer_fraud(
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
+
+
+@router.get("/{customer_ref}/twin")
+async def customer_twin(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    settings: Settings = Depends(get_settings_dep),
+    uow: SqlAlchemyUnitOfWork = Depends(get_uow),
+    destination: str | None = Query(default=None),
+) -> dict:
+    as_of, queries = context
+    features = CustomerFeatureService(
+        TemporalFeatureService(PostgresTemporalFeatureQueries(queries.session)),
+        GraphFeatureService(Neo4jFeatureQueries(settings)),
+    )
+    try:
+        result = await DigitalTwinService(
+            UnitOfWorkStateReader(uow),
+            features,
+            EventMemoryService(PostgresEventMemoryQueries(queries.session)),
+            PlanRepositoryCatalogue(SqlPlanRepository(queries.session)),
+        ).build_customer(customer_ref, as_of, destination=destination)
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except SQLAlchemyError as exc:
         raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
 

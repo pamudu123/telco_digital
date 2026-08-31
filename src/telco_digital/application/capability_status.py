@@ -314,7 +314,6 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
         ),
         not_implemented=(
             "Persisted prediction store",
-            "Retailer digital twin",
             "Online retraining",
         ),
         limitations=(
@@ -325,10 +324,38 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="09",
         name="Digital twins",
-        status="Not started",
-        demonstrated_scenario="Interpreted current state distinct from recorded facts.",
+        status="POC complete",
+        document="docs/features/09-digital-twins.md",
+        demonstrated_scenario=(
+            "U001 Singapore twin combines observed facts, the March episode, "
+            "FREQUENT_TRAVELLER / HEAVY_DATA_USER, SCENARIO_BASED ROAM_15 and "
+            "explicit unknowns. RET-001 retailer twin exposes Observed and "
+            "Historical facts; Predicted and Recommended stay unknown."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
-        not_implemented=("DigitalTwin V1",),
+        evidence=(
+            "docs/features/09-digital-twins.md",
+            "notebooks/09_digital_twins/09_digital_twins.ipynb",
+            "notebooks/09_digital_twins/outputs/metrics.json",
+            "notebooks/09_digital_twins/outputs/tables/",
+            "notebooks/09_digital_twins/outputs/plots/",
+        ),
+        implemented=(
+            "Computed customer twin with Observed, Recent, Historical, Graph, "
+            "Inferred, Predicted, Unknown, Recommended and Warnings",
+            "First-class retailer twin with Observed and Historical facts",
+            "DigitalTwinService.build(entity_id, as_of) composing existing services",
+            "Read-only customer and retailer twin API plus Customer 360 panel",
+        ),
+        not_implemented=(
+            "Persisted twin table",
+            "Fraud and demand predictions inside the twin",
+            "Next-best action from the decision engine",
+        ),
+        limitations=(
+            "Twins are computed over synthetic seed facts",
+            "Fraud and SFA forecast remain separate live panels; the twin Predicted section does not ingest them",
+        ),
     ),
     CapabilityRecord(
         number="10",
@@ -479,7 +506,9 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Customer travels to Singapore",
         customer_ref="U001",
         applications=("Selfcare",),
-        current_evidence="Travel facts, retrieved March episode and ranked catalogue offers",
+        current_evidence=(
+            "Travel facts, retrieved March episode, ranked catalogue offers and a computed twin"
+        ),
         later_intelligence="Decision engine records the chosen offer and outcome",
         steps=(
             WalkthroughStep(
@@ -522,7 +551,7 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Repeated small recharges",
         customer_ref="U002",
         applications=("Selfcare", "Loyalty"),
-        current_evidence="Recharge history plus PRICE_SENSITIVE trait",
+        current_evidence="Recharge history, PRICE_SENSITIVE trait and computed twin Inferred section",
         later_intelligence="Personalised offer",
         steps=(
             WalkthroughStep(
@@ -565,7 +594,7 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling usage with complaints",
         customer_ref="U004",
         applications=("Selfcare", "Loyalty", "adReach", "Viber"),
-        current_evidence="Usage and service events plus a trained churn score",
+        current_evidence="Usage and service events, trained churn score and computed twin Predicted section",
         later_intelligence="Next-best action from the decision engine",
         steps=(
             WalkthroughStep(
@@ -654,8 +683,8 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling retailer stock with rising sales",
         retailer_ref="RET-001",
         applications=("SFA",),
-        current_evidence="Sales, inventory events and a trained 7-day demand forecast",
-        later_intelligence="Retailer twin and decision-engine visit plan",
+        current_evidence="Sales, inventory events, a trained 7-day demand forecast and a computed retailer twin",
+        later_intelligence="Decision-engine visit plan",
         steps=(
             WalkthroughStep(
                 number=1, title="What happened", live=True, summary="Authoritative recorded facts."
@@ -664,7 +693,7 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
                 number=2,
                 title="What the platform knows",
                 live=True,
-                summary="Reconstructed daily demand and on-hand cover from facts at as_of.",
+                summary="Reconstructed daily demand, on-hand cover and retailer twin Observed/Historical at as_of.",
             ),
             WalkthroughStep(
                 number=3,
