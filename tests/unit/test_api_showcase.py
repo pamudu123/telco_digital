@@ -47,15 +47,30 @@ def test_capability_02_routes_are_registered() -> None:
         assert "/api/v1/showcase/sfa/retailers/{retailer_ref}/forecast" in paths
         assert "/api/v1/customers/{customer_ref}/twin" in paths
         assert "/api/v1/showcase/sfa/retailers/{retailer_ref}/twin" in paths
+        assert "/api/v1/customers/{customer_ref}/decision" in paths
+        assert "/api/v1/copilot/ask" in paths
         assert "/api/v1/showcase/graph/summary" in paths
         assert "/api/v1/showcase/graph/customers/{customer_ref}" in paths
+
+
+def test_copilot_invalid_as_of_returns_422() -> None:
+    with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
+        response = client.post(
+            "/api/v1/copilot/ask",
+            json={
+                "question": "Why is U001 receiving this recommendation?",
+                "customer_ref": "U001",
+                "as_of": "yesterday",
+            },
+        )
+        assert response.status_code == 422
 
 
 def test_frontend_index_is_served() -> None:
     with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert "capabilities 00–09 showcase" in response.text
+        assert "capabilities 00–11 showcase" in response.text
         assert "vendor/chart.umd.min.js" in response.text
         assert "js/app.js" in response.text
 
@@ -67,12 +82,15 @@ def test_walkthroughs_are_metadata_not_predictions() -> None:
         assert len(body["walkthroughs"]) == 6
         for item in body["walkthroughs"]:
             planned = [step for step in item["steps"] if not step["live"]]
-            if item["id"] in {"singapore-travel", "retailer-stock"}:
+            if item["id"] in {"singapore-travel", "retailer-stock", "declining-usage", "small-recharges"}:
                 assert any(
                     step["live"] and "recommend" in step["title"].lower() for step in item["steps"]
                 )
                 if item["id"] == "singapore-travel":
-                    assert "decision" in item["later_intelligence"].lower()
+                    assert "outcome" in item["later_intelligence"].lower()
+                if item["id"] == "declining-usage":
+                    assert any("support" in step["summary"].lower() for step in item["steps"])
+                    assert any("discount" in step["summary"].lower() for step in item["steps"])
                 continue
             assert planned
             assert any(

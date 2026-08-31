@@ -1,0 +1,32 @@
+[
+  {
+    "customer_ref":"U001",
+    "action":"PRESENT_OFFER",
+    "target_plan_code":"ROAM_15",
+    "reason_codes":"HISTORICAL_EPISODE, CATALOGUE_MATCH, DURATION_UNKNOWN",
+    "what":"Present catalogue offer ROAM_15.",
+    "why":"Retrieved travel memory ranks ROAM_15 for the 4\u20137 days scenario.",
+    "alternatives":"ROAM_30, ROAM_5",
+    "churn_risk_band":"MEDIUM"
+  },
+  {
+    "customer_ref":"U002",
+    "action":"NO_INVENTED_OFFER",
+    "target_plan_code":null,
+    "reason_codes":"PRICE_SENSITIVE, NO_CATALOGUE_TRAVEL_CONTEXT",
+    "what":"Do not invent a discount or roam plan.",
+    "why":"PRICE_SENSITIVE evidence is present, but there is no travel catalogue context to rank an offer.",
+    "alternatives":"",
+    "churn_risk_band":"LOW"
+  },
+  {
+    "customer_ref":"U004",
+    "action":"SUPPORT_FOLLOW_UP",
+    "target_plan_code":null,
+    "reason_codes":"CHURN_HIGH, NETWORK_OR_COMPLAINT, NO_AUTO_DISCOUNT",
+    "what":"Follow up on the open service issue. Do not issue a retention discount.",
+    "why":"Churn is HIGH with declining engagement or open network\/complaint tickets. A predicted score is not an offer.",
+    "alternatives":"",
+    "churn_risk_band":"HIGH"
+  }
+]

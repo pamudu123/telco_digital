@@ -12,7 +12,7 @@ export async function renderWalkthroughs(root, { signal } = {}) {
         el("div", {}, [
           el("h1", { text: "Golden-scenario walkthroughs" }),
           el("p", {
-            text: "Facts, reconstructed context, travel event memory, behaviour traits, churn scores, travel recommendations, graph fraud risk, SFA forecasts and computed twins are live. The decision engine stays POC planned.",
+            text: "Facts, reconstructed context, travel event memory, behaviour traits, churn scores, travel recommendations, graph fraud risk, SFA forecasts, computed twins, next-best actions and Copilot are live. Outcome recording stays POC planned.",
           }),
         ]),
       ]),

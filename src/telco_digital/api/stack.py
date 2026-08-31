@@ -1,0 +1,55 @@
+"""Compose existing intelligence services for read-only adapters."""
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from telco_digital.config import Settings
+from telco_digital.copilot import CopilotService
+from telco_digital.decisioning import DecisionEngine
+from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
+from telco_digital.infrastructure.postgres.event_memory import PostgresEventMemoryQueries
+from telco_digital.infrastructure.postgres.features import PostgresTemporalFeatureQueries
+from telco_digital.infrastructure.postgres.repositories import SqlPlanRepository
+from telco_digital.intelligence.behaviour import BehaviourService
+from telco_digital.intelligence.churn import ChurnService
+from telco_digital.intelligence.event_memory import EventMemoryService
+from telco_digital.intelligence.features import (
+    CustomerFeatureService,
+    GraphFeatureService,
+    TemporalFeatureService,
+)
+from telco_digital.intelligence.recommendations import (
+    PlanRepositoryCatalogue,
+    RecommendationService,
+)
+
+
+def customer_features(session: AsyncSession, settings: Settings) -> CustomerFeatureService:
+    return CustomerFeatureService(
+        TemporalFeatureService(PostgresTemporalFeatureQueries(session)),
+        GraphFeatureService(Neo4jFeatureQueries(settings)),
+    )
+
+
+def event_memory(session: AsyncSession) -> EventMemoryService:
+    return EventMemoryService(PostgresEventMemoryQueries(session))
+
+
+def recommendations(session: AsyncSession) -> RecommendationService:
+    return RecommendationService(
+        event_memory(session),
+        PlanRepositoryCatalogue(SqlPlanRepository(session)),
+    )
+
+
+def decision_engine(session: AsyncSession, settings: Settings) -> DecisionEngine:
+    features = customer_features(session, settings)
+    memory = event_memory(session)
+    return DecisionEngine(
+        RecommendationService(memory, PlanRepositoryCatalogue(SqlPlanRepository(session))),
+        BehaviourService(features, memory),
+        ChurnService(features),
+    )
+
+
+def copilot_service(session: AsyncSession, settings: Settings) -> CopilotService:
+    return CopilotService(decision_engine(session, settings), settings)

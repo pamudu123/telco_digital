@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–09. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations, graph-fraud scores and a computed digital twin. Journey ranks ROAM_15 with uncertainty. Retail and SFA shows a demand forecast and retailer twin. Decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–11. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations, graph-fraud scores, a computed digital twin and a next-best action. Journey ranks ROAM_15 and shows the decision. Retail and SFA shows a demand forecast and retailer twin. Copilot is live with a deterministic fallback. The complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -148,9 +148,9 @@ view. The first version should provide:
 - Data provenance for every section.
 
 Recorded facts remain the lead evidence. Derived features, event memory,
-behaviour traits, churn scores, catalogue recommendations, graph-fraud scores
-and the computed digital twin are live when those services succeed.
-Decision-engine output stays **POC planned**, not empty or invented values.
+behaviour traits, churn scores, catalogue recommendations, graph-fraud scores,
+the computed digital twin and next-best actions are live when those services
+succeed. Outcome recording stays **POC planned**.
 
 ## 3. Existing-application lenses
 
@@ -363,8 +363,7 @@ backend behaviour:
 - The complete FastAPI capability (all application services, projection lag,
   model versions) and the POC simulator / write path.
 - Authentication, roles, permissions or multi-tenant UI isolation.
-- Feature, model, recommendation, twin or decision screens. Event memory is live on Journey.
-- Copilot interaction.
+- Outcome recording of the chosen action.
 - Production UX, accessibility validation, telemetry or operational support.
 
 ## POC limitations

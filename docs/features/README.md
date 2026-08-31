@@ -15,14 +15,15 @@ scenario works in the shared demo environment; it does not mean production ready
 | 07 | Graph fraud | POC complete | [07-graph-fraud.md](./07-graph-fraud.md) |
 | 08 | SFA forecasting | POC complete | [08-sfa-forecasting.md](./08-sfa-forecasting.md) |
 | 09 | Digital twins | POC complete | [09-digital-twins.md](./09-digital-twins.md) |
-| 10 | Decision engine and explanations | Not started | — |
-| 11 | OpenRouter GLM Copilot | Not started | — |
+| 10 | Decision engine and explanations | POC complete | [10-decision-engine.md](./10-decision-engine.md) |
+| 11 | OpenRouter GLM Copilot | POC complete | [11-copilot.md](./11-copilot.md) |
 | 12 | FastAPI | Not started | — |
 | 13 | POC simulator | Not started | — |
 
-Capabilities are implemented and accepted sequentially. Capability 09 composes
-capabilities 02–06. Graph fraud and SFA forecasting stay as separate live
-panels. Later package scaffolds must not be interpreted as implemented behavior.
+Capabilities are implemented and accepted sequentially. Capabilities 00–11 are
+POC complete. Graph fraud, SFA forecasting and twins stay as separate live
+panels from the decision engine. Later package scaffolds must not be interpreted
+as implemented behavior.
 
 The planned presentation of these capabilities inside the existing Omobio/NG
 application family is documented in [POC-UI.md](../POC-UI.md). UI labels must

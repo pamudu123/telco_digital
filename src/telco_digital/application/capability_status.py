@@ -249,7 +249,6 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
         ),
         not_implemented=(
             "Outcome recording of the chosen offer",
-            "Next-best action from the decision engine",
             "Learned ranking that invents a plan",
         ),
         limitations=(
@@ -360,19 +359,68 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="10",
         name="Decision engine and explanations",
-        status="Not started",
-        demonstrated_scenario="Next-best action with reason codes and constraints.",
+        status="POC complete",
+        document="docs/features/10-decision-engine.md",
+        demonstrated_scenario=(
+            "U001 Singapore with unknown duration presents catalogue ROAM_15. "
+            "U004 HIGH churn with open network/complaint tickets gets "
+            "SUPPORT_FOLLOW_UP, not a discount. U002 PRICE_SENSITIVE with no "
+            "travel context does not invent an offer."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
-        not_implemented=("Decision engine", "Explanation layer"),
+        evidence=(
+            "docs/features/10-decision-engine.md",
+            "notebooks/10_decisioning/10_decisioning.ipynb",
+            "notebooks/10_decisioning/outputs/metrics.json",
+            "notebooks/10_decisioning/outputs/tables/",
+            "notebooks/10_decisioning/outputs/plots/",
+        ),
+        implemented=(
+            "DecisionEngine composing event memory, behaviour, churn and recommendations",
+            "Deterministic NBA with reason codes and What/Why explanations",
+            "Churn used as a constraint, never as a discount generator",
+            "Read-only decision API plus Journey, Customer 360 and Models panels",
+        ),
+        not_implemented=(
+            "Outcome recording of the chosen action",
+            "Fraud, forecast and digital-twin inputs",
+        ),
+        limitations=(
+            "07–09 stay separate live panels; the engine composes 03–06 only",
+            "Rules are catalogue-safe and synthetic-persona shaped",
+        ),
     ),
     CapabilityRecord(
         number="11",
         name="OpenRouter GLM Copilot",
-        status="Not started",
-        demonstrated_scenario="Read-only grounded Copilot with deterministic fallback.",
+        status="POC complete",
+        document="docs/features/11-copilot.md",
+        demonstrated_scenario=(
+            "Why is U001 receiving this recommendation? is answered from the "
+            "decision document: March episode, ROAM_15, duration unknown, "
+            "alternatives ROAM_5 and ROAM_30."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
-        not_implemented=("Copilot", "LLM connection"),
-        limitations=("No LLM before Milestone 12",),
+        evidence=(
+            "docs/features/11-copilot.md",
+            "notebooks/11_copilot/11_copilot.ipynb",
+            "notebooks/11_copilot/outputs/metrics.json",
+            "notebooks/11_copilot/outputs/tables/",
+        ),
+        implemented=(
+            "Structured context pack from decision, recommendations and event memory",
+            "Deterministic fallback that never invents a plan",
+            "Optional OpenRouter GLM when OPENROUTER_API_KEY is set",
+            "Read-only Copilot API and live Copilot page",
+        ),
+        not_implemented=(
+            "Command writes from Copilot",
+            "Persistent conversation history",
+        ),
+        limitations=(
+            "Copilot is a presentation layer and does not create facts",
+            "Missing key, failed call or ungrounded model text uses the fallback",
+        ),
     ),
     CapabilityRecord(
         number="12",
@@ -507,9 +555,10 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         customer_ref="U001",
         applications=("Selfcare",),
         current_evidence=(
-            "Travel facts, retrieved March episode, ranked catalogue offers and a computed twin"
+            "Travel facts, retrieved March episode, ranked catalogue offers, "
+            "computed twin and PRESENT_OFFER ROAM_15"
         ),
-        later_intelligence="Decision engine records the chosen offer and outcome",
+        later_intelligence="Outcome recording of the chosen offer",
         steps=(
             WalkthroughStep(
                 number=1, title="What happened", live=True, summary="Authoritative recorded facts."
@@ -551,8 +600,8 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Repeated small recharges",
         customer_ref="U002",
         applications=("Selfcare", "Loyalty"),
-        current_evidence="Recharge history, PRICE_SENSITIVE trait and computed twin Inferred section",
-        later_intelligence="Personalised offer",
+        current_evidence="Recharge history, PRICE_SENSITIVE trait, computed twin Inferred section and NO_INVENTED_OFFER",
+        later_intelligence="A catalogue-backed personalised offer when travel context exists",
         steps=(
             WalkthroughStep(
                 number=1, title="What happened", live=True, summary="Authoritative recorded facts."
@@ -572,14 +621,14 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
             WalkthroughStep(
                 number=4,
                 title="What it recommends",
-                live=False,
-                summary="Decisions and reason codes are POC planned.",
+                live=True,
+                summary="NO_INVENTED_OFFER: price sensitivity without catalogue travel context.",
             ),
             WalkthroughStep(
                 number=5,
                 title="What remains unknown",
                 live=True,
-                summary="No personalised offer is generated in this showcase.",
+                summary="No personalised offer is generated without catalogue travel context.",
             ),
             WalkthroughStep(
                 number=6,
@@ -594,8 +643,8 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling usage with complaints",
         customer_ref="U004",
         applications=("Selfcare", "Loyalty", "adReach", "Viber"),
-        current_evidence="Usage and service events, trained churn score and computed twin Predicted section",
-        later_intelligence="Next-best action from the decision engine",
+        current_evidence="Usage and service events, trained churn score, computed twin Predicted section and SUPPORT_FOLLOW_UP",
+        later_intelligence="Outcome recording of the support action",
         steps=(
             WalkthroughStep(
                 number=1, title="What happened", live=True, summary="Authoritative recorded facts."
@@ -615,14 +664,14 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
             WalkthroughStep(
                 number=4,
                 title="What it recommends",
-                live=False,
-                summary="Decisions and reason codes are POC planned.",
+                live=True,
+                summary="SUPPORT_FOLLOW_UP: support action, not a discount.",
             ),
             WalkthroughStep(
                 number=5,
                 title="What remains unknown",
                 live=True,
-                summary="No next-best action is generated in this showcase.",
+                summary="The support action is not recorded as an outcome.",
             ),
             WalkthroughStep(
                 number=6,

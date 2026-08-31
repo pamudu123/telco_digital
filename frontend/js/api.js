@@ -18,10 +18,18 @@ function asOfQuery(path, asOf) {
 }
 
 async function request(path, options = {}) {
-  const { signal } = options;
+  const { signal, method, body } = options;
+  const init = {};
+  if (signal) init.signal = signal;
+  if (method) init.method = method;
+  if (body !== undefined) {
+    init.method = init.method || "POST";
+    init.headers = { "Content-Type": "application/json" };
+    init.body = JSON.stringify(body);
+  }
   let response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, signal ? { signal } : {});
+    response = await fetch(`${API_BASE_URL}${path}`, init);
   } catch (error) {
     if (isAbortError(error)) throw error;
     throw new ApiError(503, { source: "unavailable", detail: "API is unreachable" });
@@ -57,6 +65,15 @@ export const api = {
       options,
     );
   },
+  customerDecision: (ref, asOf, destination, options) => {
+    const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/decision`, asOf);
+    const separator = path.includes("?") ? "&" : "?";
+    return request(
+      destination ? `${path}${separator}destination=${encodeURIComponent(destination)}` : path,
+      options,
+    );
+  },
+  copilotAsk: (payload, options) => request("/copilot/ask", { ...options, method: "POST", body: payload }),
   eventMemory: (ref, asOf, destination, options) => {
     const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/event-memory`, asOf);
     const separator = path.includes("?") ? "&" : "?";

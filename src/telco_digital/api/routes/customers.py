@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.exc import SQLAlchemyError
 
 from telco_digital.api.deps import get_as_of_queries, get_settings_dep, get_uow, require_showcase
+from telco_digital.api.stack import decision_engine
 from telco_digital.application.services import showcase as showcase_service
 from telco_digital.application.services.common import NotFoundError
 from telco_digital.config import Settings
@@ -204,6 +205,31 @@ async def customer_recommendations(
         return result.model_dump(mode="json")
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
+
+
+@router.get("/{customer_ref}/decision")
+async def customer_decision(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    destination: str | None = Query(default=None),
+    settings: Settings = Depends(get_settings_dep),
+) -> dict:
+    as_of, queries = context
+    try:
+        result = await decision_engine(queries.session, settings).evaluate(
+            customer_ref, as_of, destination=destination
+        )
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except NotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except LookupError as exc:

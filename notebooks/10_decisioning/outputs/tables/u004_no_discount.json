@@ -1,0 +1,9 @@
+[
+  {
+    "customer_ref":"U004",
+    "action":"SUPPORT_FOLLOW_UP",
+    "mentions_discount":true,
+    "invents_fake_plan":false,
+    "percent_20":false
+  }
+]

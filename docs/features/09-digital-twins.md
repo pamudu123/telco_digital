@@ -113,8 +113,9 @@ and Copilot narration over the twin are not implemented.
 ## 11. POC limitations
 
 Twins are demonstrative over synthetic seed journeys. Graph relationships
-are unknown when Neo4j is unavailable. Capabilities 07 and 08 remain not
-started, so Predicted fraud/demand stay unknown by design.
+are unknown when Neo4j is unavailable. Graph fraud and SFA forecasts are live
+as separate panels; Predicted fraud/demand inside the twin stay unknown by
+design because the twin composes capabilities 02–06 only.
 
 ## 12. Production improvements that would be required later
 
@@ -124,6 +125,6 @@ used, and never treat a twin as a writeable customer record.
 
 ## 13. Dependency for the next capability
 
-Capability 10 may later turn twin Predicted + Recommended into a next-best
-action with reason codes. Capability 11 may narrate the same twin. Both
-remain not started.
+Capability 10 turns twin Predicted + Recommended into a next-best
+action with reason codes. Capability 11 narrates the same documents through
+Copilot. Outcome recording remains later.
