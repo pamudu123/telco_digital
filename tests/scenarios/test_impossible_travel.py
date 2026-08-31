@@ -87,6 +87,19 @@ async def test_impossible_travel_uses_latest_return_time(uow, clock) -> None:
         ),
         clock=clock,
     )
+    before_return = await get_timeline(
+        uow,
+        GetTimelineQuery(
+            customer_ref="RETURNING",
+            as_of=utc("2026-08-26T08:30:00+00:00"),
+        ),
+    )
+    start_event = next(
+        event for event in before_return if event.event_type == EventType.TRAVEL_STARTED.value
+    )
+    assert start_event.payload == {"country": "US"}
+    assert all(event.event_type != EventType.TRAVEL_ENDED.value for event in before_return)
+
     result = await record_travel(
         uow,
         RecordTravelCommand(

@@ -191,8 +191,7 @@ class PostgresTemporalFeatureQueries:
                         row.interaction_type == "COMPLAINT" for row in service
                     ),
                     "open_count": sum(
-                        row.status == "OPEN"
-                        and (row.resolved_at is None or row.resolved_at > as_of)
+                        row.resolved_at is None or row.resolved_at > as_of
                         for row in service
                     ),
                 },

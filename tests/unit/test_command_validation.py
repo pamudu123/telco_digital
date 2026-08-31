@@ -61,6 +61,16 @@ def test_invalid_interaction_enum_is_rejected() -> None:
         )
 
 
+def test_new_interaction_must_be_open() -> None:
+    with pytest.raises(ValidationError, match="OPEN status"):
+        RecordServiceInteractionCommand(
+            customer_ref="U001",
+            interaction_type="COMPLAINT",
+            status="RESOLVED",
+            occurred_at=utc("2026-08-20T10:00:00+00:00"),
+        )
+
+
 @pytest.mark.asyncio
 async def test_end_travel_rejects_time_before_start(uow, clock) -> None:
     await create_customer(

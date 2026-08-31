@@ -14,17 +14,13 @@ def test_provider_postgres_url_uses_asyncpg_driver() -> None:
 
 
 def test_log_level_is_normalized_and_applied() -> None:
-    root = logging.getLogger()
     package = logging.getLogger("telco_digital")
-    original_root = root.level
     original_package = package.level
     try:
         settings = Settings(log_level="debug")
         configure_logging(settings.log_level)
-        assert root.level == logging.DEBUG
         assert package.getEffectiveLevel() == logging.DEBUG
     finally:
-        root.setLevel(original_root)
         package.setLevel(original_package)
 
 

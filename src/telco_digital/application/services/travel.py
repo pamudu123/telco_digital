@@ -108,11 +108,7 @@ async def record_travel(
             recorded_at=recorded_at,
             source=command.source,
             correlation_id=correlation_id,
-            payload={
-                "country": travel.country_code,
-                "ended_at": command.ended_at.isoformat() if command.ended_at else None,
-                "duration_known": command.ended_at is not None,
-            },
+            payload={"country": travel.country_code},
         )
         travel.start_event_id = event.id
         end_event = None

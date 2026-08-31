@@ -113,6 +113,12 @@ class RecordServiceInteractionCommand(BaseModel):
     correlation_id: str | None = None
     source: str = "simulator"
 
+    @model_validator(mode="after")
+    def validate_initial_status(self) -> RecordServiceInteractionCommand:
+        if self.status != InteractionStatus.OPEN:
+            raise ValueError("A newly recorded interaction must have OPEN status")
+        return self
+
 
 class GetCustomerStateQuery(BaseModel):
     customer_ref: str
