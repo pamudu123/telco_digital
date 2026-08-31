@@ -216,6 +216,14 @@
   margin-bottom: 1rem;
 }
 
+.toolbar .question-field {
+  flex: 1 1 28rem;
+}
+
+.toolbar .question-field input {
+  width: 100%;
+}
+
 label {
   display: flex;
   flex-direction: column;

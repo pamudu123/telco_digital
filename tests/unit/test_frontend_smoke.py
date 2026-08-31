@@ -47,6 +47,10 @@ def test_shell_has_landmarks_and_vendored_chart() -> None:
     assert "Decision" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "decisionPanel" in (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
     assert "Fallback" in (ROOT / "js" / "copilot.js").read_text(encoding="utf-8")
+    assert 'className: "question-field"' in (ROOT / "js" / "copilot.js").read_text(encoding="utf-8")
+    assert ".toolbar .question-field" in (ROOT / "css" / "components.css").read_text(
+        encoding="utf-8"
+    )
     assert "Digital twins" in (ROOT / "js" / "models.js").read_text(encoding="utf-8")
     assert "badge-prediction" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "badge-forecast" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")

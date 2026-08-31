@@ -53,7 +53,7 @@ export async function renderCopilot(root, { signal } = {}) {
         "aria-label": "Destination country",
       }),
     ]),
-    el("label", { text: "Question" }, [
+    el("label", { className: "question-field", text: "Question" }, [
       el("input", {
         name: "q",
         type: "text",
