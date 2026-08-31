@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
-"""Train behaviour clustering and churn models (Milestone 6)."""
+"""Training entrypoint for later milestones.
 
-raise SystemExit("Not implemented until Milestone 6 — see docs/BUILD-SEQUENCE.md")
+Behaviour clustering experiments live in
+``notebooks/04_behaviour/04_behaviour.ipynb``. Churn training is capability 05.
+"""
+
+raise SystemExit(
+    "Behaviour clustering is a notebook experiment (capability 04). "
+    "Churn training is not implemented until capability 05."
+)

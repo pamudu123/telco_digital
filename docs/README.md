@@ -18,6 +18,7 @@
 | [features/README.md](./features/README.md) | Verified capability status, evidence and implementation documents |
 | [features/00-read-only-showcase.md](./features/00-read-only-showcase.md) | Early read-only UI showcase for capability-00 evidence (not FastAPI/simulator complete) |
 | [features/03-event-memory.md](./features/03-event-memory.md) | Capability 03 travel episode extraction and similar-event matching |
+| [features/04-behaviour-intelligence.md](./features/04-behaviour-intelligence.md) | Capability 04 derived behaviour traits and notebook clustering |
 
 Start here: [LOCKED-ARCHITECTURE.md](./LOCKED-ARCHITECTURE.md).  
 Code next: steps 01–33 in [BUILD-SEQUENCE.md](./BUILD-SEQUENCE.md).

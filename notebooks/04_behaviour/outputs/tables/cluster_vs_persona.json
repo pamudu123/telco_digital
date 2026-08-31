@@ -1,0 +1,27 @@
+[
+  {
+    "customer_ref":"U001",
+    "persona":"FREQUENT_TRAVELLER",
+    "cluster":3
+  },
+  {
+    "customer_ref":"U002",
+    "persona":"PRICE_SENSITIVE",
+    "cluster":0
+  },
+  {
+    "customer_ref":"U003",
+    "persona":"STABLE_HIGH_VALUE",
+    "cluster":2
+  },
+  {
+    "customer_ref":"U004",
+    "persona":"DECLINING_ENGAGEMENT",
+    "cluster":1
+  },
+  {
+    "customer_ref":"U005",
+    "persona":"WALLET_FRAUD_CLUSTER",
+    "cluster":2
+  }
+]

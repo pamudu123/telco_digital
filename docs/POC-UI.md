@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–03. Customer 360 includes amber derived features, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Models, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–04. Customer 360 includes amber derived features and behaviour traits, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Models, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -194,7 +194,7 @@ meaningful records manually.
 | Scenario | Existing application | Current evidence | Later intelligence |
 |---|---|---|---|
 | Customer travels to Singapore | Selfcare | Travel, plan and usage facts | Event memory and uncertainty-aware recommendation |
-| Repeated small recharges | Selfcare, Loyalty | Recharge and balance history | Behaviour trait and personalised offer |
+| Repeated small recharges | Selfcare, Loyalty | Recharge history plus PRICE_SENSITIVE | Personalised offer |
 | Falling usage with complaints | Selfcare, Loyalty, adReach/Viber | Usage and service events | Churn risk and next-best action |
 | Shared device and suspicious transfers | Mobile Money | Device, wallet, merchant and transaction facts | Neo4j graph fraud evidence |
 | Falling retailer stock with rising sales | SFA | Sales and inventory events | Forecast, retailer twin and restock action |

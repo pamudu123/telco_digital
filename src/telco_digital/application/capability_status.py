@@ -163,10 +163,34 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="04",
         name="Behaviour intelligence",
-        status="Not started",
-        demonstrated_scenario="Derived behaviour traits from observed history.",
+        status="POC complete",
+        document="docs/features/04-behaviour-intelligence.md",
+        demonstrated_scenario=(
+            "U002 repeated small recharges yield PRICE_SENSITIVE with confidence and evidence. "
+            "U001 is a frequent traveller and heavy data user from travel history."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "Mobile Money", "SFA"),
-        not_implemented=("Behaviour model", "Trait store"),
+        evidence=(
+            "docs/features/04-behaviour-intelligence.md",
+            "notebooks/04_behaviour/04_behaviour.ipynb",
+            "notebooks/04_behaviour/outputs/metrics.json",
+            "notebooks/04_behaviour/outputs/tables/",
+            "notebooks/04_behaviour/outputs/plots/",
+        ),
+        implemented=(
+            "Point-in-time rule traits from features and travel episodes",
+            "Confidence and evidence on every trait",
+            "Read-only behaviour API and Customer 360 trait panel",
+        ),
+        not_implemented=(
+            "Persisted trait store",
+            "Online clustering in the API",
+            "Churn prediction",
+        ),
+        limitations=(
+            "Deterministic rules over synthetic history",
+            "Clustering remains a notebook experiment, not a served model",
+        ),
     ),
     CapabilityRecord(
         number="05",
@@ -400,11 +424,42 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Repeated small recharges",
         customer_ref="U002",
         applications=("Selfcare", "Loyalty"),
-        current_evidence="Recharge and balance history",
-        later_intelligence="Behaviour trait and personalised offer",
-        steps=_fact_steps(
-            unknown="No behaviour trait or offer is generated in this showcase.",
-            consumer="Mobile Selfcare and Loyalty Management",
+        current_evidence="Recharge history plus PRICE_SENSITIVE trait",
+        later_intelligence="Personalised offer",
+        steps=(
+            WalkthroughStep(
+                number=1, title="What happened", live=True, summary="Authoritative recorded facts."
+            ),
+            WalkthroughStep(
+                number=2,
+                title="What the platform knows",
+                live=True,
+                summary="Reconstructed context from facts at as_of.",
+            ),
+            WalkthroughStep(
+                number=3,
+                title="What it infers or predicts",
+                live=True,
+                summary="PRICE_SENSITIVE from repeated small recharges, with evidence.",
+            ),
+            WalkthroughStep(
+                number=4,
+                title="What it recommends",
+                live=False,
+                summary="Decisions and reason codes are POC planned.",
+            ),
+            WalkthroughStep(
+                number=5,
+                title="What remains unknown",
+                live=True,
+                summary="No personalised offer is generated in this showcase.",
+            ),
+            WalkthroughStep(
+                number=6,
+                title="Which existing application consumes the result",
+                live=True,
+                summary="Mobile Selfcare and Loyalty Management",
+            ),
         ),
     ),
     Walkthrough(

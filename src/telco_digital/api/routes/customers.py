@@ -14,6 +14,7 @@ from telco_digital.infrastructure.postgres.event_memory import PostgresEventMemo
 from telco_digital.infrastructure.postgres.features import PostgresTemporalFeatureQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
+from telco_digital.intelligence.behaviour import BehaviourService
 from telco_digital.intelligence.event_memory import EventMemoryService
 from telco_digital.intelligence.features import (
     CustomerFeatureService,
@@ -58,6 +59,31 @@ async def customer_event_memory(
     service = EventMemoryService(PostgresEventMemoryQueries(queries.session))
     try:
         result = await service.recall(customer_ref, as_of, destination=destination)
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
+
+
+@router.get("/{customer_ref}/behaviour")
+async def customer_behaviour(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    settings: Settings = Depends(get_settings_dep),
+) -> dict:
+    as_of, queries = context
+    features = CustomerFeatureService(
+        TemporalFeatureService(PostgresTemporalFeatureQueries(queries.session)),
+        GraphFeatureService(Neo4jFeatureQueries(settings)),
+    )
+    memory = EventMemoryService(PostgresEventMemoryQueries(queries.session))
+    try:
+        result = await BehaviourService(features, memory).evaluate(customer_ref, as_of)
         return result.model_dump(mode="json")
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

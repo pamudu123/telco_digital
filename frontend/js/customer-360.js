@@ -50,7 +50,33 @@ function eventMemoryPanel(data) {
   ]);
 }
 
-function plannedRail(eventMemory, eventMemoryError) {
+function behaviourPanel(data) {
+  const traits = data.traits || [];
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Behaviour traits" }),
+      badge("Derived", "derived"),
+    ]),
+    traits.length
+      ? el(
+          "ul",
+          { className: "timeline" },
+          traits.map((item) =>
+            el("li", {}, [
+              el("div", {}, [
+                el("div", { text: `${item.trait.replaceAll("_", " ")} (${item.confidence})` }),
+                el("small", { text: Object.entries(item.evidence || {}).map(([key, value]) => `${key}: ${value}`).join(" • ") }),
+              ]),
+              badge("Derived", "derived"),
+            ]),
+          ),
+        )
+      : el("p", { text: "No behaviour trait met the evidence threshold at this as_of." }),
+    el("p", { className: "meta", text: data.behaviour_set_version }),
+  ]);
+}
+
+function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError) {
   const items = [
     ["Churn prediction", "No prediction generated."],
     ["Recommendation", "No recommended action generated."],
@@ -75,6 +101,23 @@ function plannedRail(eventMemory, eventMemoryError) {
             ]),
             el("p", { text: "Open Journey to recall similar historical travel episodes." }),
             el("a", { href: "#/journey", text: "Open Journey and Event Memory" }),
+          ]),
+    behaviourError
+      ? el("div", { className: "card" }, [
+          el("header", { className: "page-header" }, [
+            el("h3", { text: "Behaviour traits" }),
+            badge("Unavailable", "unknown"),
+          ]),
+          el("p", { text: "Trait rules could not be loaded. Recorded facts remain live." }),
+        ])
+      : behaviour
+        ? behaviourPanel(behaviour)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Behaviour traits" }),
+              badge("Derived", "derived"),
+            ]),
+            el("p", { text: "Derived traits appear when feature evidence is available." }),
           ]),
     ...items.map(([title, detail]) =>
       el("div", { className: "card" }, [
@@ -165,7 +208,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Customer 360" }),
         el("p", {
-          text: "Recorded facts only. Derived traits, predictions and recommendations stay POC planned.",
+          text: "Recorded facts plus derived features, episodes and behaviour traits. Predictions and recommendations stay POC planned.",
         }),
       ]),
     ]),
@@ -191,10 +234,11 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
   }
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
-  const [factsOutcome, featuresOutcome, memoryOutcome] = await Promise.allSettled([
+  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome] = await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
     api.eventMemory(selected, asOf || undefined, undefined, { signal }),
+    api.customerBehaviour(selected, asOf || undefined, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -214,8 +258,22 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     memoryOutcome.status === "rejected" && !isAbortError(memoryOutcome.reason)
       ? memoryOutcome.reason
       : null;
+  const behaviour = behaviourOutcome.status === "fulfilled" ? behaviourOutcome.value : null;
+  const behaviourError =
+    behaviourOutcome.status === "rejected" && !isAbortError(behaviourOutcome.reason)
+      ? behaviourOutcome.reason
+      : null;
   results.replaceChildren(
-    renderFacts(factsOutcome.value, currentLens, features, featuresError, eventMemory, eventMemoryError),
+    renderFacts(
+      factsOutcome.value,
+      currentLens,
+      features,
+      featuresError,
+      eventMemory,
+      eventMemoryError,
+      behaviour,
+      behaviourError,
+    ),
   );
 }
 
@@ -253,7 +311,16 @@ function featurePanel(features) {
   ]);
 }
 
-function renderFacts(data, lens, features, featuresError, eventMemory, eventMemoryError) {
+function renderFacts(
+  data,
+  lens,
+  features,
+  featuresError,
+  eventMemory,
+  eventMemoryError,
+  behaviour,
+  behaviourError,
+) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
     recharges: factList("Recharge history", data.recharges, "No recharges at this as_of."),
@@ -288,7 +355,7 @@ function renderFacts(data, lens, features, featuresError, eventMemory, eventMemo
     ]),
     el("aside", {}, [
       featuresError ? featureErrorPanel(featuresError) : features ? featurePanel(features) : null,
-      plannedRail(eventMemory, eventMemoryError),
+      plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError),
     ]),
   ]);
 }

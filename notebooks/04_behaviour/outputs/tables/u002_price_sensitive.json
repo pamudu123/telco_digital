@@ -1,0 +1,9 @@
+{
+  "trait": "PRICE_SENSITIVE",
+  "confidence": 0.8,
+  "evidence": {
+    "small_recharge_frequency": "high",
+    "small_recharge_count_30d": 5,
+    "frequent_small_recharge_evidence": true
+  }
+}

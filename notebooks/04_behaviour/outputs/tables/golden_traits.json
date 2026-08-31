@@ -1,0 +1,32 @@
+[
+  {
+    "customer_ref": "U001",
+    "traits": [
+      "HEAVY_DATA_USER",
+      "FREQUENT_TRAVELLER",
+      "STREAMING_HEAVY"
+    ]
+  },
+  {
+    "customer_ref": "U002",
+    "traits": [
+      "PRICE_SENSITIVE"
+    ]
+  },
+  {
+    "customer_ref": "U003",
+    "traits": [
+      "HIGH_VALUE"
+    ]
+  },
+  {
+    "customer_ref": "U004",
+    "traits": [
+      "DECLINING_ENGAGEMENT"
+    ]
+  },
+  {
+    "customer_ref": "U005",
+    "traits": []
+  }
+]

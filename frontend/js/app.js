@@ -54,7 +54,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–03 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–04 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -72,7 +72,7 @@ function renderShell(root) {
         el("h2", { text: "Intelligence" }),
         nav,
         el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capabilities 00–03." }),
+          el("div", { text: "POC environment: Live evidence = capabilities 00–04." }),
           el("div", { text: "Planned capability = not implemented." }),
         ]),
       ]),
