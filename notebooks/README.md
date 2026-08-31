@@ -5,6 +5,7 @@ evaluation, and plots; runtime services remain under `src/telco_digital`.
 Capability 05 trains the served churn artifact in `05_churn`.
 Capability 06 ranks catalogue offers in `06_recommendations`.
 Capability 07 analyses transaction-only versus graph fraud scores in `07_graph_fraud`.
+Capability 08 trains the served SFA forecast artifact in `08_sfa_forecasting`.
 
 Install and execute with:
 

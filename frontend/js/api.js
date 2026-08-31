@@ -70,4 +70,6 @@ export const api = {
     request(asOfQuery(`/showcase/graph/customers/${encodeURIComponent(ref)}`, asOf), options),
   retailer: (ref, asOf, options) =>
     request(asOfQuery(`/showcase/sfa/retailers/${encodeURIComponent(ref)}`, asOf), options),
+  retailerForecast: (ref, asOf, options) =>
+    request(asOfQuery(`/showcase/sfa/retailers/${encodeURIComponent(ref)}/forecast`, asOf), options),
 };

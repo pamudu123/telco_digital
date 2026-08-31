@@ -8,7 +8,7 @@ const IMPACT = [
   ["adReach", "Audience intelligence and propensity — later capabilities."],
   ["Viber", "Channel selection — later capabilities."],
   ["Mobile Money", "Graph fraud scores are live; review recommendations stay later."],
-  ["SFA", "Forecasts and visit priorities — later capabilities."],
+  ["SFA", "Demand forecasts are live; visit priorities stay later."],
   ["Lottery", "Secondary lens; abuse investigation later."],
 ];
 

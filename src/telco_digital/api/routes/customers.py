@@ -154,6 +154,7 @@ async def customer_fraud(
         raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
 
 
+
 @router.get("/{customer_ref}/recommendations")
 async def customer_recommendations(
     customer_ref: str,

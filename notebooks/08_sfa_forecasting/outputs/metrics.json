@@ -1,0 +1,46 @@
+{
+  "model_version": "sfa-forecast-v1",
+  "served_model": "arima",
+  "prophet_backend": "prophet",
+  "comparison": {
+    "naive": {
+      "mae": 1.1305,
+      "rmse": 1.5991,
+      "mape": 25.0031
+    },
+    "seasonal_naive": {
+      "mae": 0.7049,
+      "rmse": 0.792,
+      "mape": 11.1372
+    },
+    "moving_average": {
+      "mae": 1.5537,
+      "rmse": 1.6281,
+      "mape": 26.6045
+    },
+    "arima": {
+      "mae": 0.0018,
+      "rmse": 0.0027,
+      "mape": 0.0367
+    },
+    "prophet": {
+      "mae": 0.6662,
+      "rmse": 0.774,
+      "mape": 13.1731
+    }
+  },
+  "reconstruction": {
+    "mae": 2.9528,
+    "rmse": 3.6975,
+    "mape": 43.894
+  },
+  "hero": {
+    "retailer_ref": "RET-001",
+    "product_code": "POC-PROD-01",
+    "as_of": "2026-08-21",
+    "on_hand": 18.26,
+    "forecast_7d": 49.06,
+    "actual_7d": 47.34,
+    "stockout_warning": true
+  }
+}

@@ -292,10 +292,35 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="08",
         name="SFA forecasting",
-        status="Not started",
-        demonstrated_scenario="Retailer demand forecast and stockout warning.",
+        status="POC complete",
+        document="docs/features/08-sfa-forecasting.md",
+        demonstrated_scenario=(
+            "RET-001 late-summer demand rises while cover falls to about 18 units "
+            "against a 7-day forecast near 47, producing STOCKOUT_RISK and RESTOCK."
+        ),
         consuming_applications=("SFA",),
-        not_implemented=("Forecast model", "Retailer twin"),
+        evidence=(
+            "docs/features/08-sfa-forecasting.md",
+            "notebooks/08_sfa_forecasting/08_sfa_forecasting.ipynb",
+            "notebooks/08_sfa_forecasting/outputs/metrics.json",
+            "notebooks/08_sfa_forecasting/outputs/tables/",
+            "notebooks/08_sfa_forecasting/outputs/plots/",
+            "notebooks/08_sfa_forecasting/artifacts/sfa-forecast-v1.json",
+        ),
+        implemented=(
+            "Notebook training comparing naive, moving-average, ARIMA and Prophet",
+            "Served forecast artifact with 7-day demand, cover and stockout band",
+            "Read-only retailer forecast API and Retail and SFA panel",
+        ),
+        not_implemented=(
+            "Persisted prediction store",
+            "Retailer digital twin",
+            "Online retraining",
+        ),
+        limitations=(
+            "Daily demand is a derived expansion of monthly SFA pulses",
+            "Synthetic scenario-shaped series, not a live POS feed",
+        ),
     ),
     CapabilityRecord(
         number="09",
@@ -629,11 +654,42 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling retailer stock with rising sales",
         retailer_ref="RET-001",
         applications=("SFA",),
-        current_evidence="Sales and inventory events",
-        later_intelligence="Forecast, retailer twin and restock action",
-        steps=_fact_steps(
-            unknown="No forecast or stockout score is produced in this showcase.",
-            consumer="Mobile SFA",
+        current_evidence="Sales, inventory events and a trained 7-day demand forecast",
+        later_intelligence="Retailer twin and decision-engine visit plan",
+        steps=(
+            WalkthroughStep(
+                number=1, title="What happened", live=True, summary="Authoritative recorded facts."
+            ),
+            WalkthroughStep(
+                number=2,
+                title="What the platform knows",
+                live=True,
+                summary="Reconstructed daily demand and on-hand cover from facts at as_of.",
+            ),
+            WalkthroughStep(
+                number=3,
+                title="What it infers or predicts",
+                live=True,
+                summary="Notebook-trained forecast: about 18 on hand versus 47 units in 7 days.",
+            ),
+            WalkthroughStep(
+                number=4,
+                title="What it recommends",
+                live=True,
+                summary="STOCKOUT_RISK with RESTOCK for RET-001 / POC-PROD-01.",
+            ),
+            WalkthroughStep(
+                number=5,
+                title="What remains unknown",
+                live=True,
+                summary="Supplier lead time and promotions are not in the recorded facts.",
+            ),
+            WalkthroughStep(
+                number=6,
+                title="Which existing application consumes the result",
+                live=True,
+                summary="Mobile SFA",
+            ),
         ),
     ),
     Walkthrough(

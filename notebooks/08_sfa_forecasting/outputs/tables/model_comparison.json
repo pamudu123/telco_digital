@@ -1,0 +1,32 @@
+[
+  {
+    "model": "naive",
+    "mae": 1.1305,
+    "rmse": 1.5991,
+    "mape": 25.0031
+  },
+  {
+    "model": "seasonal_naive",
+    "mae": 0.7049,
+    "rmse": 0.792,
+    "mape": 11.1372
+  },
+  {
+    "model": "moving_average",
+    "mae": 1.5537,
+    "rmse": 1.6281,
+    "mape": 26.6045
+  },
+  {
+    "model": "arima",
+    "mae": 0.0018,
+    "rmse": 0.0027,
+    "mape": 0.0367
+  },
+  {
+    "model": "prophet",
+    "mae": 0.6662,
+    "rmse": 0.774,
+    "mape": 13.1731
+  }
+]

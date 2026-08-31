@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–07. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations and graph-fraud scores. Journey ranks ROAM_15 with uncertainty. Twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–08. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations and graph-fraud scores. Journey ranks ROAM_15 with uncertainty. Retail and SFA shows a demand forecast. Twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -178,9 +178,9 @@ graph fraud scores. Review recommendations stay later.
 
 ### Mobile SFA
 
-Show distributors, retailers, agents, product sales and inventory events. Later
-capabilities add demand forecasts, retailer twins, stockout warnings and visit
-priorities.
+Show distributors, retailers, agents, product sales and inventory events plus a
+7-day demand forecast and stockout warning. Retailer twins and visit priorities
+stay later.
 
 ### Mobile Lottery
 
@@ -198,7 +198,7 @@ meaningful records manually.
 | Repeated small recharges | Selfcare, Loyalty | Recharge history plus PRICE_SENSITIVE | Personalised offer |
 | Falling usage with complaints | Selfcare, Loyalty, adReach/Viber | Usage and service events | Churn risk and next-best action |
 | Shared device and suspicious transfers | Mobile Money | Wallet transfers plus transaction-only vs graph fraud scores | Review recommendation |
-| Falling retailer stock with rising sales | SFA | Sales and inventory events | Forecast, retailer twin and restock action |
+| Falling retailer stock with rising sales | SFA | Sales, inventory events and a trained 7-day demand forecast | Retailer twin and visit plan |
 | Changing campaign responses | adReach, Viber | Campaign interaction history | Campaign intelligence and channel decision |
 
 Each walkthrough should use the same presentation order:

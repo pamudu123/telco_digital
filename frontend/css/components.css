@@ -93,6 +93,10 @@
   color: var(--recommend);
 }
 
+.badge-forecast {
+  background: #e6fffb;
+  color: var(--forecast);
+}
 .feature-list {
   display: grid;
   gap: 0.35rem;

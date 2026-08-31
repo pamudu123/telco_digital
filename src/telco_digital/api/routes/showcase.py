@@ -16,7 +16,9 @@ from telco_digital.application.services import showcase as showcase_service
 from telco_digital.application.services.common import NotFoundError
 from telco_digital.config import Settings
 from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
+from telco_digital.infrastructure.postgres.forecasting import PostgresRetailerDemandQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
+from telco_digital.intelligence.forecasting import ForecastingService
 
 router = APIRouter(
     prefix="/showcase",
@@ -113,6 +115,32 @@ async def walkthroughs() -> dict:
         "source": "capability_manifest",
         "walkthroughs": [item.model_dump(mode="json") for item in showcase_service.walkthroughs()],
     }
+
+
+@router.get("/sfa/retailers/{retailer_ref}/forecast")
+async def retailer_forecast(
+    retailer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    horizon_days: int = 7,
+) -> dict:
+    as_of, queries = context
+    try:
+        result = await ForecastingService(PostgresRetailerDemandQueries(queries.session)).forecast(
+            retailer_ref,
+            as_of,
+            horizon_days=horizon_days,
+        )
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise _unavailable(exc) from exc
 
 
 @router.get("/sfa/retailers/{retailer_ref}")
