@@ -104,5 +104,4 @@ sets, and a versioned episode store only if product owners require persistence.
 
 ## 13. Dependency for the next capability
 
-Capability 04 may consume these episodes as evidence for behaviour traits. It
-remains not started and no clustering or trait output is included here.
+Capability 04 consumes these episodes as optional evidence for behaviour traits.

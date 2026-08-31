@@ -40,6 +40,7 @@ def test_capability_02_routes_are_registered() -> None:
         paths = client.get("/openapi.json").json()["paths"]
         assert "/api/v1/customers/{customer_ref}/features" in paths
         assert "/api/v1/customers/{customer_ref}/event-memory" in paths
+        assert "/api/v1/customers/{customer_ref}/behaviour" in paths
         assert "/api/v1/showcase/graph/summary" in paths
         assert "/api/v1/showcase/graph/customers/{customer_ref}" in paths
 
@@ -48,7 +49,7 @@ def test_frontend_index_is_served() -> None:
     with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert "capabilities 00–03 showcase" in response.text
+        assert "capabilities 00–04 showcase" in response.text
         assert "vendor/chart.umd.min.js" in response.text
         assert "js/app.js" in response.text
 

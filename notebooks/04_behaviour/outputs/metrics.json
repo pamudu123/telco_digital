@@ -1,0 +1,10 @@
+{
+  "behaviour_set_version": "customer-behaviour-v1",
+  "synthetic_poc": true,
+  "golden_customers": 5,
+  "u002_price_sensitive": true,
+  "u001_frequent_traveller": true,
+  "trait_count": 6,
+  "cluster_count": 4,
+  "online_clustering": false
+}
