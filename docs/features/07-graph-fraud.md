@@ -15,8 +15,8 @@ because the account only initiates a small number of transfers. Graph risk is
 density are visible on the projection. U003 stays **LOW** on both scores. U005
 shares device D001 with U001; that overlap is evidence, not a write-path block.
 
-Capability 06 (recommendations) remains not started and is not required to
-score fraud.
+Capability 06 catalogue ranking is independent and is not required to score
+fraud.
 
 ## 3. Data inputs and outputs
 
@@ -99,13 +99,13 @@ Read live results at
 ## 10. What is not implemented
 
 Graph ML embeddings, a persisted prediction store, review-queue actions,
-write-path blocking, recommendations, twins and Copilot are not implemented.
+write-path blocking, twins and Copilot are not implemented.
 
 ## 11. POC limitations
 
 The watchlist is a documented seed list. The wallet funnel is synthetic.
-Hold-out metrics are not claimed. Capability 06 is intentionally still not
-started.
+Hold-out metrics are not claimed. Catalogue recommendations are a separate
+capability and do not consume this score.
 
 ## 12. Production improvements that would be required later
 
@@ -116,6 +116,5 @@ persist prediction records.
 
 ## 13. Dependency for the next sequential capability
 
-Capability 06 remains not started and may later consume this score as one
-input to candidate ranking. Capability 08 (SFA forecasting) does not depend
-on this scorer.
+Capability 06 ranks catalogue offers independently of this scorer. Capability
+08 (SFA forecasting) does not depend on this scorer.

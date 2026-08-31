@@ -216,7 +216,6 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
         ),
         not_implemented=(
             "Persisted prediction store",
-            "Next-best action from a churn score",
             "Online retraining",
         ),
         limitations=(
@@ -227,10 +226,36 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="06",
         name="Recommendations and uncertainty",
-        status="Not started",
-        demonstrated_scenario="Ranked offers with unknowns and confidence.",
+        status="POC complete",
+        document="docs/features/06-recommendations-uncertainty.md",
+        demonstrated_scenario=(
+            "U001 travelling to Singapore with unknown duration is SCENARIO_BASED; "
+            "ROAM_15 ranks highest from the March 6-day / 11.4 GB episode; "
+            "ROAM_5 and ROAM_30 remain catalogue alternatives."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "SFA"),
-        not_implemented=("Candidate generation", "Uncertainty handling"),
+        evidence=(
+            "docs/features/06-recommendations-uncertainty.md",
+            "notebooks/06_recommendations/06_recommendations.ipynb",
+            "notebooks/06_recommendations/outputs/metrics.json",
+            "notebooks/06_recommendations/outputs/tables/",
+            "notebooks/06_recommendations/outputs/plots/",
+        ),
+        implemented=(
+            "Candidate generation from the active roaming catalogue only",
+            "Deterministic scoring from retrieved travel episodes",
+            "Known / inferred / predicted / unknown uncertainty facts",
+            "Read-only recommendation API, Journey panel and Customer 360 panel",
+        ),
+        not_implemented=(
+            "Outcome recording of the chosen offer",
+            "Next-best action from the decision engine",
+            "Learned ranking that invents a plan",
+        ),
+        limitations=(
+            "Travel-offer ranking over a synthetic Singapore catalogue",
+            "Churn is not applied as a discount or invented plan",
+        ),
     ),
     CapabilityRecord(
         number="07",
@@ -261,7 +286,7 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
         ),
         limitations=(
             "Seeded watchlist and synthetic wallet funnel, not a live SAR table",
-            "Capability 06 recommendations remain not started",
+            "Review actions stay with the decision engine",
         ),
     ),
     CapabilityRecord(
@@ -429,8 +454,8 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Customer travels to Singapore",
         customer_ref="U001",
         applications=("Selfcare",),
-        current_evidence="Travel, plan and usage facts plus retrieved March episode",
-        later_intelligence="Uncertainty-aware recommendation",
+        current_evidence="Travel facts, retrieved March episode and ranked catalogue offers",
+        later_intelligence="Decision engine records the chosen offer and outcome",
         steps=(
             WalkthroughStep(
                 number=1, title="What happened", live=True, summary="Authoritative recorded facts."
@@ -450,8 +475,8 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
             WalkthroughStep(
                 number=4,
                 title="What it recommends",
-                live=False,
-                summary="Decisions and reason codes are POC planned.",
+                live=True,
+                summary="SCENARIO_BASED: ROAM_15 first; ROAM_5 and ROAM_30 as alternatives.",
             ),
             WalkthroughStep(
                 number=5,

@@ -88,6 +88,11 @@
   color: var(--prediction);
 }
 
+.badge-recommend {
+  background: #f6ffed;
+  color: var(--recommend);
+}
+
 .feature-list {
   display: grid;
   gap: 0.35rem;

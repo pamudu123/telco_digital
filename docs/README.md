@@ -20,6 +20,7 @@
 | [features/03-event-memory.md](./features/03-event-memory.md) | Capability 03 travel episode extraction and similar-event matching |
 | [features/04-behaviour-intelligence.md](./features/04-behaviour-intelligence.md) | Capability 04 derived behaviour traits and notebook clustering |
 | [features/05-churn-prediction.md](./features/05-churn-prediction.md) | Capability 05 notebook-trained churn score |
+| [features/06-recommendations-uncertainty.md](./features/06-recommendations-uncertainty.md) | Capability 06 catalogue ranking and uncertainty |
 | [features/07-graph-fraud.md](./features/07-graph-fraud.md) | Capability 07 graph fraud rules and combined scorer |
 
 Start here: [LOCKED-ARCHITECTURE.md](./LOCKED-ARCHITECTURE.md).  

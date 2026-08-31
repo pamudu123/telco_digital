@@ -22,10 +22,13 @@ def test_shell_has_landmarks_banner_and_vendored_chart() -> None:
     assert "customerBehaviour" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerChurn" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerFraud" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "customerRecommendations" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "badge-recommend" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "Derived features" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Behaviour traits" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Churn prediction" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Graph fraud" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "recommendationPanel" in (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "badge-prediction" in (ROOT / "css" / "components.css").read_text(encoding="utf-8")
     assert "Graph projection" in (ROOT / "js" / "graph.js").read_text(encoding="utf-8")
 
@@ -50,6 +53,9 @@ def test_nav_distinguishes_live_and_planned_pages() -> None:
     journey_js = (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
     customer_js = (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
     assert "Recall episodes" in journey_js
+    assert "customerRecommendations" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "SCENARIO_BASED" in journey_js or "recommendationPanel" in journey_js
+    assert "Recommend" in journey_js
     assert 'params.get("destination") || "SG"' not in journey_js
     assert 'params.get("destination") || ""' in journey_js
     assert "duration_known" in customer_js

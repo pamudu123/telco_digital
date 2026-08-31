@@ -1,0 +1,23 @@
+[
+  {
+    "plan_code":"ROAM_15",
+    "score":1.0,
+    "confidence":0.82,
+    "scenario_label":"4\u20137 days",
+    "reasons":"Present in the active catalogue | Same plan as the retrieved Singapore episode | Fits the 4\u20137 days historical duration band | Catalogue data allowance covers historical usage | Catalogue country matches the destination"
+  },
+  {
+    "plan_code":"ROAM_30",
+    "score":0.3,
+    "confidence":0.6,
+    "scenario_label":"8\u201314 days",
+    "reasons":"Present in the active catalogue | Catalogue data allowance covers historical usage | Catalogue country matches the destination"
+  },
+  {
+    "plan_code":"ROAM_5",
+    "score":0.0,
+    "confidence":0.45,
+    "scenario_label":"1\u20133 days",
+    "reasons":"Present in the active catalogue | Historical usage exceeds this catalogue allowance | Catalogue country matches the destination"
+  }
+]

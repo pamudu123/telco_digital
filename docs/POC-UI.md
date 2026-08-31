@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–05 and 07. Customer 360 includes amber derived features and behaviour traits plus trained churn and graph-fraud scores, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Recommendations, twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–07. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations and graph-fraud scores. Journey ranks ROAM_15 with uncertainty. Twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -39,8 +39,9 @@ capability status without presenting planned models as live.
 ![Customer 360 concept](./assets/ui/02-customer-360.png)
 
 The Customer 360 view leads with recorded facts and provenance. Event memory,
-behaviour traits, churn scores and graph-fraud risk are live derived or predicted
-panels. Recommendations and digital-twin panels remain explicitly marked as planned.
+behaviour traits, churn scores, catalogue recommendations and graph-fraud risk
+are live derived or predicted panels. Digital-twin panels remain explicitly
+marked as planned.
 
 ### POC status and application impact
 
@@ -193,7 +194,7 @@ meaningful records manually.
 
 | Scenario | Existing application | Current evidence | Later intelligence |
 |---|---|---|---|
-| Customer travels to Singapore | Selfcare | Travel, plan and usage facts | Event memory and uncertainty-aware recommendation |
+| Customer travels to Singapore | Selfcare | Travel facts, retrieved March episode and ranked catalogue offers | Decision engine records the chosen offer |
 | Repeated small recharges | Selfcare, Loyalty | Recharge history plus PRICE_SENSITIVE | Personalised offer |
 | Falling usage with complaints | Selfcare, Loyalty, adReach/Viber | Usage and service events | Churn risk and next-best action |
 | Shared device and suspicious transfers | Mobile Money | Wallet transfers plus transaction-only vs graph fraud scores | Review recommendation |

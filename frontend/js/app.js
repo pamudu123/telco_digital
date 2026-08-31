@@ -23,7 +23,7 @@ const NAV = [
 const PLANNED = {
   models: {
     title: "Models and Decisions",
-    body: "Churn and graph-fraud scores are live on Customer 360. Recommendations, twins and the decision engine are not started. This page does not display those later scores.",
+    body: "Churn and graph-fraud scores are live on Customer 360. Travel recommendations are live on Journey. Twins and the decision engine are not started. This page does not display those later scores.",
   },
   copilot: {
     title: "Copilot",
@@ -54,7 +54,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–05 and 07 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–07 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -72,7 +72,7 @@ function renderShell(root) {
         el("h2", { text: "Intelligence" }),
         nav,
         el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capabilities 00–05 and 07." }),
+          el("div", { text: "POC environment: Live evidence = capabilities 00–07." }),
           el("div", { text: "Planned capability = not implemented." }),
         ]),
       ]),
@@ -95,7 +95,7 @@ async function renderOverview(root, { signal } = {}) {
     el("div", { className: "page-header" }, [
       el("div", {}, [
         el("h1", { text: "Intelligence overview" }),
-        el("p", { text: "Live facts, Neo4j projection, point-in-time features, travel event memory and graph fraud scores. Later capabilities are labeled as planned." }),
+        el("p", { text: "Live facts, Neo4j projection, point-in-time features, travel event memory, catalogue recommendations and graph fraud scores. Later capabilities are labeled as planned." }),
       ]),
       el("a", { href: "#/status", text: "POC status" }),
     ]),
