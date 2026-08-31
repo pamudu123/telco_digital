@@ -65,6 +65,8 @@ def test_status_links_all_submitted_capability_evidence() -> None:
     assert 'target: "_blank"' in status_js
     assert "item.evidence" in status_js
     assert "Retained capability-00 artifacts" not in status_js
+    assert 'badge("Not connected", "unknown")' in status_js
+    assert 'errorBox(lag, "Projection lag unavailable.")' not in status_js
 
 
 def test_as_of_controls_accept_dates_without_a_time_component() -> None:

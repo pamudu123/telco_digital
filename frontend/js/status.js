@@ -96,7 +96,13 @@ export async function renderStatus(root, { signal } = {}) {
           ]);
     const lagCard =
       lag instanceof Error
-        ? errorBox(lag, "Projection lag unavailable.")
+        ? el("article", { className: "card" }, [
+            el("h3", { text: "Projection lag" }),
+            badge("Not connected", "unknown"),
+            el("p", {
+              text: "Connect PostgreSQL to view pending events and projection timing.",
+            }),
+          ])
         : el("article", { className: "card" }, [
             el("h3", { text: "Projection lag" }),
             badge("Graph projection", "live"),
