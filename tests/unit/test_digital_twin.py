@@ -24,7 +24,11 @@ from telco_digital.intelligence.event_memory import (
 )
 from telco_digital.intelligence.features import CustomerFeatures, GraphFeatures
 from telco_digital.intelligence.features.service import FeatureGroup
-from telco_digital.intelligence.recommendations import CataloguePlan, DecisionMode, build_recommendation
+from telco_digital.intelligence.recommendations import (
+    CataloguePlan,
+    DecisionMode,
+    build_recommendation,
+)
 
 AS_OF = datetime.fromisoformat("2026-08-20T12:00:00+00:00")
 CUSTOMER_ID = uuid4()
@@ -277,12 +281,6 @@ async def test_service_dispatches_customer_and_retailer() -> None:
     context = _context()
     observed = _observed()
     as_of = AS_OF
-    provenance = ProvenanceBlock(
-        source="live_database",
-        as_of=as_of,
-        dataset_version="poc-v1",
-        table="sfa.sale",
-    )
     retailer = Retailer360(
         source="live_database",
         as_of=as_of,

@@ -1,0 +1,9 @@
+[
+  {
+    "retailer_ref":"RET-001",
+    "sale_count":1,
+    "total_quantity":47.0,
+    "predicted":"unknown",
+    "recommended":"unknown"
+  }
+]

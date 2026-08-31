@@ -17,13 +17,13 @@ from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueri
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
 from telco_digital.intelligence.behaviour import BehaviourService
 from telco_digital.intelligence.churn import ChurnService
+from telco_digital.intelligence.digital_twin import DigitalTwinService, UnitOfWorkStateReader
 from telco_digital.intelligence.event_memory import EventMemoryService
 from telco_digital.intelligence.features import (
     CustomerFeatureService,
     GraphFeatureService,
     TemporalFeatureService,
 )
-from telco_digital.intelligence.digital_twin import DigitalTwinService, UnitOfWorkStateReader
 from telco_digital.intelligence.recommendations import (
     PlanRepositoryCatalogue,
     RecommendationService,

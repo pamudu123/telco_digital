@@ -1,0 +1,19 @@
+{
+  "u001_mode": "SCENARIO_BASED",
+  "u001_primary": "ROAM_15",
+  "u001_traits": [
+    "HEAVY_DATA_USER",
+    "FREQUENT_TRAVELLER",
+    "STREAMING_HEAVY"
+  ],
+  "u002_traits": [
+    "PRICE_SENSITIVE"
+  ],
+  "u004_churn_band": "HIGH",
+  "retailer_predicted": "unknown",
+  "unknowns": [
+    "Neo4j graph features are unavailable; values are not assumed to be zero.",
+    "Current trip duration is unknown.",
+    "Usage change ratio is unknown because the previous 30-day window is empty."
+  ]
+}

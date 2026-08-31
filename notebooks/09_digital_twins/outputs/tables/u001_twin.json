@@ -1,0 +1,22 @@
+[
+  {
+    "section":"observed",
+    "value":"LK \/ ROAM_15"
+  },
+  {
+    "section":"historical",
+    "value":"Singapore ROAM_15 11.4GB"
+  },
+  {
+    "section":"inferred",
+    "value":"HEAVY_DATA_USER, FREQUENT_TRAVELLER, STREAMING_HEAVY"
+  },
+  {
+    "section":"predicted",
+    "value":"MEDIUM \/ fraud unknown"
+  },
+  {
+    "section":"recommended",
+    "value":"SCENARIO_BASED ROAM_15"
+  }
+]

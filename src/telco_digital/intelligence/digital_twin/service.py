@@ -27,16 +27,16 @@ from telco_digital.intelligence.behaviour import (
 from telco_digital.intelligence.churn import CustomerChurn, score_churn
 from telco_digital.intelligence.event_memory import CustomerContext, EventMemoryService
 from telco_digital.intelligence.features import (
-    CustomerFeatureService,
     CustomerFeatures,
+    CustomerFeatureService,
     GraphFeatures,
 )
 from telco_digital.intelligence.features.service import validate_as_of
 from telco_digital.intelligence.recommendations import (
-    CatalogueReader,
     CustomerRecommendation,
     build_recommendation,
 )
+from telco_digital.intelligence.recommendations.catalogue import CatalogueReader
 
 TWIN_SET_VERSION = "digital-twin-v1"
 ENTITY_CUSTOMER = "CUSTOMER"
