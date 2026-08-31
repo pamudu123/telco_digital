@@ -82,17 +82,16 @@ class UnitOfWorkEventMemoryQueries:
         limit: int = 25,
     ) -> tuple[CustomerTravelFacts, ...]:
         async with self.uow:
+            peer_ids = await self.uow.travels.list_peer_customer_ids(
+                exclude_customer_id=exclude_customer_id,
+                as_of=as_of,
+                destination=destination,
+                limit=limit,
+            )
             peers: list[CustomerTravelFacts] = []
-            for customer in await self.uow.customers.list_all():
-                if customer.id == exclude_customer_id:
+            for customer_id in peer_ids:
+                customer = await self.uow.customers.get_by_id(customer_id)
+                if customer is None:
                     continue
-                bundle = await self._bundle(customer, as_of)
-                travels = bundle.travels
-                if destination is not None:
-                    travels = tuple(row for row in travels if row.destination == destination)
-                if not travels:
-                    continue
-                peers.append(bundle.model_copy(update={"travels": travels}))
-                if len(peers) >= limit:
-                    break
+                peers.append(await self._bundle(customer, as_of))
             return tuple(peers)

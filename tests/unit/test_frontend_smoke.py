@@ -42,7 +42,14 @@ def test_nav_distinguishes_live_and_planned_pages() -> None:
     assert '["journey", "Journey and Event Memory", "live"]' in app_js
     assert 'import { renderJourney } from "./journey.js"' in app_js
     assert "eventMemory" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
-    assert "Recall episodes" in (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
+    journey_js = (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
+    customer_js = (ROOT / "js" / "customer-360.js").read_text(encoding="utf-8")
+    assert "Recall episodes" in journey_js
+    assert 'params.get("destination") || "SG"' not in journey_js
+    assert 'params.get("destination") || ""' in journey_js
+    assert "duration_known" in customer_js
+    assert "duration unknown" in customer_js
+    assert "formatEpisodeSummary" in customer_js
     assert '["overview", "Overview", "live"]' in app_js
     assert "No LLM answers" in app_js or "not connected" in app_js
 

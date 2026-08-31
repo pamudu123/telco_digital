@@ -33,6 +33,15 @@ function factList(title, rows, emptyText) {
   ]);
 }
 
+function formatEpisodeSummary(episode) {
+  const destination = episode?.destination_name || episode?.destination || "Unknown destination";
+  const duration = episode?.duration_known ? `${episode.duration_days} days` : "duration unknown";
+  const usageGb = episode?.metrics?.usage_gb;
+  const usage = usageGb == null ? "usage unknown" : `${usageGb} GB`;
+  const plan = episode?.actions?.plan_selected || "no roam plan";
+  return `${destination}: ${duration}, ${usage}, ${plan}.`;
+}
+
 function eventMemoryPanel(data) {
   const top = (data.matches || [])[0];
   return el("div", { className: "card" }, [
@@ -41,9 +50,7 @@ function eventMemoryPanel(data) {
       badge("Derived", "derived"),
     ]),
     top
-      ? el("p", {
-          text: `${top.episode.destination_name}: ${top.episode.duration_days} days, ${top.episode.metrics.usage_gb} GB, ${top.episode.actions.plan_selected || "no roam plan"}.`,
-        })
+      ? el("p", { text: formatEpisodeSummary(top.episode) })
       : el("p", { text: "No similar historical episode retrieved at this as_of." }),
     el("p", { className: "meta", text: data.episode_set_version }),
     el("a", { href: `#/journey?ref=${encodeURIComponent(data.customer_ref)}`, text: "Open Journey and Event Memory" }),

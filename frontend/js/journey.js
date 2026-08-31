@@ -51,7 +51,7 @@ function episodeCard(match) {
       ]),
       el("div", {}, [
         el("dt", { text: "Usage" }),
-        el("dd", { text: `${episode.metrics.usage_gb} GB` }),
+        el("dd", { text: episode.metrics?.usage_gb == null ? "Unknown" : `${episode.metrics.usage_gb} GB` }),
       ]),
       el("div", {}, [
         el("dt", { text: "Plan selected" }),
@@ -75,7 +75,7 @@ function historyList(episodes) {
         el("time", { text: formatDate(episode.start_at) }),
         el("div", {}, [
           el("div", {
-            text: `${episode.destination_name}: ${episode.duration_known ? `${episode.duration_days} days` : "duration unknown"}, ${episode.metrics.usage_gb} GB, ${episode.actions.plan_selected || "no roam plan"}`,
+            text: `${episode.destination_name}: ${episode.duration_known ? `${episode.duration_days} days` : "duration unknown"}, ${episode.metrics?.usage_gb == null ? "usage unknown" : `${episode.metrics.usage_gb} GB`}, ${episode.actions?.plan_selected || "no roam plan"}`,
           }),
           el("small", { text: episode.outcome }),
         ]),
@@ -100,7 +100,7 @@ export async function renderJourney(root, { signal } = {}) {
   const params = new URLSearchParams(window.location.hash.split("?")[1] || "");
   const selected = params.get("ref") || "U001";
   const asOf = params.get("as_of") || "";
-  const destination = params.get("destination") || "SG";
+  const destination = (params.get("destination") || "").trim();
 
   const toolbar = el("form", { className: "toolbar" }, [
     el("label", { text: "Golden persona" }, [

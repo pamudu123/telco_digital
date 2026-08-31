@@ -255,6 +255,28 @@ class InMemoryTravelRepository:
     async def list_as_of(self, customer_id: UUID, as_of: datetime) -> list[Travel]:
         return [t for t in await self.list_by_customer(customer_id) if t.started_at <= as_of]
 
+    async def list_peer_customer_ids(
+        self,
+        *,
+        exclude_customer_id: UUID,
+        as_of: datetime,
+        destination: str | None = None,
+        limit: int = 25,
+    ) -> list[UUID]:
+        latest: dict[UUID, datetime] = {}
+        for travel in self._store.all():
+            if travel.customer_id == exclude_customer_id:
+                continue
+            if travel.started_at > as_of:
+                continue
+            if destination is not None and travel.country_code != destination:
+                continue
+            current = latest.get(travel.customer_id)
+            if current is None or travel.started_at > current:
+                latest[travel.customer_id] = travel.started_at
+        ordered = sorted(latest, key=lambda customer_id: latest[customer_id], reverse=True)
+        return ordered[:limit]
+
     async def update(self, travel: Travel) -> None:
         self._store.items[travel.id] = travel
 

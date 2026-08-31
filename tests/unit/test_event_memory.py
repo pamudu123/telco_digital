@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
@@ -146,3 +147,20 @@ async def test_service_recalls_personal_history_first() -> None:
 def test_naive_as_of_is_rejected() -> None:
     with pytest.raises(ValueError, match="timezone-aware"):
         extract_travel_episodes(_facts(), datetime(2026, 8, 20))
+
+
+def test_postgres_adapter_bulk_loads_peer_facts() -> None:
+    source = Path("src/telco_digital/infrastructure/postgres/event_memory.py").read_text(
+        encoding="utf-8"
+    )
+    load_peers = source.split("async def load_peers", 1)[1]
+    assert "await self._bundle(" not in load_peers
+    assert "in_(customer_ids)" in source
+    assert "in_(peer_ids)" in source
+
+
+def test_uow_adapter_selects_peer_ids_from_travel_history() -> None:
+    source = Path("src/telco_digital/intelligence/event_memory/uow.py").read_text(encoding="utf-8")
+    load_peers = source.split("async def load_peers", 1)[1]
+    assert "customers.list_all()" not in load_peers
+    assert "list_peer_customer_ids" in load_peers
