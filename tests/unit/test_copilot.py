@@ -110,8 +110,7 @@ def test_ungrounded_model_text_falls_back(monkeypatch: pytest.MonkeyPatch) -> No
     decision = _u001_decision()
 
     class Response:
-        def raise_for_status(self) -> None:
-            return None
+        status_code = 200
 
         def json(self) -> dict:
             return {"choices": [{"message": {"content": "Give FAKE_PLAN and a 20% discount."}}]}
@@ -123,7 +122,7 @@ def test_ungrounded_model_text_falls_back(monkeypatch: pytest.MonkeyPatch) -> No
     answer = answer_from_decision(
         QUESTION,
         decision,
-        Settings(openrouter_api_key="test-key", openrouter_model="z-ai/glm-4.5-flash"),
+        Settings(openrouter_api_key="test-key", openrouter_model="z-ai/glm-5.3-flash"),
     )
     assert answer.source == "deterministic_fallback"
     assert "ROAM_15" in answer.answer
@@ -135,8 +134,7 @@ def test_grounded_model_text_is_accepted(monkeypatch: pytest.MonkeyPatch) -> Non
     decision = _u001_decision()
 
     class Response:
-        def raise_for_status(self) -> None:
-            return None
+        status_code = 200
 
         def json(self) -> dict:
             return {
@@ -162,6 +160,33 @@ def test_grounded_model_text_is_accepted(monkeypatch: pytest.MonkeyPatch) -> Non
     )
     assert answer.source == "openrouter_glm"
     assert "ROAM_15" in answer.answer
+
+
+def test_rejected_model_reports_the_provider_reason(monkeypatch: pytest.MonkeyPatch) -> None:
+    decision = _u001_decision()
+
+    class Response:
+        status_code = 400
+
+        def json(self) -> dict:
+            return {"error": {"message": "z-ai/glm-4.5-flash is not a valid model ID"}}
+
+    monkeypatch.setattr(
+        "telco_digital.copilot.service.requests.post",
+        lambda *args, **kwargs: Response(),
+    )
+    answer = answer_from_decision(
+        QUESTION,
+        decision,
+        Settings(openrouter_api_key="test-key", openrouter_model="z-ai/glm-4.5-flash"),
+    )
+    assert answer.source == "deterministic_fallback"
+    assert "not a valid model ID" in (answer.fallback_reason or "")
+    assert "ROAM_15" in answer.answer
+
+
+def test_default_copilot_model_is_currently_served() -> None:
+    assert Settings().openrouter_model == "z-ai/glm-5.3-flash"
 
 
 @pytest.mark.asyncio

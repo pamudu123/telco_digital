@@ -111,6 +111,17 @@ def is_ungrounded(answer: str, decision: CustomerDecision) -> bool:
     return False
 
 
+def _provider_error(response: requests.Response) -> str:
+    try:
+        payload = response.json()
+    except ValueError:
+        return response.text.strip()[:200] or "no response body"
+    error = payload.get("error") if isinstance(payload, dict) else None
+    if isinstance(error, dict) and error.get("message"):
+        return str(error["message"])
+    return str(error or payload)[:200]
+
+
 def _openrouter_complete(settings: Settings, question: str, pack: dict[str, object]) -> str:
     key = (settings.openrouter_api_key or "").strip()
     if not key:
@@ -141,7 +152,11 @@ def _openrouter_complete(settings: Settings, question: str, pack: dict[str, obje
         },
         timeout=20,
     )
-    response.raise_for_status()
+    if response.status_code >= 400:
+        raise RuntimeError(
+            f"{response.status_code} from OpenRouter for model "
+            f"{settings.openrouter_model}: {_provider_error(response)}"
+        )
     payload = response.json()
     return str(payload["choices"][0]["message"]["content"]).strip()
 

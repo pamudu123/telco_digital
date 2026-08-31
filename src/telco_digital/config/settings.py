@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     api_environment: str = "local"
     showcase_enabled: bool = True
     openrouter_api_key: str | None = None
-    openrouter_model: str = "z-ai/glm-4.5-flash"
+    openrouter_model: str = "z-ai/glm-5.3-flash"
 
     @field_validator("cors_origins", mode="before")
     @classmethod

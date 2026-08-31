@@ -34,7 +34,9 @@ return the fallback.
 - `CopilotAnswer`
 
 Settings (environment only): `openrouter_api_key`, `openrouter_model`
-(default `z-ai/glm-4.5-flash`). The key is never placed in frontend files.
+(default `z-ai/glm-5.3-flash`). The key is never placed in frontend files.
+A retired or misspelled model id makes OpenRouter reject the request, and the
+fallback reason then reports the provider's response body.
 
 ## 6. Notebook and execution command
 
