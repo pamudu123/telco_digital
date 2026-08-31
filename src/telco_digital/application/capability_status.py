@@ -353,7 +353,10 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
         ),
         limitations=(
             "Twins are computed over synthetic seed facts",
-            "Fraud and SFA forecast remain separate live panels; the twin Predicted section does not ingest them",
+            (
+                "Fraud and SFA forecast remain separate live panels; "
+                "the twin Predicted section does not ingest them"
+            ),
         ),
     ),
     CapabilityRecord(
@@ -600,7 +603,10 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Repeated small recharges",
         customer_ref="U002",
         applications=("Selfcare", "Loyalty"),
-        current_evidence="Recharge history, PRICE_SENSITIVE trait, computed twin Inferred section and NO_INVENTED_OFFER",
+        current_evidence=(
+            "Recharge history, PRICE_SENSITIVE trait, computed twin "
+            "Inferred section and NO_INVENTED_OFFER"
+        ),
         later_intelligence="A catalogue-backed personalised offer when travel context exists",
         steps=(
             WalkthroughStep(
@@ -643,7 +649,10 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling usage with complaints",
         customer_ref="U004",
         applications=("Selfcare", "Loyalty", "adReach", "Viber"),
-        current_evidence="Usage and service events, trained churn score, computed twin Predicted section and SUPPORT_FOLLOW_UP",
+        current_evidence=(
+            "Usage and service events, trained churn score, computed twin "
+            "Predicted section and SUPPORT_FOLLOW_UP"
+        ),
         later_intelligence="Outcome recording of the support action",
         steps=(
             WalkthroughStep(
@@ -732,7 +741,10 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Falling retailer stock with rising sales",
         retailer_ref="RET-001",
         applications=("SFA",),
-        current_evidence="Sales, inventory events, a trained 7-day demand forecast and a computed retailer twin",
+        current_evidence=(
+            "Sales, inventory events, a trained 7-day demand forecast "
+            "and a computed retailer twin"
+        ),
         later_intelligence="Decision-engine visit plan",
         steps=(
             WalkthroughStep(
@@ -742,7 +754,10 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
                 number=2,
                 title="What the platform knows",
                 live=True,
-                summary="Reconstructed daily demand, on-hand cover and retailer twin Observed/Historical at as_of.",
+                summary=(
+                    "Reconstructed daily demand, on-hand cover and retailer "
+                    "twin Observed/Historical at as_of."
+                ),
             ),
             WalkthroughStep(
                 number=3,

@@ -82,7 +82,12 @@ def test_walkthroughs_are_metadata_not_predictions() -> None:
         assert len(body["walkthroughs"]) == 6
         for item in body["walkthroughs"]:
             planned = [step for step in item["steps"] if not step["live"]]
-            if item["id"] in {"singapore-travel", "retailer-stock", "declining-usage", "small-recharges"}:
+            if item["id"] in {
+                "singapore-travel",
+                "retailer-stock",
+                "declining-usage",
+                "small-recharges",
+            }:
                 assert any(
                     step["live"] and "recommend" in step["title"].lower() for step in item["steps"]
                 )

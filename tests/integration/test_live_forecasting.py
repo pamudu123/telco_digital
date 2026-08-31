@@ -8,7 +8,7 @@ import pytest
 from telco_digital.config import get_settings
 from telco_digital.infrastructure.postgres.forecasting import PostgresRetailerDemandQueries
 from telco_digital.infrastructure.postgres.session import create_engine, create_session_factory
-from telco_digital.intelligence.forecasting import ForecastingService, HERO_PRODUCT_CODE
+from telco_digital.intelligence.forecasting import HERO_PRODUCT_CODE, ForecastingService
 
 pytestmark = pytest.mark.integration
 
