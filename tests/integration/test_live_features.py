@@ -53,6 +53,8 @@ async def test_live_graph_features_and_summary_are_available() -> None:
     summary = await queries.summary(END_AT)
 
     assert result.available is True
-    assert result.values["customer_graph_degree"] >= 1
+    degree = result.values["customer_graph_degree"]
+    assert degree is not None
+    assert degree >= 1
     assert summary["projection"] == "poc-v1"
     assert summary["node_counts"]

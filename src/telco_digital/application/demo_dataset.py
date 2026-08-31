@@ -74,10 +74,10 @@ def build_dataset(background_customers: int = 1000) -> DatasetBundle:
     rng = random.Random(DATASET_SEED)
     rows: dict[str, list[dict[str, Any]]] = defaultdict(list)
     persona_counts: Counter[str] = Counter()
-    monthly_usage: Counter[str] = Counter()
+    monthly_usage: defaultdict[str, float] = defaultdict(float)
     monthly_recharges: Counter[str] = Counter()
     monthly_transactions: Counter[str] = Counter()
-    monthly_sales: Counter[str] = Counter()
+    monthly_sales: defaultdict[str, float] = defaultdict(float)
 
     _reference_rows(rows)
     customers = list(GOLDEN_PERSONAS.items()) + [
@@ -334,8 +334,10 @@ def build_dataset(background_customers: int = 1000) -> DatasetBundle:
             transaction_id = deterministic_id(
                 "money_transaction", f"{customer_ref}:{transaction_number}"
             )
-            destination_wallet_id = None
-            merchant_id = merchant_ids[(sequence + transaction_number) % len(merchant_ids)]
+            destination_wallet_id: UUID | None = None
+            merchant_id: UUID | None = merchant_ids[
+                (sequence + transaction_number) % len(merchant_ids)
+            ]
             transaction_type = "MERCHANT_PAYMENT"
             if persona == "WALLET_FRAUD_CLUSTER" or sequence % 100 == 0:
                 target_ref = "U009" if customer_ref != "U009" else "U006"
@@ -488,7 +490,7 @@ def _reference_rows(rows: dict[str, list[dict[str, Any]]]) -> None:
 
 def _sfa_facts(
     rows: dict[str, list[dict[str, Any]]],
-    monthly_sales: Counter[str],
+    monthly_sales: defaultdict[str, float],
     rng: random.Random,
 ) -> None:
     for retailer in range(1, 26):

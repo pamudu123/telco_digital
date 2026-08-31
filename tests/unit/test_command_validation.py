@@ -14,6 +14,7 @@ from telco_digital.application.commands.commands import (
 )
 from telco_digital.application.services.customer import create_customer
 from telco_digital.application.services.travel import end_travel, record_travel
+from telco_digital.domain.enums import InteractionStatus, InteractionType
 
 
 @pytest.mark.parametrize(
@@ -54,10 +55,12 @@ def test_invalid_travel_range_is_rejected() -> None:
 
 def test_invalid_interaction_enum_is_rejected() -> None:
     with pytest.raises(ValidationError, match="interaction_type"):
-        RecordServiceInteractionCommand(
-            customer_ref="U001",
-            interaction_type="COMPLAINTS",
-            occurred_at=utc("2026-08-20T10:00:00+00:00"),
+        RecordServiceInteractionCommand.model_validate(
+            {
+                "customer_ref": "U001",
+                "interaction_type": "COMPLAINTS",
+                "occurred_at": utc("2026-08-20T10:00:00+00:00"),
+            }
         )
 
 
@@ -65,8 +68,8 @@ def test_new_interaction_must_be_open() -> None:
     with pytest.raises(ValidationError, match="OPEN status"):
         RecordServiceInteractionCommand(
             customer_ref="U001",
-            interaction_type="COMPLAINT",
-            status="RESOLVED",
+            interaction_type=InteractionType.COMPLAINT,
+            status=InteractionStatus.RESOLVED,
             occurred_at=utc("2026-08-20T10:00:00+00:00"),
         )
 

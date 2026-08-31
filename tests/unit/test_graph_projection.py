@@ -1,6 +1,8 @@
 from dataclasses import fields
+from typing import cast
 
 from telco_digital.infrastructure.neo4j.projector import GraphProjector, GraphSnapshot
+from telco_digital.infrastructure.neo4j.repository import GraphRepository
 
 
 class RecordingRepository:
@@ -30,7 +32,7 @@ def empty_snapshot() -> GraphSnapshot:
 def test_rebuild_clears_only_managed_projection_and_projects_all_domains() -> None:
     repository = RecordingRepository()
 
-    counts = GraphProjector(repository).rebuild(empty_snapshot())
+    counts = GraphProjector(cast(GraphRepository, repository)).rebuild(empty_snapshot())
 
     assert counts == {"Customer": 1}
     assert repository.calls[:2] == ["ensure_constraints", "clear_managed_projection"]
@@ -45,6 +47,6 @@ def test_rebuild_clears_only_managed_projection_and_projects_all_domains() -> No
 def test_rebuild_can_preserve_existing_managed_projection() -> None:
     repository = RecordingRepository()
 
-    GraphProjector(repository).rebuild(empty_snapshot(), reset_managed=False)
+    GraphProjector(cast(GraphRepository, repository)).rebuild(empty_snapshot(), reset_managed=False)
 
     assert "clear_managed_projection" not in repository.calls

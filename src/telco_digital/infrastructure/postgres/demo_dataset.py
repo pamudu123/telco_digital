@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, cast
 
-from sqlalchemy import delete, func, select
+from sqlalchemy import Table, delete, func, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncEngine
 
@@ -39,34 +39,37 @@ from telco_digital.infrastructure.postgres.models import (
     WalletModel,
 )
 
-TABLES = {
-    "plans": PlanModel.__table__,
-    "campaigns": CampaignModel.__table__,
-    "merchants": MerchantModel.__table__,
-    "distributors": DistributorModel.__table__,
-    "sfa_products": SfaProductModel.__table__,
-    "customers": CustomerModel.__table__,
-    "accounts": AccountModel.__table__,
-    "devices": DeviceModel.__table__,
-    "customer_devices": CustomerDeviceModel.__table__,
-    "wallets": WalletModel.__table__,
-    "loyalty_accounts": LoyaltyAccountModel.__table__,
-    "retailers": RetailerModel.__table__,
-    "sales_agents": SalesAgentModel.__table__,
-    "subscriptions": SubscriptionModel.__table__,
-    "recharges": RechargeModel.__table__,
-    "balance_ledger": BalanceLedgerModel.__table__,
-    "usage_events": UsageEventModel.__table__,
-    "travels": TravelModel.__table__,
-    "service_interactions": ServiceInteractionModel.__table__,
-    "loyalty_ledger": LoyaltyLedgerModel.__table__,
-    "campaign_interactions": CampaignInteractionModel.__table__,
-    "money_transactions": MoneyTransactionModel.__table__,
-    "sales": SaleModel.__table__,
-    "inventory_events": InventoryEventModel.__table__,
-    "activity_events": ActivityEventModel.__table__,
-    "outbox_events": OutboxEventModel.__table__,
-}
+TABLES: dict[str, Table] = cast(
+    dict[str, Table],
+    {
+        "plans": PlanModel.__table__,
+        "campaigns": CampaignModel.__table__,
+        "merchants": MerchantModel.__table__,
+        "distributors": DistributorModel.__table__,
+        "sfa_products": SfaProductModel.__table__,
+        "customers": CustomerModel.__table__,
+        "accounts": AccountModel.__table__,
+        "devices": DeviceModel.__table__,
+        "customer_devices": CustomerDeviceModel.__table__,
+        "wallets": WalletModel.__table__,
+        "loyalty_accounts": LoyaltyAccountModel.__table__,
+        "retailers": RetailerModel.__table__,
+        "sales_agents": SalesAgentModel.__table__,
+        "subscriptions": SubscriptionModel.__table__,
+        "recharges": RechargeModel.__table__,
+        "balance_ledger": BalanceLedgerModel.__table__,
+        "usage_events": UsageEventModel.__table__,
+        "travels": TravelModel.__table__,
+        "service_interactions": ServiceInteractionModel.__table__,
+        "loyalty_ledger": LoyaltyLedgerModel.__table__,
+        "campaign_interactions": CampaignInteractionModel.__table__,
+        "money_transactions": MoneyTransactionModel.__table__,
+        "sales": SaleModel.__table__,
+        "inventory_events": InventoryEventModel.__table__,
+        "activity_events": ActivityEventModel.__table__,
+        "outbox_events": OutboxEventModel.__table__,
+    },
+)
 
 INSERT_ORDER = tuple(TABLES)
 DELETE_ORDER = tuple(reversed(INSERT_ORDER))

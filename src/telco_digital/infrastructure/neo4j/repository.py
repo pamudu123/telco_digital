@@ -32,9 +32,7 @@ class GraphRepository:
         )
         with self.driver.session() as session:
             for statement in statements:
-                session.execute_write(
-                    lambda transaction, query=statement: transaction.run(query).consume()
-                )
+                session.execute_write(lambda transaction: transaction.run(statement).consume())
 
     def clear_managed_projection(self) -> None:
         with self.driver.session() as session:

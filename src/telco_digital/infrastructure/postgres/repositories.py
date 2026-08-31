@@ -276,8 +276,7 @@ class SqlSubscriptionRepository:
                 SubscriptionModel.customer_id == customer_id,
                 SubscriptionModel.started_at <= as_of,
                 (SubscriptionModel.ended_at.is_(None)) | (SubscriptionModel.ended_at > as_of),
-                SubscriptionModel.started_at
-                + func.make_interval(0, 0, 0, PlanModel.validity_days)
+                SubscriptionModel.started_at + func.make_interval(0, 0, 0, PlanModel.validity_days)
                 > as_of,
             )
             .order_by(SubscriptionModel.started_at.desc())

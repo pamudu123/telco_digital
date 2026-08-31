@@ -1,3 +1,7 @@
+from typing import cast
+
+from sqlalchemy.ext.asyncio import AsyncEngine
+
 from telco_digital.infrastructure.postgres.graph_snapshot import load_graph_snapshot
 
 
@@ -21,7 +25,7 @@ class _Transaction:
 
 class _Connection:
     def __init__(self) -> None:
-        self.options = {}
+        self.options: dict[str, str] = {}
         self.execute_count = 0
 
     async def __aenter__(self):
@@ -54,7 +58,7 @@ class _Engine:
 
 async def test_graph_snapshot_uses_one_repeatable_read_transaction() -> None:
     engine = _Engine()
-    snapshot = await load_graph_snapshot(engine)
+    snapshot = await load_graph_snapshot(cast(AsyncEngine, engine))
     assert engine.connect_count == 1
     assert engine.connection.options == {"isolation_level": "REPEATABLE READ"}
     assert engine.connection.execute_count == 15

@@ -302,8 +302,7 @@ class InMemoryServiceInteractionRepository:
 
     async def open_count(self, customer_id: UUID, as_of: datetime) -> int:
         return sum(
-            item.occurred_at <= as_of
-            and (item.resolved_at is None or item.resolved_at > as_of)
+            item.occurred_at <= as_of and (item.resolved_at is None or item.resolved_at > as_of)
             for item in await self.list_by_customer(customer_id)
         )
 

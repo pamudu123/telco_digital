@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict
 from telco_digital.intelligence.fraud.features import GraphFraudFeatures, TransactionRiskFeatures
 
 RuleSeverity = Literal["low", "medium", "high"]
+EvidenceValue = int | float | str | None
 
 RULE_BOOSTS: dict[str, float] = {
     "SHARED_DEVICE": 0.08,
@@ -27,7 +28,7 @@ class FraudRule(BaseModel):
     fired: bool
     severity: RuleSeverity
     boost: float
-    evidence: dict[str, int | float | str | None]
+    evidence: dict[str, EvidenceValue]
 
 
 def evaluate_rules(
@@ -43,7 +44,7 @@ def evaluate_rules(
     age = transaction.account_age_days
     count = transaction.transaction_count_90d
 
-    checks = (
+    checks: tuple[tuple[str, RuleSeverity, bool, dict[str, EvidenceValue]], ...] = (
         (
             "SHARED_DEVICE",
             "low",
@@ -103,7 +104,7 @@ def evaluate_rules(
             FraudRule(
                 code=code,
                 fired=fired,
-                severity=severity,  # type: ignore[arg-type]
+                severity=severity,
                 boost=boost,
                 evidence=evidence,
             )
