@@ -68,4 +68,14 @@ export const api = {
     request(asOfQuery(`/showcase/graph/customers/${encodeURIComponent(ref)}`, asOf), options),
   retailer: (ref, asOf, options) =>
     request(asOfQuery(`/showcase/sfa/retailers/${encodeURIComponent(ref)}`, asOf), options),
+  customerTwin: (ref, asOf, destination, options) => {
+    const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/twin`, asOf);
+    const separator = path.includes("?") ? "&" : "?";
+    return request(
+      destination ? `${path}${separator}destination=${encodeURIComponent(destination)}` : path,
+      options,
+    );
+  },
+  retailerTwin: (ref, asOf, options) =>
+    request(asOfQuery(`/showcase/sfa/retailers/${encodeURIComponent(ref)}/twin`, asOf), options),
 };

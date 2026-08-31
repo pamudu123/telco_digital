@@ -15,6 +15,7 @@ Postgres repositories, outbox, Neo4j projection, graph queries.
 | File | Intent |
 |---|---|
 | `scenario_travel_recommendation.py` | Historical Singapore trip retrieved; ROAM_15 ranks highest; duration unknown; no invented plan |
+| `scenario_digital_twin.py` | U001 twin composes episode + ROAM_15; RET-001 Predicted/Recommended stay unknown |
 | `scenario_impossible_travel.py` | Event stored; `IMPOSSIBLE_TRAVEL` warning |
 | `scenario_churn.py` | Usage decline + complaints + falling engagement → HIGH score and drivers (NBA stays later) |
 | `scenario_graph_fraud.py` | Shared device + suspicious merchant → graph risk + evidence |

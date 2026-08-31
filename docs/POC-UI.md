@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–06. Customer 360 includes amber derived features and behaviour traits plus a trained churn score and catalogue recommendations. Journey ranks ROAM_15 with uncertainty. Twins, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–06 and 09. Customer 360 includes amber derived features, behaviour traits, a trained churn score, catalogue recommendations and a computed digital twin. Journey ranks ROAM_15 with uncertainty. Graph fraud, SFA forecasting, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -39,8 +39,9 @@ capability status without presenting planned models as live.
 ![Customer 360 concept](./assets/ui/02-customer-360.png)
 
 The Customer 360 view leads with recorded facts and provenance. Event memory,
-behaviour traits and churn scores are live derived or predicted panels.
-Recommendations and digital-twin panels remain explicitly marked as planned.
+behaviour traits, churn scores, catalogue recommendations and the computed
+digital twin are live derived or predicted panels. Decision-engine panels
+remain explicitly marked as planned.
 
 ### POC status and application impact
 
@@ -146,9 +147,10 @@ view. The first version should provide:
 - Wallet activity and known devices.
 - Data provenance for every section.
 
-Until temporal features and digital twins are implemented, this page must show
-only recorded facts. Derived traits, predictions and recommendations appear as
-**POC planned**, not as empty or invented values.
+Recorded facts remain the lead evidence. Derived features, event memory,
+behaviour traits, churn scores, catalogue recommendations and the computed
+digital twin are live when those services succeed. Decision-engine output
+stays **POC planned**, not empty or invented values.
 
 ## 3. Existing-application lenses
 
