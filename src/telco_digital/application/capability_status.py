@@ -130,10 +130,35 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="03",
         name="Event memory",
-        status="Not started",
-        demonstrated_scenario="Similar historical episodes retrieved for a current situation.",
+        status="POC complete",
+        document="docs/features/03-event-memory.md",
+        demonstrated_scenario=(
+            "U001 travelling to Singapore again retrieves the March 2026 episode: "
+            "6 days, 11.4 GB, ROAM_15, no additional package required."
+        ),
         consuming_applications=("Selfcare", "Loyalty", "adReach", "Viber", "SFA"),
-        not_implemented=("Episode matching", "CustomerContext"),
+        evidence=(
+            "docs/features/03-event-memory.md",
+            "notebooks/03_event_memory/03_event_memory.ipynb",
+            "notebooks/03_event_memory/outputs/metrics.json",
+            "notebooks/03_event_memory/outputs/tables/",
+            "notebooks/03_event_memory/outputs/plots/",
+        ),
+        implemented=(
+            "Travel episode extraction from point-in-time facts",
+            "Similar-event matching with personal-history priority",
+            "CustomerContext with explicit unknowns",
+            "Read-only event-memory API and Journey page",
+        ),
+        not_implemented=(
+            "Non-travel episode types",
+            "Persisted episode store",
+            "Recommendation ranking from retrieved episodes",
+        ),
+        limitations=(
+            "Travel-only memory over synthetic journeys",
+            "Similarity is deterministic and rule-based, not learned",
+        ),
     ),
     CapabilityRecord(
         number="04",
@@ -332,13 +357,42 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Customer travels to Singapore",
         customer_ref="U001",
         applications=("Selfcare",),
-        current_evidence="Travel, plan and usage facts",
-        later_intelligence="Event memory and uncertainty-aware recommendation",
-        steps=_fact_steps(
-            unknown=(
-                "Trip duration is known for U001's March 2026 journey; later trips may be unknown."
+        current_evidence="Travel, plan and usage facts plus retrieved March episode",
+        later_intelligence="Uncertainty-aware recommendation",
+        steps=(
+            WalkthroughStep(
+                number=1, title="What happened", live=True, summary="Authoritative recorded facts."
             ),
-            consumer="Mobile Selfcare",
+            WalkthroughStep(
+                number=2,
+                title="What the platform knows",
+                live=True,
+                summary="Reconstructed context from facts at as_of.",
+            ),
+            WalkthroughStep(
+                number=3,
+                title="What it infers or predicts",
+                live=True,
+                summary="March Singapore episode retrieved: 6 days, 11.4 GB, ROAM_15.",
+            ),
+            WalkthroughStep(
+                number=4,
+                title="What it recommends",
+                live=False,
+                summary="Decisions and reason codes are POC planned.",
+            ),
+            WalkthroughStep(
+                number=5,
+                title="What remains unknown",
+                live=True,
+                summary="August trip duration is unknown unless that later trip has already ended.",
+            ),
+            WalkthroughStep(
+                number=6,
+                title="Which existing application consumes the result",
+                live=True,
+                summary="Mobile Selfcare",
+            ),
         ),
     ),
     Walkthrough(

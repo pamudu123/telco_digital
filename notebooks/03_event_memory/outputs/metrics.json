@@ -1,0 +1,13 @@
+{
+  "episode_set_version": "travel-episodes-v1",
+  "synthetic_poc": true,
+  "u001_march_duration_days": 6,
+  "u001_march_usage_gb": 11.4,
+  "u001_march_plan": "ROAM_15",
+  "u001_march_outcome": "No additional package required",
+  "august_top_rank": "SAME_CUSTOMER_SAME_SITUATION",
+  "august_top_similarity": 0.95,
+  "future_leakage_checks_failed": 0,
+  "historical_episode_count": 1,
+  "match_count": 1
+}

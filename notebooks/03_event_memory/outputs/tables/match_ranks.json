@@ -1,0 +1,8 @@
+[
+  {
+    "customer_ref": "U001",
+    "destination": "Singapore",
+    "rank": "SAME_CUSTOMER_SAME_SITUATION",
+    "similarity": 0.95
+  }
+]
