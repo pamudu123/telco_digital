@@ -24,7 +24,8 @@ implemented.
 
 - Open Overview, Customer 360, application fact lenses, walkthroughs, and POC Status.
 - See live counts from PostgreSQL with explicit `source: live_database`.
-- See planned pages (Journey, Graph, Models, Copilot) with **POC planned** badges and no fabricated metrics.
+- See planned pages (Models, Copilot) with **POC planned** badges and no fabricated metrics.
+- Open Journey and Event Memory for derived travel-episode matches.
 
 ## What they cannot do
 

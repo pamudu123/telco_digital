@@ -78,4 +78,5 @@ Approve feature definitions with domain owners, introduce governed feature linea
 
 ## 13. Dependency for the next capability
 
-Capability 03 may consume these versioned snapshots for travel episode matching. It remains not started and no event-memory behavior is included here.
+Capability 03 consumes point-in-time travel, usage and subscription facts for
+episode matching. Feature snapshots are optional context, not a required input.

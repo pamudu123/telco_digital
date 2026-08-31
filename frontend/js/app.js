@@ -5,11 +5,12 @@ import { badge, el, formatDate, formatNumber, provenanceLine, statusBox } from "
 import { renderStatus } from "./status.js";
 import { renderWalkthroughs } from "./walkthroughs.js";
 import { renderGraph } from "./graph.js";
+import { renderJourney } from "./journey.js";
 
 const NAV = [
   ["overview", "Overview", "live"],
   ["customer-360", "Customer 360", "live"],
-  ["journey", "Journey and Event Memory", "planned"],
+  ["journey", "Journey and Event Memory", "live"],
   ["campaigns", "Campaigns and Loyalty", "live"],
   ["money", "Money and Fraud", "live"],
   ["retail", "Retail and SFA", "live"],
@@ -20,10 +21,6 @@ const NAV = [
 ];
 
 const PLANNED = {
-  journey: {
-    title: "Journey and Event Memory",
-    body: "Event memory matches similar historical episodes. This capability is not started. No fabricated journey metrics are shown.",
-  },
   models: {
     title: "Models and Decisions",
     body: "Churn, recommendations, twins and the decision engine are not started. This page does not display model scores.",
@@ -57,7 +54,7 @@ function renderShell(root) {
     el("div", { className: "banner", role: "note" }, [
       el("strong", { text: "Synthetic data" }),
       el("span", {
-        text: "All customer records are synthetic POC fixtures. Capabilities 00–02 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
+        text: "All customer records are synthetic POC fixtures. Capabilities 00–03 are a read-only POC showcase — not production, not FastAPI complete, and not the simulator.",
       }),
     ]),
     el("div", { className: "app-shell" }, [
@@ -75,7 +72,7 @@ function renderShell(root) {
         el("h2", { text: "Intelligence" }),
         nav,
         el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capability 00." }),
+          el("div", { text: "POC environment: Live evidence = capabilities 00–03." }),
           el("div", { text: "Planned capability = not implemented." }),
         ]),
       ]),
@@ -98,7 +95,7 @@ async function renderOverview(root, { signal } = {}) {
     el("div", { className: "page-header" }, [
       el("div", {}, [
         el("h1", { text: "Intelligence overview" }),
-        el("p", { text: "Live facts, Neo4j projection evidence and point-in-time features. Later capabilities are labeled as planned." }),
+        el("p", { text: "Live facts, Neo4j projection, point-in-time features and travel event memory. Later capabilities are labeled as planned." }),
       ]),
       el("a", { href: "#/status", text: "POC status" }),
     ]),
@@ -274,6 +271,7 @@ export function start() {
       else if (id === "money") await renderCustomer360(content, { lens: "money", signal });
       else if (id === "retail") await renderCustomer360(content, { lens: "retail", signal });
       else if (id === "walkthroughs") await renderWalkthroughs(content, { signal });
+      else if (id === "journey") await renderJourney(content, { signal });
       else if (id === "graph") await renderGraph(content, { signal });
       else if (id === "status") await renderStatus(content, { signal });
       else if (PLANNED[id]) renderPlanned(content, id);

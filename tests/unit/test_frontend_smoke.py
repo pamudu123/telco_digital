@@ -37,7 +37,10 @@ def test_frontend_renders_temporal_provenance_in_utc() -> None:
 
 def test_nav_distinguishes_live_and_planned_pages() -> None:
     app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
-    assert '["journey", "Journey and Event Memory", "planned"]' in app_js
+    assert '["journey", "Journey and Event Memory", "live"]' in app_js
+    assert 'import { renderJourney } from "./journey.js"' in app_js
+    assert "eventMemory" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "Recall episodes" in (ROOT / "js" / "journey.js").read_text(encoding="utf-8")
     assert '["overview", "Overview", "live"]' in app_js
     assert "No LLM answers" in app_js or "not connected" in app_js
 

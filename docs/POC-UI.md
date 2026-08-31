@@ -1,6 +1,6 @@
 # POC Intelligence Showcase UI
 
-> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–02. Customer 360 includes amber, versioned point-in-time derived features, and Graph Explorer includes purple Neo4j projection evidence. Event memory, models, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
+> Current implementation: the framework-free HTML/CSS/JavaScript showcase presents capabilities 00–03. Customer 360 includes amber derived features, Graph Explorer includes purple Neo4j projection evidence, and Journey shows derived travel-episode matches. Models, decisions, Copilot, the complete FastAPI milestone and the simulator remain planned.
 
 ## Purpose
 
@@ -361,8 +361,7 @@ backend behaviour:
 - The complete FastAPI capability (all application services, projection lag,
   model versions) and the POC simulator / write path.
 - Authentication, roles, permissions or multi-tenant UI isolation.
-- Live Neo4j projection for the expanded dataset.
-- Feature, event-memory, model, recommendation, twin or decision screens.
+- Feature, model, recommendation, twin or decision screens. Event memory is live on Journey.
 - Copilot interaction.
 - Production UX, accessibility validation, telemetry or operational support.
 

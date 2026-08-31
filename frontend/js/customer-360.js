@@ -33,15 +33,49 @@ function factList(title, rows, emptyText) {
   ]);
 }
 
-function plannedRail() {
+function eventMemoryPanel(data) {
+  const top = (data.matches || [])[0];
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Event memory" }),
+      badge("Derived", "derived"),
+    ]),
+    top
+      ? el("p", {
+          text: `${top.episode.destination_name}: ${top.episode.duration_days} days, ${top.episode.metrics.usage_gb} GB, ${top.episode.actions.plan_selected || "no roam plan"}.`,
+        })
+      : el("p", { text: "No similar historical episode retrieved at this as_of." }),
+    el("p", { className: "meta", text: data.episode_set_version }),
+    el("a", { href: `#/journey?ref=${encodeURIComponent(data.customer_ref)}`, text: "Open Journey and Event Memory" }),
+  ]);
+}
+
+function plannedRail(eventMemory, eventMemoryError) {
   const items = [
-    ["Event memory", "No episode matching in this showcase."],
     ["Churn prediction", "No prediction generated."],
     ["Recommendation", "No recommended action generated."],
     ["Digital twin", "No derived twin in this showcase."],
   ];
-  return el("aside", { className: "planned-rail", "aria-label": "Planned intelligence" }, [
+  return el("aside", { className: "planned-rail", "aria-label": "Intelligence readiness" }, [
     el("h2", { text: "Intelligence readiness" }),
+    eventMemoryError
+      ? el("div", { className: "card" }, [
+          el("header", { className: "page-header" }, [
+            el("h3", { text: "Event memory" }),
+            badge("Unavailable", "unknown"),
+          ]),
+          el("p", { text: "Episode matching could not be loaded. Recorded facts remain live." }),
+        ])
+      : eventMemory
+        ? eventMemoryPanel(eventMemory)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Event memory" }),
+              badge("Derived", "derived"),
+            ]),
+            el("p", { text: "Open Journey to recall similar historical travel episodes." }),
+            el("a", { href: "#/journey", text: "Open Journey and Event Memory" }),
+          ]),
     ...items.map(([title, detail]) =>
       el("div", { className: "card" }, [
         el("header", { className: "page-header" }, [
@@ -157,9 +191,10 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
   }
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
-  const [factsOutcome, featuresOutcome] = await Promise.allSettled([
+  const [factsOutcome, featuresOutcome, memoryOutcome] = await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
+    api.eventMemory(selected, asOf || undefined, undefined, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -174,7 +209,14 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     featuresOutcome.status === "rejected" && !isAbortError(featuresOutcome.reason)
       ? featuresOutcome.reason
       : null;
-  results.replaceChildren(renderFacts(factsOutcome.value, currentLens, features, featuresError));
+  const eventMemory = memoryOutcome.status === "fulfilled" ? memoryOutcome.value : null;
+  const eventMemoryError =
+    memoryOutcome.status === "rejected" && !isAbortError(memoryOutcome.reason)
+      ? memoryOutcome.reason
+      : null;
+  results.replaceChildren(
+    renderFacts(factsOutcome.value, currentLens, features, featuresError, eventMemory, eventMemoryError),
+  );
 }
 
 function featureErrorPanel(error) {
@@ -211,7 +253,7 @@ function featurePanel(features) {
   ]);
 }
 
-function renderFacts(data, lens, features, featuresError) {
+function renderFacts(data, lens, features, featuresError, eventMemory, eventMemoryError) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
     recharges: factList("Recharge history", data.recharges, "No recharges at this as_of."),
@@ -246,7 +288,7 @@ function renderFacts(data, lens, features, featuresError) {
     ]),
     el("aside", {}, [
       featuresError ? featureErrorPanel(featuresError) : features ? featurePanel(features) : null,
-      plannedRail(),
+      plannedRail(eventMemory, eventMemoryError),
     ]),
   ]);
 }

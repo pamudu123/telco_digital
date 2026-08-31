@@ -43,6 +43,14 @@ export const api = {
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/360`, asOf), options),
   customerFeatures: (ref, asOf, options) =>
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/features`, asOf), options),
+  eventMemory: (ref, asOf, destination, options) => {
+    const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/event-memory`, asOf);
+    const separator = path.includes("?") ? "&" : "?";
+    return request(
+      destination ? `${path}${separator}destination=${encodeURIComponent(destination)}` : path,
+      options,
+    );
+  },
   graphSummary: (asOf, options) => request(asOfQuery("/showcase/graph/summary", asOf), options),
   graphCustomer: (ref, asOf, options) =>
     request(asOfQuery(`/showcase/graph/customers/${encodeURIComponent(ref)}`, asOf), options),

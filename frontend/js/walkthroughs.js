@@ -12,7 +12,7 @@ export async function renderWalkthroughs(root, { signal } = {}) {
         el("div", {}, [
           el("h1", { text: "Golden-scenario walkthroughs" }),
           el("p", {
-            text: "Facts and reconstructed context are live. Inferences and recommendations stay POC planned.",
+            text: "Facts, reconstructed context and travel event memory are live. Recommendations stay POC planned.",
           }),
         ]),
       ]),
@@ -42,9 +42,17 @@ export async function renderWalkthroughs(root, { signal } = {}) {
               ]),
             ),
           ),
-          item.customer_ref
-            ? el("a", { href: `#/customer-360?ref=${encodeURIComponent(item.customer_ref)}`, text: "Open Customer 360" })
-            : el("a", { href: "#/retail", text: "Open Retail and SFA" }),
+          item.id === "singapore-travel"
+            ? el("a", {
+                href: `#/journey?ref=${encodeURIComponent(item.customer_ref)}&destination=SG`,
+                text: "Open Journey and Event Memory",
+              })
+            : item.customer_ref
+              ? el("a", {
+                  href: `#/customer-360?ref=${encodeURIComponent(item.customer_ref)}`,
+                  text: "Open Customer 360",
+                })
+              : el("a", { href: "#/retail", text: "Open Retail and SFA" }),
         ]),
       ),
     );

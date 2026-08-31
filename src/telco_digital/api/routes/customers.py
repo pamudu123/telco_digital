@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.exc import SQLAlchemyError
 
 from telco_digital.api.deps import get_as_of_queries, get_settings_dep, get_uow, require_showcase
@@ -10,9 +10,11 @@ from telco_digital.application.services import showcase as showcase_service
 from telco_digital.application.services.common import NotFoundError
 from telco_digital.config import Settings
 from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
+from telco_digital.infrastructure.postgres.event_memory import PostgresEventMemoryQueries
 from telco_digital.infrastructure.postgres.features import PostgresTemporalFeatureQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
+from telco_digital.intelligence.event_memory import EventMemoryService
 from telco_digital.intelligence.features import (
     CustomerFeatureService,
     GraphFeatureService,
@@ -40,6 +42,27 @@ async def customer_features(
     try:
         result = await service.calculate(customer_ref, as_of)
         return result.model_dump(mode="json")
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
+
+
+@router.get("/{customer_ref}/event-memory")
+async def customer_event_memory(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    destination: str | None = Query(default=None),
+) -> dict:
+    as_of, queries = context
+    service = EventMemoryService(PostgresEventMemoryQueries(queries.session))
+    try:
+        result = await service.recall(customer_ref, as_of, destination=destination)
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except SQLAlchemyError as exc:

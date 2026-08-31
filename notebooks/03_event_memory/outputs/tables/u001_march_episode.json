@@ -1,0 +1,9 @@
+{
+  "destination": "Singapore",
+  "start_at": "2026-03-10T08:00:00+00:00",
+  "end_at": "2026-03-16T18:00:00+00:00",
+  "duration_days": 6,
+  "usage_gb": 11.4,
+  "plan_selected": "ROAM_15",
+  "outcome": "No additional package required"
+}
