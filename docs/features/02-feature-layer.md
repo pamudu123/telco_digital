@@ -66,7 +66,7 @@ Read live results at `/api/v1/customers/U001/features?as_of=2026-08-31T23:59:00Z
 
 ## 10. What is not implemented
 
-Event memory, clustering, churn/fraud prediction, recommendations, training, automated refresh, online feature serving and production feature-store infrastructure are not implemented.
+Recommendations, training, automated refresh, online feature serving and production feature-store infrastructure are not implemented. Event memory, behaviour, churn and graph fraud are later verified capabilities.
 
 ## 11. POC limitations
 

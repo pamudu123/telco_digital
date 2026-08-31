@@ -1,0 +1,10 @@
+{
+  "scorer_version": "fraud-rules-v1",
+  "prediction_set_version": "customer-fraud-v1",
+  "u009_risk_band": "HIGH",
+  "u009_transaction_risk": 0.335,
+  "u009_graph_risk": 1.0,
+  "u003_risk_band": "LOW",
+  "graph_exceeds_transaction_for_u009": true,
+  "golden_customers": 4
+}

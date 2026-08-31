@@ -47,6 +47,8 @@ export const api = {
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/behaviour`, asOf), options),
   customerChurn: (ref, asOf, options) =>
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/churn`, asOf), options),
+  customerFraud: (ref, asOf, options) =>
+    request(asOfQuery(`/customers/${encodeURIComponent(ref)}/fraud`, asOf), options),
   eventMemory: (ref, asOf, destination, options) => {
     const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/event-memory`, asOf);
     const separator = path.includes("?") ? "&" : "?";

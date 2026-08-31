@@ -1,0 +1,26 @@
+[
+  {
+    "customer_ref": "U009",
+    "transaction_risk": 0.335,
+    "graph_risk": 1.0,
+    "delta": 0.665
+  },
+  {
+    "customer_ref": "U005",
+    "transaction_risk": 0.0,
+    "graph_risk": 0.58,
+    "delta": 0.58
+  },
+  {
+    "customer_ref": "U001",
+    "transaction_risk": 0.0,
+    "graph_risk": 0.13,
+    "delta": 0.13
+  },
+  {
+    "customer_ref": "U003",
+    "transaction_risk": 0.085,
+    "graph_risk": 0.0,
+    "delta": -0.085
+  }
+]

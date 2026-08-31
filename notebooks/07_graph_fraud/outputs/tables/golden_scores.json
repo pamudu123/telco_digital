@@ -1,0 +1,46 @@
+[
+  {
+    "customer_ref": "U009",
+    "transaction_risk": 0.335,
+    "graph_risk": 1.0,
+    "combined_risk": 0.8005,
+    "risk_band": "HIGH",
+    "fired_rules": [
+      "KNOWN_FRAUD_WITHIN_2_HOPS",
+      "WALLET_FUNNEL"
+    ],
+    "in_known_fraud_seed": true
+  },
+  {
+    "customer_ref": "U005",
+    "transaction_risk": 0.0,
+    "graph_risk": 0.58,
+    "combined_risk": 0.406,
+    "risk_band": "MEDIUM",
+    "fired_rules": [
+      "SHARED_DEVICE",
+      "KNOWN_FRAUD_WITHIN_2_HOPS"
+    ],
+    "in_known_fraud_seed": true
+  },
+  {
+    "customer_ref": "U001",
+    "transaction_risk": 0.0,
+    "graph_risk": 0.13,
+    "combined_risk": 0.091,
+    "risk_band": "LOW",
+    "fired_rules": [
+      "SHARED_DEVICE"
+    ],
+    "in_known_fraud_seed": false
+  },
+  {
+    "customer_ref": "U003",
+    "transaction_risk": 0.085,
+    "graph_risk": 0.0,
+    "combined_risk": 0.0255,
+    "risk_band": "LOW",
+    "fired_rules": [],
+    "in_known_fraud_seed": false
+  }
+]

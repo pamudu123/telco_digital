@@ -115,7 +115,45 @@ function churnPanel(data) {
   ]);
 }
 
-function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError) {
+function fraudPanel(data) {
+  const fired = (data.rules || []).filter((item) => item.fired);
+  const percent = Math.round(Number(data.combined_risk) * 100);
+  const transaction = Math.round(Number(data.transaction_risk) * 100);
+  const graph = data.graph_available ? Math.round(Number(data.graph_risk) * 100) : null;
+  return el("div", { className: "card" }, [
+    el("header", { className: "page-header" }, [
+      el("h3", { text: "Graph fraud" }),
+      badge("Prediction", "prediction"),
+    ]),
+    el("p", {
+      text: `${data.risk_band} combined • ${percent}% (${data.scorer_version})`,
+    }),
+    el("p", {
+      className: "meta",
+      text: graph == null
+        ? `Transaction-only ${transaction}% • graph unavailable`
+        : `Transaction-only ${transaction}% • graph ${graph}%`,
+    }),
+    fired.length
+      ? el(
+          "ul",
+          { className: "timeline" },
+          fired.map((item) =>
+            el("li", {}, [
+              el("div", {}, [
+                el("div", { text: item.code.replaceAll("_", " ") }),
+                el("small", { text: `${item.severity} • boost ${item.boost}` }),
+              ]),
+              badge("Prediction", "prediction"),
+            ]),
+          ),
+        )
+      : el("p", { text: "No fraud rule fired at this as_of." }),
+    el("p", { className: "meta", text: `${data.prediction_set_version} • as_of ${formatDate(data.as_of)}` }),
+  ]);
+}
+
+function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError, fraud, fraudError) {
   const items = [
     ["Recommendation", "No recommended action generated."],
     ["Digital twin", "No derived twin in this showcase."],
@@ -173,6 +211,23 @@ function plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, c
               badge("Prediction", "prediction"),
             ]),
             el("p", { text: "A trained score appears when feature evidence is available." }),
+          ]),
+    fraudError
+      ? el("div", { className: "card" }, [
+          el("header", { className: "page-header" }, [
+            el("h3", { text: "Graph fraud" }),
+            badge("Unavailable", "unknown"),
+          ]),
+          el("p", { text: "Graph fraud scoring could not be loaded. Recorded facts remain live." }),
+        ])
+      : fraud
+        ? fraudPanel(fraud)
+        : el("div", { className: "card" }, [
+            el("header", { className: "page-header" }, [
+              el("h3", { text: "Graph fraud" }),
+              badge("Prediction", "prediction"),
+            ]),
+            el("p", { text: "Transaction-only and graph risk appear when money or projection evidence is available." }),
           ]),
     ...items.map(([title, detail]) =>
       el("div", { className: "card" }, [
@@ -263,7 +318,7 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       el("div", {}, [
         el("h1", { text: "Customer 360" }),
         el("p", {
-          text: "Recorded facts plus derived features, episodes, behaviour traits and a trained churn score. Recommendations stay POC planned.",
+          text: "Recorded facts plus derived features, episodes, behaviour traits, a trained churn score and graph fraud risk. Recommendations stay POC planned.",
         }),
       ]),
     ]),
@@ -289,12 +344,13 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
   }
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
-  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome] = await Promise.allSettled([
+  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, fraudOutcome] = await Promise.allSettled([
     api.customer360(selected, asOf || undefined, { signal }),
     api.customerFeatures(selected, asOf || undefined, { signal }),
     api.eventMemory(selected, asOf || undefined, undefined, { signal }),
     api.customerBehaviour(selected, asOf || undefined, { signal }),
     api.customerChurn(selected, asOf || undefined, { signal }),
+    api.customerFraud(selected, asOf || undefined, { signal }),
   ]);
   if (stale(signal)) return;
 
@@ -324,6 +380,11 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
     churnOutcome.status === "rejected" && !isAbortError(churnOutcome.reason)
       ? churnOutcome.reason
       : null;
+  const fraud = fraudOutcome.status === "fulfilled" ? fraudOutcome.value : null;
+  const fraudError =
+    fraudOutcome.status === "rejected" && !isAbortError(fraudOutcome.reason)
+      ? fraudOutcome.reason
+      : null;
   results.replaceChildren(
     renderFacts(
       factsOutcome.value,
@@ -336,6 +397,8 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
       behaviourError,
       churn,
       churnError,
+      fraud,
+      fraudError,
     ),
   );
 }
@@ -385,6 +448,8 @@ function renderFacts(
   behaviourError,
   churn,
   churnError,
+  fraud,
+  fraudError,
 ) {
   const sections = {
     usage: factList("Usage", data.usage, "No usage events at this as_of."),
@@ -420,7 +485,7 @@ function renderFacts(
     ]),
     el("aside", {}, [
       featuresError ? featureErrorPanel(featuresError) : features ? featurePanel(features) : null,
-      plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError),
+      plannedRail(eventMemory, eventMemoryError, behaviour, behaviourError, churn, churnError, fraud, fraudError),
     ]),
   ]);
 }

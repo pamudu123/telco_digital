@@ -16,6 +16,8 @@ def test_manifest_keeps_fastapi_and_simulator_not_started() -> None:
     assert by_number["03"].status == "POC complete"
     assert by_number["04"].status == "POC complete"
     assert by_number["05"].status == "POC complete"
+    assert by_number["07"].status == "POC complete"
+    assert by_number["06"].status == "Not started"
     assert by_number["12"].status == "Not started"
     assert by_number["12"].name == "FastAPI"
     assert by_number["13"].status == "Not started"
@@ -40,5 +42,5 @@ def test_manifest_does_not_claim_showcase_completes_later_capabilities() -> None
     assert all(
         item.status != "POC complete"
         for item in CAPABILITIES
-        if item.number not in {"00", "01", "02", "03", "04", "05"}
+        if item.number not in {"00", "01", "02", "03", "04", "05", "07"}
     )

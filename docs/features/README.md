@@ -12,7 +12,7 @@ scenario works in the shared demo environment; it does not mean production ready
 | 04 | Behaviour intelligence | POC complete | [04-behaviour-intelligence.md](./04-behaviour-intelligence.md) |
 | 05 | Churn prediction | POC complete | [05-churn-prediction.md](./05-churn-prediction.md) |
 | 06 | Recommendations and uncertainty | Not started | — |
-| 07 | Graph fraud | Not started | — |
+| 07 | Graph fraud | POC complete | [07-graph-fraud.md](./07-graph-fraud.md) |
 | 08 | SFA forecasting | Not started | — |
 | 09 | Digital twins | Not started | — |
 | 10 | Decision engine and explanations | Not started | — |

@@ -10,8 +10,10 @@ from telco_digital.application.services import showcase as showcase_service
 from telco_digital.application.services.common import NotFoundError
 from telco_digital.config import Settings
 from telco_digital.infrastructure.neo4j.features import Neo4jFeatureQueries
+from telco_digital.infrastructure.neo4j.fraud import Neo4jGraphFraudQueries
 from telco_digital.infrastructure.postgres.event_memory import PostgresEventMemoryQueries
 from telco_digital.infrastructure.postgres.features import PostgresTemporalFeatureQueries
+from telco_digital.infrastructure.postgres.fraud import PostgresTransactionRiskQueries
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
 from telco_digital.intelligence.behaviour import BehaviourService
@@ -22,6 +24,7 @@ from telco_digital.intelligence.features import (
     GraphFeatureService,
     TemporalFeatureService,
 )
+from telco_digital.intelligence.fraud import FraudService
 
 router = APIRouter(
     prefix="/customers",
@@ -114,6 +117,30 @@ async def customer_churn(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except NotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="PostgreSQL is unreachable") from exc
+
+
+@router.get("/{customer_ref}/fraud")
+async def customer_fraud(
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    settings: Settings = Depends(get_settings_dep),
+) -> dict:
+    as_of, queries = context
+    service = FraudService(
+        PostgresTransactionRiskQueries(queries.session),
+        Neo4jGraphFraudQueries(settings),
+    )
+    try:
+        result = await service.evaluate(customer_ref, as_of)
+        return result.model_dump(mode="json")
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except NotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except LookupError as exc:

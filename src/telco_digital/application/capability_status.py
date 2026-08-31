@@ -235,10 +235,34 @@ CAPABILITIES: tuple[CapabilityRecord, ...] = (
     CapabilityRecord(
         number="07",
         name="Graph fraud",
-        status="Not started",
-        demonstrated_scenario="Shared-device and transfer patterns scored from the graph.",
+        status="POC complete",
+        document="docs/features/07-graph-fraud.md",
+        demonstrated_scenario=(
+            "U009's incoming wallet funnel and seeded fraud membership score HIGH "
+            "combined risk. Transaction-only risk stays lower. U003 stays LOW."
+        ),
         consuming_applications=("Mobile Money", "Loyalty", "SFA", "Lottery"),
-        not_implemented=("Fraud features", "Fraud scorer"),
+        evidence=(
+            "docs/features/07-graph-fraud.md",
+            "notebooks/07_graph_fraud/07_graph_fraud.ipynb",
+            "notebooks/07_graph_fraud/outputs/metrics.json",
+            "notebooks/07_graph_fraud/outputs/tables/",
+            "notebooks/07_graph_fraud/outputs/plots/",
+        ),
+        implemented=(
+            "Point-in-time transaction-only and graph fraud features",
+            "Deterministic rules and combined FraudScorer",
+            "Read-only fraud API and Customer 360 / Money risk panel",
+        ),
+        not_implemented=(
+            "Graph ML embeddings",
+            "Persisted prediction store",
+            "Review-queue or write-path blocking",
+        ),
+        limitations=(
+            "Seeded watchlist and synthetic wallet funnel, not a live SAR table",
+            "Capability 06 recommendations remain not started",
+        ),
     ),
     CapabilityRecord(
         number="08",
@@ -534,11 +558,45 @@ WALKTHROUGHS: tuple[Walkthrough, ...] = (
         title="Shared device and suspicious transfers",
         customer_ref="U009",
         applications=("Mobile Money",),
-        current_evidence="Device, wallet, merchant and transaction facts",
-        later_intelligence="Neo4j graph fraud evidence",
-        steps=_fact_steps(
-            unknown="Graph fraud scoring is not implemented.",
-            consumer="Mobile Money",
+        current_evidence="Wallet transfers plus transaction-only vs graph fraud scores",
+        later_intelligence="Review recommendation from the decision engine",
+        steps=(
+            WalkthroughStep(
+                number=1, title="What happened", live=True, summary="Authoritative recorded facts."
+            ),
+            WalkthroughStep(
+                number=2,
+                title="What the platform knows",
+                live=True,
+                summary="Reconstructed context from facts at as_of.",
+            ),
+            WalkthroughStep(
+                number=3,
+                title="What it infers or predicts",
+                live=True,
+                summary=(
+                    "U009 scores HIGH from graph funnel and seeded-fraud "
+                    "proximity; transaction-only risk stays lower."
+                ),
+            ),
+            WalkthroughStep(
+                number=4,
+                title="What it recommends",
+                live=False,
+                summary="Decisions and reason codes are POC planned.",
+            ),
+            WalkthroughStep(
+                number=5,
+                title="What remains unknown",
+                live=True,
+                summary="No review action is generated in this showcase.",
+            ),
+            WalkthroughStep(
+                number=6,
+                title="Which existing application consumes the result",
+                live=True,
+                summary="Mobile Money",
+            ),
         ),
     ),
     Walkthrough(

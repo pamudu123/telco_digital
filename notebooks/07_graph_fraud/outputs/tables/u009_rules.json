@@ -1,0 +1,38 @@
+[
+  {
+    "code": "SHARED_DEVICE",
+    "fired": false,
+    "severity": "low",
+    "boost": 0.0
+  },
+  {
+    "code": "KNOWN_FRAUD_WITHIN_2_HOPS",
+    "fired": true,
+    "severity": "high",
+    "boost": 0.15
+  },
+  {
+    "code": "WALLET_FUNNEL",
+    "fired": true,
+    "severity": "high",
+    "boost": 0.15
+  },
+  {
+    "code": "CIRCULAR_TRANSFERS",
+    "fired": false,
+    "severity": "high",
+    "boost": 0.0
+  },
+  {
+    "code": "ABNORMAL_CREATION",
+    "fired": false,
+    "severity": "medium",
+    "boost": 0.0
+  },
+  {
+    "code": "ABNORMAL_TRANSACTION_VELOCITY",
+    "fired": false,
+    "severity": "medium",
+    "boost": 0.0
+  }
+]
