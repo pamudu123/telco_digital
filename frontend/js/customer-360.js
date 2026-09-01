@@ -447,86 +447,41 @@ export async function renderCustomer360(root, { lens = "all", signal } = {}) {
 
   results.replaceChildren(statusBox("loading", "Loading recorded facts…"));
   const recDestination = selected === "U001" ? "SG" : undefined;
-  const [factsOutcome, featuresOutcome, memoryOutcome, behaviourOutcome, churnOutcome, recsOutcome, fraudOutcome, twinOutcome, decisionOutcome] =
-    await Promise.allSettled([
-    api.customer360(selected, asOf || undefined, { signal }),
-    api.customerFeatures(selected, asOf || undefined, { signal }),
-    api.eventMemory(selected, asOf || undefined, recDestination, { signal }),
-    api.customerBehaviour(selected, asOf || undefined, { signal }),
-    api.customerChurn(selected, asOf || undefined, { signal }),
-    api.customerRecommendations(selected, asOf || undefined, recDestination, { signal }),
-    api.customerFraud(selected, asOf || undefined, { signal }),
-    api.customerTwin(selected, asOf || undefined, recDestination, { signal }),
-    api.customerDecision(selected, asOf || undefined, recDestination, { signal }),
-  ]);
-  if (stale(signal)) return;
-
-  if (factsOutcome.status === "rejected") {
-    if (isAbortError(factsOutcome.reason)) return;
-    results.replaceChildren(errorBox(factsOutcome.reason, `Could not load ${selected}.`));
+  let intelligence;
+  try {
+    intelligence = await api.customerIntelligence(
+      selected,
+      asOf || undefined,
+      recDestination,
+      { signal },
+    );
+  } catch (error) {
+    if (stale(signal) || isAbortError(error)) return;
+    results.replaceChildren(errorBox(error, `Could not load ${selected}.`));
     return;
   }
+  if (stale(signal)) return;
 
-  const features = featuresOutcome.status === "fulfilled" ? featuresOutcome.value : null;
-  const featuresError =
-    featuresOutcome.status === "rejected" && !isAbortError(featuresOutcome.reason)
-      ? featuresOutcome.reason
-      : null;
-  const eventMemory = memoryOutcome.status === "fulfilled" ? memoryOutcome.value : null;
-  const eventMemoryError =
-    memoryOutcome.status === "rejected" && !isAbortError(memoryOutcome.reason)
-      ? memoryOutcome.reason
-      : null;
-  const behaviour = behaviourOutcome.status === "fulfilled" ? behaviourOutcome.value : null;
-  const behaviourError =
-    behaviourOutcome.status === "rejected" && !isAbortError(behaviourOutcome.reason)
-      ? behaviourOutcome.reason
-      : null;
-  const churn = churnOutcome.status === "fulfilled" ? churnOutcome.value : null;
-  const churnError =
-    churnOutcome.status === "rejected" && !isAbortError(churnOutcome.reason)
-      ? churnOutcome.reason
-      : null;
-  const recommendation = recsOutcome.status === "fulfilled" ? recsOutcome.value : null;
-  const recommendationError =
-    recsOutcome.status === "rejected" && !isAbortError(recsOutcome.reason)
-      ? recsOutcome.reason
-      : null;
-  const fraud = fraudOutcome.status === "fulfilled" ? fraudOutcome.value : null;
-  const fraudError =
-    fraudOutcome.status === "rejected" && !isAbortError(fraudOutcome.reason)
-      ? fraudOutcome.reason
-      : null;
-  const twin = twinOutcome.status === "fulfilled" ? twinOutcome.value : null;
-  const twinError =
-    twinOutcome.status === "rejected" && !isAbortError(twinOutcome.reason)
-      ? twinOutcome.reason
-      : null;
-  const decision = decisionOutcome.status === "fulfilled" ? decisionOutcome.value : null;
-  const decisionError =
-    decisionOutcome.status === "rejected" && !isAbortError(decisionOutcome.reason)
-      ? decisionOutcome.reason
-      : null;
   results.replaceChildren(
     renderFacts(
-      factsOutcome.value,
+      intelligence.facts,
       currentLens,
-      features,
-      featuresError,
-      eventMemory,
-      eventMemoryError,
-      behaviour,
-      behaviourError,
-      churn,
-      churnError,
-      recommendation,
-      recommendationError,
-      fraud,
-      fraudError,
-      twin,
-      twinError,
-      decision,
-      decisionError,
+      intelligence.features,
+      null,
+      intelligence.event_memory,
+      null,
+      intelligence.behaviour,
+      null,
+      intelligence.churn,
+      null,
+      intelligence.recommendation,
+      null,
+      intelligence.fraud,
+      null,
+      intelligence.twin,
+      null,
+      intelligence.decision,
+      null,
     ),
   );
 }

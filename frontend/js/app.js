@@ -56,10 +56,6 @@ function renderShell(root) {
       el("aside", { className: "sidebar" }, [
         el("h2", { text: "Intelligence" }),
         nav,
-        el("div", { className: "sidebar-foot" }, [
-          el("div", { text: "POC environment: Live evidence = capabilities 00–12." }),
-          el("div", { text: "Planned capability = the simulator write path." }),
-        ]),
       ]),
       content,
     ]),
@@ -222,6 +218,47 @@ function chartCard(title, canvas, points, doughnut = false) {
 export function start() {
   const { nav, content } = renderShell(document.body);
   let active = new AbortController();
+  let currentId = null;
+  const views = new Map();
+
+  function viewFor(id) {
+    if (!views.has(id)) {
+      views.set(id, {
+        root: el("div", { className: "page-view", dataset: { route: id } }),
+        status: "new",
+        run: 0,
+      });
+    }
+    return views.get(id);
+  }
+
+  async function renderPage(id, view, signal) {
+    const run = ++view.run;
+    view.status = "loading";
+    try {
+      if (id === "overview") await renderOverview(view.root, { signal });
+      else if (id === "customer-360") await renderCustomer360(view.root, { signal });
+      else if (id === "campaigns") await renderCustomer360(view.root, { lens: "campaigns", signal });
+      else if (id === "money") await renderCustomer360(view.root, { lens: "money", signal });
+      else if (id === "retail") await renderCustomer360(view.root, { lens: "retail", signal });
+      else if (id === "walkthroughs") await renderWalkthroughs(view.root, { signal });
+      else if (id === "journey") await renderJourney(view.root, { signal });
+      else if (id === "graph") await renderGraph(view.root, { signal });
+      else if (id === "models") await renderModels(view.root, { signal });
+      else if (id === "copilot") await renderCopilot(view.root, { signal });
+      else if (id === "status") await renderStatus(view.root, { signal });
+      else view.root.replaceChildren(statusBox("error", "Unknown page", "Use the Intelligence navigation."));
+      if (view.run === run) view.status = signal.aborted ? "aborted" : "ready";
+    } catch (error) {
+      if (view.run !== run) return;
+      if (signal.aborted || isAbortError(error)) {
+        view.status = "aborted";
+        return;
+      }
+      view.status = "ready";
+      view.root.replaceChildren(errorBox(error, "Could not load this page."));
+    }
+  }
 
   async function show() {
     active.abort();
@@ -229,27 +266,19 @@ export function start() {
     active = controller;
     const { signal } = controller;
     const id = route();
+    const isSameScreen = id === currentId;
+    const view = viewFor(id);
+    currentId = id;
     setCurrent(nav, id);
-    content.replaceChildren();
-    try {
-      if (id === "overview") await renderOverview(content, { signal });
-      else if (id === "customer-360") await renderCustomer360(content, { signal });
-      else if (id === "campaigns") await renderCustomer360(content, { lens: "campaigns", signal });
-      else if (id === "money") await renderCustomer360(content, { lens: "money", signal });
-      else if (id === "retail") await renderCustomer360(content, { lens: "retail", signal });
-      else if (id === "walkthroughs") await renderWalkthroughs(content, { signal });
-      else if (id === "journey") await renderJourney(content, { signal });
-      else if (id === "graph") await renderGraph(content, { signal });
-      else if (id === "models") await renderModels(content, { signal });
-      else if (id === "copilot") await renderCopilot(content, { signal });
-      else if (id === "status") await renderStatus(content, { signal });
-      else content.replaceChildren(statusBox("error", "Unknown page", "Use the Intelligence navigation."));
-      if (signal.aborted) return;
-      content.focus();
-    } catch (error) {
-      if (signal.aborted || isAbortError(error)) return;
-      content.replaceChildren(errorBox(error, "Could not load this page."));
+    content.replaceChildren(view.root);
+
+    // A hash change within the active screen is a new search. Moving between
+    // screens restores the cached DOM and its loaded information unchanged.
+    if (isSameScreen || view.status === "new" || view.status === "aborted") {
+      await renderPage(id, view, signal);
     }
+    if (signal.aborted) return;
+    content.focus();
   }
   window.addEventListener("hashchange", () => {
     show();

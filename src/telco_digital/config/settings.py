@@ -9,9 +9,16 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+asyncpg://poc:poc@localhost:5432/intelligence_poc"
     database_pool_mode: Literal["direct", "session", "transaction"] = "direct"
+    database_pool_size: int = 5
+    database_max_overflow: int = 5
+    database_pool_timeout_seconds: float = 10.0
+    database_pool_recycle_seconds: int = 300
+    database_pool_pre_ping: bool = True
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
     neo4j_password: str = "password"
+    neo4j_connection_timeout_seconds: float = 2.0
+    neo4j_connection_acquisition_timeout_seconds: float = 2.0
     log_level: str = "INFO"
     cors_origins: list[str] = ["http://localhost:8000", "http://127.0.0.1:8000"]
     api_environment: str = "local"

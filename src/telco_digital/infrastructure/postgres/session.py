@@ -36,16 +36,28 @@ def running_serverless() -> bool:
 def create_engine(settings: Settings | None = None) -> AsyncEngine:
     settings = settings or get_settings()
     database_url = async_database_url(settings.database_url)
-    engine_options: dict = {"pool_pre_ping": True}
+    engine_options: dict = {"pool_pre_ping": settings.database_pool_pre_ping}
 
-    if settings.database_pool_mode == "transaction" or uses_transaction_pooler(database_url):
+    transaction_pooler = (
+        settings.database_pool_mode == "transaction" or uses_transaction_pooler(database_url)
+    )
+    if transaction_pooler:
         database_url = database_url.update_query_dict({"prepared_statement_cache_size": "0"})
-        engine_options.update(
-            connect_args={"statement_cache_size": 0},
-            poolclass=NullPool,
-        )
-    elif running_serverless():
+        engine_options["connect_args"] = {"statement_cache_size": 0}
+
+    if running_serverless():
         engine_options["poolclass"] = NullPool
+    else:
+        # A long-running FastAPI process can safely reuse client connections to
+        # Supavisor. Transaction-level pooling still requires both asyncpg
+        # statement caches to remain disabled, but it does not require opening
+        # a new TCP/TLS connection for every HTTP request.
+        engine_options.update(
+            pool_size=settings.database_pool_size,
+            max_overflow=settings.database_max_overflow,
+            pool_timeout=settings.database_pool_timeout_seconds,
+            pool_recycle=settings.database_pool_recycle_seconds,
+        )
 
     return create_async_engine(database_url, **engine_options)
 

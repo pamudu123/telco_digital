@@ -54,6 +54,14 @@ export const api = {
   walkthroughs: (options) => request("/showcase/walkthroughs", options),
   customer360: (ref, asOf, options) =>
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/360`, asOf), options),
+  customerIntelligence: (ref, asOf, destination, options) => {
+    const path = asOfQuery(`/customers/${encodeURIComponent(ref)}/intelligence`, asOf);
+    const separator = path.includes("?") ? "&" : "?";
+    return request(
+      destination ? `${path}${separator}destination=${encodeURIComponent(destination)}` : path,
+      options,
+    );
+  },
   customerFeatures: (ref, asOf, options) =>
     request(asOfQuery(`/customers/${encodeURIComponent(ref)}/features`, asOf), options),
   customerBehaviour: (ref, asOf, options) =>

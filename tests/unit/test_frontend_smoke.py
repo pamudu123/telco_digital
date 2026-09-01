@@ -24,6 +24,7 @@ def test_shell_has_landmarks_and_vendored_chart() -> None:
     assert "Copilot" in app_js
     assert 'import { renderGraph } from "./graph.js"' in app_js
     assert "customerFeatures" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
+    assert "customerIntelligence" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerBehaviour" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerChurn" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
     assert "customerFraud" in (ROOT / "js" / "api.js").read_text(encoding="utf-8")
@@ -111,9 +112,15 @@ def test_nav_distinguishes_live_and_planned_pages() -> None:
     assert '["overview", "Overview", "live"]' in app_js
     assert '["models", "Models and Decisions", "live"]' in app_js
     assert '["copilot", "Copilot", "live"]' in app_js
-    assert "00–12" in app_js
     assert "renderCopilot" in app_js
     assert "renderModels" in app_js
+
+
+def test_sidebar_omits_environment_explanation() -> None:
+    app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
+
+    assert "POC environment:" not in app_js
+    assert "Planned capability =" not in app_js
 
 
 def test_customer_360_does_not_paint_stale_loads() -> None:
@@ -131,3 +138,17 @@ def test_customer_360_does_not_paint_stale_loads() -> None:
     assert "Recorded facts remain live" in customer_js
     assert "root.append(renderFacts" not in customer_js
     assert "root.append(errorBox" not in customer_js
+    assert "api.customerIntelligence" in customer_js
+    assert "api.customer360(selected" not in customer_js
+
+
+def test_navigation_retains_each_screens_loaded_information() -> None:
+    app_js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
+
+    assert "const views = new Map()" in app_js
+    assert "const view = viewFor(id)" in app_js
+    assert "content.replaceChildren(view.root)" in app_js
+    assert 'view.status === "new"' in app_js
+    assert 'view.status === "aborted"' in app_js
+    assert "if (isSameScreen" in app_js
+    assert "content.replaceChildren();" not in app_js

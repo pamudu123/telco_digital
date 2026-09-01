@@ -21,6 +21,16 @@ class Neo4jGraphFraudQueries:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
 
+    def _driver(self):
+        return GraphDatabase.driver(
+            self.settings.neo4j_uri,
+            auth=(self.settings.neo4j_user, self.settings.neo4j_password),
+            connection_timeout=self.settings.neo4j_connection_timeout_seconds,
+            connection_acquisition_timeout=(
+                self.settings.neo4j_connection_acquisition_timeout_seconds
+            ),
+        )
+
     async def calculate(self, customer_ref: str, as_of: datetime) -> GraphFraudFeatures:
         return await asyncio.to_thread(self._calculate, customer_ref, as_of)
 
@@ -73,10 +83,7 @@ class Neo4jGraphFraudQueries:
                max(merchant_customers) AS merchant_customer_count,
                max(merchant_degree) AS merchant_degree
         """
-        with GraphDatabase.driver(
-            self.settings.neo4j_uri,
-            auth=(self.settings.neo4j_user, self.settings.neo4j_password),
-        ) as driver:
+        with self._driver() as driver:
             record = driver.execute_query(
                 query,
                 customer_ref=customer_ref,

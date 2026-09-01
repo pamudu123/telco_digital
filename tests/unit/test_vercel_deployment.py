@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from sqlalchemy.pool import NullPool
+from sqlalchemy.pool import AsyncAdaptedQueuePool, NullPool
 
 from telco_digital.config import Settings
 from telco_digital.infrastructure.postgres.session import create_engine
@@ -30,7 +30,7 @@ def test_vercel_bundles_frontend_with_single_fastapi_function() -> None:
     assert (ROOT / "frontend" / "index.html").is_file()
 
 
-def test_transaction_pool_mode_disables_application_and_statement_pools() -> None:
+def test_transaction_pool_mode_reuses_connections_but_disables_statement_caches() -> None:
     settings = Settings(
         database_url=(
             "postgresql+asyncpg://postgres.project:password@"
@@ -41,13 +41,13 @@ def test_transaction_pool_mode_disables_application_and_statement_pools() -> Non
 
     engine = create_engine(settings)
     try:
-        assert isinstance(engine.sync_engine.pool, NullPool)
+        assert isinstance(engine.sync_engine.pool, AsyncAdaptedQueuePool)
         assert engine.url.query["prepared_statement_cache_size"] == "0"
     finally:
         engine.sync_engine.dispose()
 
 
-def test_pooler_urls_disable_statement_caching_without_an_explicit_pool_mode() -> None:
+def test_pooler_urls_reuse_connections_and_disable_statement_caching() -> None:
     settings = Settings(
         database_url=(
             "postgresql+asyncpg://postgres.project:password@"
@@ -58,7 +58,7 @@ def test_pooler_urls_disable_statement_caching_without_an_explicit_pool_mode() -
 
     engine = create_engine(settings)
     try:
-        assert isinstance(engine.sync_engine.pool, NullPool)
+        assert isinstance(engine.sync_engine.pool, AsyncAdaptedQueuePool)
         assert engine.url.query["prepared_statement_cache_size"] == "0"
     finally:
         engine.sync_engine.dispose()
@@ -89,6 +89,7 @@ def test_vercel_accepts_a_provider_postgresql_url_without_driver_suffix() -> Non
     engine = create_engine(settings)
     try:
         assert engine.url.drivername == "postgresql+asyncpg"
-        assert isinstance(engine.sync_engine.pool, NullPool)
+        assert isinstance(engine.sync_engine.pool, AsyncAdaptedQueuePool)
+        assert engine.url.query["prepared_statement_cache_size"] == "0"
     finally:
         engine.sync_engine.dispose()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 
 from telco_digital.api.deps import (
     as_of_query,
@@ -23,11 +23,14 @@ from telco_digital.api.stack import (
 )
 from telco_digital.application.commands.commands import GetCustomerStateQuery, GetTimelineQuery
 from telco_digital.application.services import showcase as showcase_service
+from telco_digital.application.services.customer_intelligence import get_customer_intelligence
 from telco_digital.application.services.customer_state import get_customer_state
 from telco_digital.application.services.timeline import get_timeline
 from telco_digital.config import Settings
+from telco_digital.infrastructure.postgres.repositories import SqlPlanRepository
 from telco_digital.infrastructure.postgres.showcase import PostgresShowcaseQueries
 from telco_digital.infrastructure.postgres.unit_of_work import SqlAlchemyUnitOfWork
+from telco_digital.intelligence.recommendations import PlanRepositoryCatalogue
 
 router = APIRouter(prefix="/customers", tags=["customers"])
 
@@ -183,4 +186,35 @@ async def customer_360(
             as_of=as_of,
             queried_at=datetime.now(tz=UTC),
         )
+        return result.model_dump(mode="json")
+
+
+@router.get("/{customer_ref}/intelligence")
+async def customer_intelligence(
+    request: Request,
+    customer_ref: str,
+    context: tuple[datetime, PostgresShowcaseQueries] = Depends(get_as_of_queries),
+    settings: Settings = Depends(get_settings_dep),
+    uow: SqlAlchemyUnitOfWork = Depends(get_uow),
+    destination: str | None = Query(default=None),
+) -> dict:
+    as_of, queries = context
+    async with service_errors():
+        factory = request.app.state.session_factory
+        async with (
+            factory() as feature_session,
+            factory() as memory_session,
+            factory() as fraud_session,
+        ):
+            result = await get_customer_intelligence(
+                customer_ref=customer_ref,
+                as_of=as_of,
+                destination=destination,
+                queries=queries,
+                uow=uow,
+                features=customer_features(feature_session, settings),
+                memory=event_memory(memory_session),
+                catalogue=PlanRepositoryCatalogue(SqlPlanRepository(memory_session)),
+                fraud=fraud_service(fraud_session, settings),
+            )
         return result.model_dump(mode="json")

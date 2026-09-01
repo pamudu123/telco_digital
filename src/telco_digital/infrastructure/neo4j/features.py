@@ -15,6 +15,16 @@ class Neo4jFeatureQueries:
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
 
+    def _driver(self):
+        return GraphDatabase.driver(
+            self.settings.neo4j_uri,
+            auth=(self.settings.neo4j_user, self.settings.neo4j_password),
+            connection_timeout=self.settings.neo4j_connection_timeout_seconds,
+            connection_acquisition_timeout=(
+                self.settings.neo4j_connection_acquisition_timeout_seconds
+            ),
+        )
+
     async def calculate(self, customer_ref: str, as_of: datetime) -> GraphFeatures:
         return await asyncio.to_thread(self._calculate, customer_ref, as_of)
 
@@ -57,10 +67,7 @@ class Neo4jFeatureQueries:
                count(DISTINCT counterparty) AS wallet_counterparties,
                count(DISTINCT bounded_relationship) AS customer_graph_degree
         """
-        with GraphDatabase.driver(
-            self.settings.neo4j_uri,
-            auth=(self.settings.neo4j_user, self.settings.neo4j_password),
-        ) as driver:
+        with self._driver() as driver:
             record = driver.execute_query(
                 query,
                 customer_ref=customer_ref,
@@ -89,10 +96,7 @@ class Neo4jFeatureQueries:
         return await asyncio.to_thread(self._summary, as_of)
 
     def _summary(self, as_of: datetime) -> dict:
-        with GraphDatabase.driver(
-            self.settings.neo4j_uri,
-            auth=(self.settings.neo4j_user, self.settings.neo4j_password),
-        ) as driver:
+        with self._driver() as driver:
             nodes = driver.execute_query(
                 "MATCH (n {projection: 'poc-v1'}) "
                 "RETURN labels(n)[0] AS kind, count(*) AS total ORDER BY kind",

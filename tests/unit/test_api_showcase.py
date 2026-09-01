@@ -39,6 +39,7 @@ def test_capability_02_routes_are_registered() -> None:
     with TestClient(create_app(Settings(showcase_enabled=True, api_environment="test"))) as client:
         paths = client.get("/openapi.json").json()["paths"]
         assert "/api/v1/customers/{customer_ref}/features" in paths
+        assert "/api/v1/customers/{customer_ref}/intelligence" in paths
         assert "/api/v1/customers/{customer_ref}/event-memory" in paths
         assert "/api/v1/customers/{customer_ref}/behaviour" in paths
         assert "/api/v1/customers/{customer_ref}/churn" in paths
