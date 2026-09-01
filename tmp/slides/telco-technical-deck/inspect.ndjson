@@ -1,0 +1,290 @@
+{"kind":"deck","id":"telco-technical-deck","slideCount":10,"slideSize":{"width":1280,"height":720}}
+{"kind":"slide","slide":1,"id":"mkoow5"}
+{"kind":"slide","slide":2,"id":"u90yed"}
+{"kind":"slide","slide":3,"id":"hnp75w"}
+{"kind":"slide","slide":4,"id":"54yzrb"}
+{"kind":"slide","slide":5,"id":"eaetx9"}
+{"kind":"slide","slide":6,"id":"msru2e"}
+{"kind":"slide","slide":7,"id":"5lzxgm"}
+{"kind":"slide","slide":8,"id":"g95le6"}
+{"kind":"slide","slide":9,"id":"oke9al"}
+{"kind":"slide","slide":10,"id":"gwaah3"}
+{"kind":"image","slide":1,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":1,"id":"3","role":"cover contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":1,"id":"4","role":"cover accent rule","shapeType":"rect","bbox":[64,86,7,455]}
+{"kind":"textbox","slide":1,"id":"5","role":"kicker","text":"TELCO DIGITAL · TECHNICAL WALKTHROUGH","textPreview":"TELCO DIGITAL · TECHNICAL WALKTHROUGH","textChars":37,"textLines":1,"bbox":[86,88,520,26]}
+{"kind":"textbox","slide":1,"id":"6","role":"cover title","text":"From operational events to explainable decisions","textPreview":"From operational events to explainable decisions","textChars":48,"textLines":1,"bbox":[82,130,785,184]}
+{"kind":"textbox","slide":1,"id":"7","role":"cover subtitle","text":"A shared-intelligence platform built on trustworthy facts, time-aware context, and relationship evidence.","textPreview":"A shared-intelligence platform built on trustworthy facts, time-aware context, and relationship evidence.","textChars":105,"textLines":1,"bbox":[86,326,610,86]}
+{"kind":"shape","slide":1,"id":"8","role":"cover moment panel","shapeType":"roundRect","bbox":[86,456,390,92]}
+{"kind":"textbox","slide":1,"id":"9","role":"cover moment","text":"PostgreSQL facts + Neo4j context + governed decisions","textPreview":"PostgreSQL facts + Neo4j context + governed decisions","textChars":53,"textLines":1,"bbox":[112,478,336,40]}
+{"kind":"textbox","slide":1,"id":"10","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":2,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":2,"id":"3","role":"content contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":2,"id":"4","role":"header","text":"01 · FOUNDATION","textPreview":"01 · FOUNDATION","textChars":15,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":2,"id":"5","role":"header","text":"02 / 10","textPreview":"02 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":2,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":2,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":2,"id":"8","role":"title","text":"One source of truth. Many intelligence consumers.","textPreview":"One source of truth. Many intelligence consumers.","textChars":49,"textLines":1,"bbox":[64,86,760,142]}
+{"kind":"textbox","slide":2,"id":"9","role":"subtitle","text":"The stack separates authoritative facts, relationship projection, derived intelligence, and presentation.","textPreview":"The stack separates authoritative facts, relationship projection, derived intelligence, and presentation.","textChars":105,"textLines":1,"bbox":[66,234,720,70]}
+{"kind":"shape","slide":2,"id":"10","role":"card panel: POSTGRESQL","shapeType":"roundRect","bbox":[84,390,355.3333333333333,220]}
+{"kind":"shape","slide":2,"id":"11","role":"card accent: POSTGRESQL","shapeType":"rect","bbox":[84,390,8,220]}
+{"kind":"shape","slide":2,"id":"12","role":"icon badge","shapeType":"ellipse","bbox":[106,414,54,54]}
+{"kind":"shape","slide":2,"id":"13","role":"icon glyph","shapeType":"rect","bbox":[122,443,6,12]}
+{"kind":"shape","slide":2,"id":"14","role":"icon glyph","shapeType":"rect","bbox":[131,435,6,20]}
+{"kind":"shape","slide":2,"id":"15","role":"icon glyph","shapeType":"rect","bbox":[140,428,6,27]}
+{"kind":"textbox","slide":2,"id":"16","role":"card label","text":"POSTGRESQL","textPreview":"POSTGRESQL","textChars":10,"textLines":1,"bbox":[172,412,247.33333333333331,28]}
+{"kind":"textbox","slide":2,"id":"17","role":"card body: POSTGRESQL","text":"Domain facts, ledgers,\nimmutable activity events,\nand the transactional outbox\nremain authoritative.","textPreview":"Domain facts, ledgers, | immutable activity events, | and the transactional outbox | remain authoritative.","textChars":100,"textLines":4,"bbox":[108,476,307.3333333333333,112]}
+{"kind":"shape","slide":2,"id":"18","role":"card panel: NEO4J","shapeType":"roundRect","bbox":[463.3333333333333,390,355.3333333333333,220]}
+{"kind":"shape","slide":2,"id":"19","role":"card accent: NEO4J","shapeType":"rect","bbox":[463.3333333333333,390,8,220]}
+{"kind":"shape","slide":2,"id":"20","role":"icon badge","shapeType":"ellipse","bbox":[485.3333333333333,414,54,54]}
+{"kind":"shape","slide":2,"id":"21","role":"icon glyph","shapeType":"ellipse","bbox":[498.3333333333333,432,10,10]}
+{"kind":"shape","slide":2,"id":"22","role":"icon glyph","shapeType":"ellipse","bbox":[516.3333333333333,441,10,10]}
+{"kind":"shape","slide":2,"id":"23","role":"icon glyph","shapeType":"rect","bbox":[507.3333333333333,439,19,3]}
+{"kind":"textbox","slide":2,"id":"24","role":"card label","text":"NEO4J","textPreview":"NEO4J","textChars":5,"textLines":1,"bbox":[551.3333333333333,412,247.33333333333331,28]}
+{"kind":"textbox","slide":2,"id":"25","role":"card body: NEO4J","text":"An idempotent worker\nprojects rebuildable\nrelationship context—never\nchanging scores as facts.","textPreview":"An idempotent worker | projects rebuildable | relationship context—never | changing scores as facts.","textChars":94,"textLines":4,"bbox":[487.3333333333333,476,307.3333333333333,112]}
+{"kind":"shape","slide":2,"id":"26","role":"card panel: INTELLIGENCE","shapeType":"roundRect","bbox":[842.6666666666666,390,355.3333333333333,220]}
+{"kind":"shape","slide":2,"id":"27","role":"card accent: INTELLIGENCE","shapeType":"rect","bbox":[842.6666666666666,390,8,220]}
+{"kind":"shape","slide":2,"id":"28","role":"icon badge","shapeType":"ellipse","bbox":[864.6666666666666,414,54,54]}
+{"kind":"shape","slide":2,"id":"29","role":"icon glyph","shapeType":"roundRect","bbox":[877.6666666666666,429,26,13]}
+{"kind":"shape","slide":2,"id":"30","role":"icon glyph","shapeType":"roundRect","bbox":[882.6666666666666,438,26,13]}
+{"kind":"shape","slide":2,"id":"31","role":"icon glyph","shapeType":"roundRect","bbox":[887.6666666666666,447,20,10]}
+{"kind":"textbox","slide":2,"id":"32","role":"card label","text":"INTELLIGENCE","textPreview":"INTELLIGENCE","textChars":12,"textLines":1,"bbox":[930.6666666666666,412,247.33333333333331,28]}
+{"kind":"textbox","slide":2,"id":"33","role":"card body: INTELLIGENCE","text":"Temporal and graph features\nfeed twins, decisions,\nexplanations, APIs, UI, and\nCopilot.","textPreview":"Temporal and graph features | feed twins, decisions, | explanations, APIs, UI, and | Copilot.","textChars":87,"textLines":4,"bbox":[866.6666666666666,476,307.3333333333333,112]}
+{"kind":"textbox","slide":2,"id":"34","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":3,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":3,"id":"3","role":"metrics contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":3,"id":"4","role":"header","text":"02 · TEMPORAL CORE","textPreview":"02 · TEMPORAL CORE","textChars":18,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":3,"id":"5","role":"header","text":"03 / 10","textPreview":"03 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":3,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":3,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":3,"id":"8","role":"title","text":"Correctness before intelligence","textPreview":"Correctness before intelligence","textChars":31,"textLines":1,"bbox":[64,86,700,142]}
+{"kind":"textbox","slide":3,"id":"9","role":"subtitle","text":"Every feature, prediction, and decision is bounded by the selected point in time.","textPreview":"Every feature, prediction, and decision is bounded by the selected point in time.","textChars":81,"textLines":1,"bbox":[66,234,700,70]}
+{"kind":"shape","slide":3,"id":"10","role":"metric panel: Hard boundary for every calculation","shapeType":"roundRect","bbox":[92,404,330,174]}
+{"kind":"shape","slide":3,"id":"11","role":"metric accent: Hard boundary for every calculation","shapeType":"rect","bbox":[92,404,330,7]}
+{"kind":"textbox","slide":3,"id":"12","role":"metric value","text":"as_of","textPreview":"as_of","textChars":5,"textLines":1,"bbox":[114,428,286,54]}
+{"kind":"textbox","slide":3,"id":"13","role":"metric label","text":"Hard boundary for every calculation","textPreview":"Hard boundary for every calculation","textChars":35,"textLines":1,"bbox":[116,486,282,38]}
+{"kind":"textbox","slide":3,"id":"14","role":"metric note","text":"No future leakage","textPreview":"No future leakage","textChars":17,"textLines":1,"bbox":[116,536,282,22]}
+{"kind":"shape","slide":3,"id":"15","role":"metric panel: occurred_at + recorded_at","shapeType":"roundRect","bbox":[462,404,330,174]}
+{"kind":"shape","slide":3,"id":"16","role":"metric accent: occurred_at + recorded_at","shapeType":"rect","bbox":[462,404,330,7]}
+{"kind":"textbox","slide":3,"id":"17","role":"metric value","text":"2 clocks","textPreview":"2 clocks","textChars":8,"textLines":1,"bbox":[484,428,286,54]}
+{"kind":"textbox","slide":3,"id":"18","role":"metric label","text":"occurred_at + recorded_at","textPreview":"occurred_at + recorded_at","textChars":25,"textLines":1,"bbox":[486,486,282,38]}
+{"kind":"textbox","slide":3,"id":"19","role":"metric note","text":"Event-time and ingestion-time","textPreview":"Event-time and ingestion-time","textChars":29,"textLines":1,"bbox":[486,536,282,22]}
+{"kind":"shape","slide":3,"id":"20","role":"metric panel: Contradictions stay in history","shapeType":"roundRect","bbox":[832,404,330,174]}
+{"kind":"shape","slide":3,"id":"21","role":"metric accent: Contradictions stay in history","shapeType":"rect","bbox":[832,404,330,7]}
+{"kind":"textbox","slide":3,"id":"22","role":"metric value","text":"immutable","textPreview":"immutable","textChars":9,"textLines":1,"bbox":[854,428,286,54]}
+{"kind":"textbox","slide":3,"id":"23","role":"metric label","text":"Contradictions stay in history","textPreview":"Contradictions stay in history","textChars":30,"textLines":1,"bbox":[856,486,282,38]}
+{"kind":"textbox","slide":3,"id":"24","role":"metric note","text":"Warnings surface anomalies","textPreview":"Warnings surface anomalies","textChars":26,"textLines":1,"bbox":[856,536,282,22]}
+{"kind":"textbox","slide":3,"id":"25","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":4,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":4,"id":"3","role":"content contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":4,"id":"4","role":"header","text":"03 · GRAPH PROJECTION","textPreview":"03 · GRAPH PROJECTION","textChars":21,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":4,"id":"5","role":"header","text":"04 / 10","textPreview":"04 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":4,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":4,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":4,"id":"8","role":"title","text":"Replayable graph projection","textPreview":"Replayable graph projection","textChars":27,"textLines":1,"bbox":[64,86,760,142]}
+{"kind":"textbox","slide":4,"id":"9","role":"subtitle","text":"The transactional outbox makes relationship projection reliable, idempotent, and auditable.","textPreview":"The transactional outbox makes relationship projection reliable, idempotent, and auditable.","textChars":91,"textLines":1,"bbox":[66,234,720,70]}
+{"kind":"shape","slide":4,"id":"10","role":"card panel: ONE TRANSACTION","shapeType":"roundRect","bbox":[84,390,355.3333333333333,220]}
+{"kind":"shape","slide":4,"id":"11","role":"card accent: ONE TRANSACTION","shapeType":"rect","bbox":[84,390,8,220]}
+{"kind":"shape","slide":4,"id":"12","role":"icon badge","shapeType":"ellipse","bbox":[106,414,54,54]}
+{"kind":"shape","slide":4,"id":"13","role":"icon glyph","shapeType":"rect","bbox":[122,443,6,12]}
+{"kind":"shape","slide":4,"id":"14","role":"icon glyph","shapeType":"rect","bbox":[131,435,6,20]}
+{"kind":"shape","slide":4,"id":"15","role":"icon glyph","shapeType":"rect","bbox":[140,428,6,27]}
+{"kind":"textbox","slide":4,"id":"16","role":"card label","text":"ONE TRANSACTION","textPreview":"ONE TRANSACTION","textChars":15,"textLines":1,"bbox":[172,412,247.33333333333331,28]}
+{"kind":"textbox","slide":4,"id":"17","role":"card body: ONE TRANSACTION","text":"Domain write + activity\nevent + outbox event commit\nor roll back together.","textPreview":"Domain write + activity | event + outbox event commit | or roll back together.","textChars":74,"textLines":3,"bbox":[108,476,307.3333333333333,112]}
+{"kind":"shape","slide":4,"id":"18","role":"card panel: PROJECT","shapeType":"roundRect","bbox":[463.3333333333333,390,355.3333333333333,220]}
+{"kind":"shape","slide":4,"id":"19","role":"card accent: PROJECT","shapeType":"rect","bbox":[463.3333333333333,390,8,220]}
+{"kind":"shape","slide":4,"id":"20","role":"icon badge","shapeType":"ellipse","bbox":[485.3333333333333,414,54,54]}
+{"kind":"shape","slide":4,"id":"21","role":"icon glyph","shapeType":"ellipse","bbox":[498.3333333333333,432,10,10]}
+{"kind":"shape","slide":4,"id":"22","role":"icon glyph","shapeType":"ellipse","bbox":[516.3333333333333,441,10,10]}
+{"kind":"shape","slide":4,"id":"23","role":"icon glyph","shapeType":"rect","bbox":[507.3333333333333,439,19,3]}
+{"kind":"textbox","slide":4,"id":"24","role":"card label","text":"PROJECT","textPreview":"PROJECT","textChars":7,"textLines":1,"bbox":[551.3333333333333,412,247.33333333333331,28]}
+{"kind":"textbox","slide":4,"id":"25","role":"card body: PROJECT","text":"The worker claims pending\nevents and applies\nparameterized Cypher with\nidempotent MERGE operations.","textPreview":"The worker claims pending | events and applies | parameterized Cypher with | idempotent MERGE operations.","textChars":99,"textLines":4,"bbox":[487.3333333333333,476,307.3333333333333,112]}
+{"kind":"shape","slide":4,"id":"26","role":"card panel: REBUILD","shapeType":"roundRect","bbox":[842.6666666666666,390,355.3333333333333,220]}
+{"kind":"shape","slide":4,"id":"27","role":"card accent: REBUILD","shapeType":"rect","bbox":[842.6666666666666,390,8,220]}
+{"kind":"shape","slide":4,"id":"28","role":"icon badge","shapeType":"ellipse","bbox":[864.6666666666666,414,54,54]}
+{"kind":"shape","slide":4,"id":"29","role":"icon glyph","shapeType":"roundRect","bbox":[877.6666666666666,429,26,13]}
+{"kind":"shape","slide":4,"id":"30","role":"icon glyph","shapeType":"roundRect","bbox":[882.6666666666666,438,26,13]}
+{"kind":"shape","slide":4,"id":"31","role":"icon glyph","shapeType":"roundRect","bbox":[887.6666666666666,447,20,10]}
+{"kind":"textbox","slide":4,"id":"32","role":"card label","text":"REBUILD","textPreview":"REBUILD","textChars":7,"textLines":1,"bbox":[930.6666666666666,412,247.33333333333331,28]}
+{"kind":"textbox","slide":4,"id":"33","role":"card body: REBUILD","text":"If Neo4j is corrupted, clear\nit and replay PostgreSQL\nfacts and events from\nscratch.","textPreview":"If Neo4j is corrupted, clear | it and replay PostgreSQL | facts and events from | scratch.","textChars":84,"textLines":4,"bbox":[866.6666666666666,476,307.3333333333333,112]}
+{"kind":"textbox","slide":4,"id":"34","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":5,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":5,"id":"3","role":"content contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":5,"id":"4","role":"header","text":"04 · WHY GRAPH","textPreview":"04 · WHY GRAPH","textChars":14,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":5,"id":"5","role":"header","text":"05 / 10","textPreview":"05 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":5,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":5,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":5,"id":"8","role":"title","text":"Graphs reveal context hidden across joins","textPreview":"Graphs reveal context hidden across joins","textChars":41,"textLines":1,"bbox":[64,86,760,142]}
+{"kind":"textbox","slide":5,"id":"9","role":"subtitle","text":"Multi-hop relationships turn isolated transactions into connected evidence.","textPreview":"Multi-hop relationships turn isolated transactions into connected evidence.","textChars":75,"textLines":1,"bbox":[66,234,720,70]}
+{"kind":"shape","slide":5,"id":"10","role":"card panel: FRAUD","shapeType":"roundRect","bbox":[84,390,355.3333333333333,220]}
+{"kind":"shape","slide":5,"id":"11","role":"card accent: FRAUD","shapeType":"rect","bbox":[84,390,8,220]}
+{"kind":"shape","slide":5,"id":"12","role":"icon badge","shapeType":"ellipse","bbox":[106,414,54,54]}
+{"kind":"shape","slide":5,"id":"13","role":"icon glyph","shapeType":"rect","bbox":[122,443,6,12]}
+{"kind":"shape","slide":5,"id":"14","role":"icon glyph","shapeType":"rect","bbox":[131,435,6,20]}
+{"kind":"shape","slide":5,"id":"15","role":"icon glyph","shapeType":"rect","bbox":[140,428,6,27]}
+{"kind":"textbox","slide":5,"id":"16","role":"card label","text":"FRAUD","textPreview":"FRAUD","textChars":5,"textLines":1,"bbox":[172,412,247.33333333333331,28]}
+{"kind":"textbox","slide":5,"id":"17","role":"card body: FRAUD","text":"Shared devices, shared\nwallets, merchant funnels,\ncircular movement, and\nproximity to known fraud.","textPreview":"Shared devices, shared | wallets, merchant funnels, | circular movement, and | proximity to known fraud.","textChars":98,"textLines":4,"bbox":[108,476,307.3333333333333,112]}
+{"kind":"shape","slide":5,"id":"18","role":"card panel: CUSTOMER 360","shapeType":"roundRect","bbox":[463.3333333333333,390,355.3333333333333,220]}
+{"kind":"shape","slide":5,"id":"19","role":"card accent: CUSTOMER 360","shapeType":"rect","bbox":[463.3333333333333,390,8,220]}
+{"kind":"shape","slide":5,"id":"20","role":"icon badge","shapeType":"ellipse","bbox":[485.3333333333333,414,54,54]}
+{"kind":"shape","slide":5,"id":"21","role":"icon glyph","shapeType":"ellipse","bbox":[498.3333333333333,432,10,10]}
+{"kind":"shape","slide":5,"id":"22","role":"icon glyph","shapeType":"ellipse","bbox":[516.3333333333333,441,10,10]}
+{"kind":"shape","slide":5,"id":"23","role":"icon glyph","shapeType":"rect","bbox":[507.3333333333333,439,19,3]}
+{"kind":"textbox","slide":5,"id":"24","role":"card label","text":"CUSTOMER 360","textPreview":"CUSTOMER 360","textChars":12,"textLines":1,"bbox":[551.3333333333333,412,247.33333333333331,28]}
+{"kind":"textbox","slide":5,"id":"25","role":"card body: CUSTOMER 360","text":"A traversable neighbourhood\nacross customer, device,\nwallet, merchant, plan, and\ntravel context.","textPreview":"A traversable neighbourhood | across customer, device, | wallet, merchant, plan, and | travel context.","textChars":96,"textLines":4,"bbox":[487.3333333333333,476,307.3333333333333,112]}
+{"kind":"shape","slide":5,"id":"26","role":"card panel: EXPLANATION","shapeType":"roundRect","bbox":[842.6666666666666,390,355.3333333333333,220]}
+{"kind":"shape","slide":5,"id":"27","role":"card accent: EXPLANATION","shapeType":"rect","bbox":[842.6666666666666,390,8,220]}
+{"kind":"shape","slide":5,"id":"28","role":"icon badge","shapeType":"ellipse","bbox":[864.6666666666666,414,54,54]}
+{"kind":"shape","slide":5,"id":"29","role":"icon glyph","shapeType":"roundRect","bbox":[877.6666666666666,429,26,13]}
+{"kind":"shape","slide":5,"id":"30","role":"icon glyph","shapeType":"roundRect","bbox":[882.6666666666666,438,26,13]}
+{"kind":"shape","slide":5,"id":"31","role":"icon glyph","shapeType":"roundRect","bbox":[887.6666666666666,447,20,10]}
+{"kind":"textbox","slide":5,"id":"32","role":"card label","text":"EXPLANATION","textPreview":"EXPLANATION","textChars":11,"textLines":1,"bbox":[930.6666666666666,412,247.33333333333331,28]}
+{"kind":"textbox","slide":5,"id":"33","role":"card body: EXPLANATION","text":"Evidence paths show why\ncontext matters instead of\nreturning an unexplained\nrisk score.","textPreview":"Evidence paths show why | context matters instead of | returning an unexplained | risk score.","textChars":87,"textLines":4,"bbox":[866.6666666666666,476,307.3333333333333,112]}
+{"kind":"textbox","slide":5,"id":"34","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":6,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":6,"id":"3","role":"metrics contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":6,"id":"4","role":"header","text":"05 · FEATURE CONTRACT","textPreview":"05 · FEATURE CONTRACT","textChars":21,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":6,"id":"5","role":"header","text":"06 / 10","textPreview":"06 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":6,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":6,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":6,"id":"8","role":"title","text":"One reusable feature contract","textPreview":"One reusable feature contract","textChars":29,"textLines":1,"bbox":[64,86,700,142]}
+{"kind":"textbox","slide":6,"id":"9","role":"subtitle","text":"CustomerFeatureService(customer_ref, as_of) joins bounded relational and graph context.","textPreview":"CustomerFeatureService(customer_ref, as_of) joins bounded relational and graph context.","textChars":87,"textLines":1,"bbox":[66,234,700,70]}
+{"kind":"shape","slide":6,"id":"10","role":"metric panel: Temporal feature families","shapeType":"roundRect","bbox":[92,404,330,174]}
+{"kind":"shape","slide":6,"id":"11","role":"metric accent: Temporal feature families","shapeType":"rect","bbox":[92,404,330,7]}
+{"kind":"textbox","slide":6,"id":"12","role":"metric value","text":"8 groups","textPreview":"8 groups","textChars":8,"textLines":1,"bbox":[114,428,286,54]}
+{"kind":"textbox","slide":6,"id":"13","role":"metric label","text":"Temporal feature families","textPreview":"Temporal feature families","textChars":25,"textLines":1,"bbox":[116,486,282,38]}
+{"kind":"textbox","slide":6,"id":"14","role":"metric note","text":"Usage to campaigns","textPreview":"Usage to campaigns","textChars":18,"textLines":1,"bbox":[116,536,282,22]}
+{"kind":"shape","slide":6,"id":"15","role":"metric panel: customer-features-v1","shapeType":"roundRect","bbox":[462,404,330,174]}
+{"kind":"shape","slide":6,"id":"16","role":"metric accent: customer-features-v1","shapeType":"rect","bbox":[462,404,330,7]}
+{"kind":"textbox","slide":6,"id":"17","role":"metric value","text":"v1","textPreview":"v1","textChars":2,"textLines":1,"bbox":[484,428,286,54]}
+{"kind":"textbox","slide":6,"id":"18","role":"metric label","text":"customer-features-v1","textPreview":"customer-features-v1","textChars":20,"textLines":1,"bbox":[486,486,282,38]}
+{"kind":"textbox","slide":6,"id":"19","role":"metric note","text":"Versioned contract","textPreview":"Versioned contract","textChars":18,"textLines":1,"bbox":[486,536,282,22]}
+{"kind":"shape","slide":6,"id":"20","role":"metric panel: Deterministic snapshot identity","shapeType":"roundRect","bbox":[832,404,330,174]}
+{"kind":"shape","slide":6,"id":"21","role":"metric accent: Deterministic snapshot identity","shapeType":"rect","bbox":[832,404,330,7]}
+{"kind":"textbox","slide":6,"id":"22","role":"metric value","text":"UUID5","textPreview":"UUID5","textChars":5,"textLines":1,"bbox":[854,428,286,54]}
+{"kind":"textbox","slide":6,"id":"23","role":"metric label","text":"Deterministic snapshot identity","textPreview":"Deterministic snapshot identity","textChars":31,"textLines":1,"bbox":[856,486,282,38]}
+{"kind":"textbox","slide":6,"id":"24","role":"metric note","text":"Idempotent materialization","textPreview":"Idempotent materialization","textChars":26,"textLines":1,"bbox":[856,536,282,22]}
+{"kind":"textbox","slide":6,"id":"25","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":7,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":7,"id":"3","role":"content contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":7,"id":"4","role":"header","text":"06 · CUSTOMER INTELLIGENCE","textPreview":"06 · CUSTOMER INTELLIGENCE","textChars":26,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":7,"id":"5","role":"header","text":"07 / 10","textPreview":"07 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":7,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":7,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":7,"id":"8","role":"title","text":"Memory → behaviour → churn","textPreview":"Memory → behaviour → churn","textChars":26,"textLines":1,"bbox":[64,86,760,142]}
+{"kind":"textbox","slide":7,"id":"9","role":"subtitle","text":"Each layer adds interpretation while preserving the evidence below it.","textPreview":"Each layer adds interpretation while preserving the evidence below it.","textChars":70,"textLines":1,"bbox":[66,234,720,70]}
+{"kind":"shape","slide":7,"id":"10","role":"card panel: EVENT MEMORY","shapeType":"roundRect","bbox":[84,390,355.3333333333333,220]}
+{"kind":"shape","slide":7,"id":"11","role":"card accent: EVENT MEMORY","shapeType":"rect","bbox":[84,390,8,220]}
+{"kind":"shape","slide":7,"id":"12","role":"icon badge","shapeType":"ellipse","bbox":[106,414,54,54]}
+{"kind":"shape","slide":7,"id":"13","role":"icon glyph","shapeType":"rect","bbox":[122,443,6,12]}
+{"kind":"shape","slide":7,"id":"14","role":"icon glyph","shapeType":"rect","bbox":[131,435,6,20]}
+{"kind":"shape","slide":7,"id":"15","role":"icon glyph","shapeType":"rect","bbox":[140,428,6,27]}
+{"kind":"textbox","slide":7,"id":"16","role":"card label","text":"EVENT MEMORY","textPreview":"EVENT MEMORY","textChars":12,"textLines":1,"bbox":[172,412,247.33333333333331,28]}
+{"kind":"textbox","slide":7,"id":"17","role":"card body: EVENT MEMORY","text":"Raw travel events become\nepisodes; retrieval\nprioritizes the customer's\nown similar history.","textPreview":"Raw travel events become | episodes; retrieval | prioritizes the customer's | own similar history.","textChars":92,"textLines":4,"bbox":[108,476,307.3333333333333,112]}
+{"kind":"shape","slide":7,"id":"18","role":"card panel: BEHAVIOUR","shapeType":"roundRect","bbox":[463.3333333333333,390,355.3333333333333,220]}
+{"kind":"shape","slide":7,"id":"19","role":"card accent: BEHAVIOUR","shapeType":"rect","bbox":[463.3333333333333,390,8,220]}
+{"kind":"shape","slide":7,"id":"20","role":"icon badge","shapeType":"ellipse","bbox":[485.3333333333333,414,54,54]}
+{"kind":"shape","slide":7,"id":"21","role":"icon glyph","shapeType":"ellipse","bbox":[498.3333333333333,432,10,10]}
+{"kind":"shape","slide":7,"id":"22","role":"icon glyph","shapeType":"ellipse","bbox":[516.3333333333333,441,10,10]}
+{"kind":"shape","slide":7,"id":"23","role":"icon glyph","shapeType":"rect","bbox":[507.3333333333333,439,19,3]}
+{"kind":"textbox","slide":7,"id":"24","role":"card label","text":"BEHAVIOUR","textPreview":"BEHAVIOUR","textChars":9,"textLines":1,"bbox":[551.3333333333333,412,247.33333333333331,28]}
+{"kind":"textbox","slide":7,"id":"25","role":"card body: BEHAVIOUR","text":"Evidence-backed segments\nsummarize patterns without\nreplacing the underlying\nfacts.","textPreview":"Evidence-backed segments | summarize patterns without | replacing the underlying | facts.","textChars":83,"textLines":4,"bbox":[487.3333333333333,476,307.3333333333333,112]}
+{"kind":"shape","slide":7,"id":"26","role":"card panel: CHURN","shapeType":"roundRect","bbox":[842.6666666666666,390,355.3333333333333,220]}
+{"kind":"shape","slide":7,"id":"27","role":"card accent: CHURN","shapeType":"rect","bbox":[842.6666666666666,390,8,220]}
+{"kind":"shape","slide":7,"id":"28","role":"icon badge","shapeType":"ellipse","bbox":[864.6666666666666,414,54,54]}
+{"kind":"shape","slide":7,"id":"29","role":"icon glyph","shapeType":"roundRect","bbox":[877.6666666666666,429,26,13]}
+{"kind":"shape","slide":7,"id":"30","role":"icon glyph","shapeType":"roundRect","bbox":[882.6666666666666,438,26,13]}
+{"kind":"shape","slide":7,"id":"31","role":"icon glyph","shapeType":"roundRect","bbox":[887.6666666666666,447,20,10]}
+{"kind":"textbox","slide":7,"id":"32","role":"card label","text":"CHURN","textPreview":"CHURN","textChars":5,"textLines":1,"bbox":[930.6666666666666,412,247.33333333333331,28]}
+{"kind":"textbox","slide":7,"id":"33","role":"card body: CHURN","text":"An interpretable baseline is\ncompared with a stronger\nmodel; predictions remain\nauditable outputs.","textPreview":"An interpretable baseline is | compared with a stronger | model; predictions remain | auditable outputs.","textChars":98,"textLines":4,"bbox":[866.6666666666666,476,307.3333333333333,112]}
+{"kind":"textbox","slide":7,"id":"34","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":8,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":8,"id":"3","role":"content contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":8,"id":"4","role":"header","text":"07 · ACTIONABLE INTELLIGENCE","textPreview":"07 · ACTIONABLE INTELLIGENCE","textChars":28,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":8,"id":"5","role":"header","text":"08 / 10","textPreview":"08 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":8,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":8,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":8,"id":"8","role":"title","text":"Three capabilities, one governance model","textPreview":"Three capabilities, one governance model","textChars":40,"textLines":1,"bbox":[64,86,760,142]}
+{"kind":"textbox","slide":8,"id":"9","role":"subtitle","text":"Recommendations, fraud, and forecasting propose evidence-backed actions without executing policy.","textPreview":"Recommendations, fraud, and forecasting propose evidence-backed actions without executing policy.","textChars":97,"textLines":1,"bbox":[66,234,720,70]}
+{"kind":"shape","slide":8,"id":"10","role":"card panel: RECOMMEND","shapeType":"roundRect","bbox":[84,390,355.3333333333333,220]}
+{"kind":"shape","slide":8,"id":"11","role":"card accent: RECOMMEND","shapeType":"rect","bbox":[84,390,8,220]}
+{"kind":"shape","slide":8,"id":"12","role":"icon badge","shapeType":"ellipse","bbox":[106,414,54,54]}
+{"kind":"shape","slide":8,"id":"13","role":"icon glyph","shapeType":"rect","bbox":[122,443,6,12]}
+{"kind":"shape","slide":8,"id":"14","role":"icon glyph","shapeType":"rect","bbox":[131,435,6,20]}
+{"kind":"shape","slide":8,"id":"15","role":"icon glyph","shapeType":"rect","bbox":[140,428,6,27]}
+{"kind":"textbox","slide":8,"id":"16","role":"card label","text":"RECOMMEND","textPreview":"RECOMMEND","textChars":9,"textLines":1,"bbox":[172,412,247.33333333333331,28]}
+{"kind":"textbox","slide":8,"id":"17","role":"card body: RECOMMEND","text":"Generate only from the real\ncatalogue, rank candidates,\nand expose uncertainty\nmodes.","textPreview":"Generate only from the real | catalogue, rank candidates, | and expose uncertainty | modes.","textChars":85,"textLines":4,"bbox":[108,476,307.3333333333333,112]}
+{"kind":"shape","slide":8,"id":"18","role":"card panel: GRAPH FRAUD","shapeType":"roundRect","bbox":[463.3333333333333,390,355.3333333333333,220]}
+{"kind":"shape","slide":8,"id":"19","role":"card accent: GRAPH FRAUD","shapeType":"rect","bbox":[463.3333333333333,390,8,220]}
+{"kind":"shape","slide":8,"id":"20","role":"icon badge","shapeType":"ellipse","bbox":[485.3333333333333,414,54,54]}
+{"kind":"shape","slide":8,"id":"21","role":"icon glyph","shapeType":"ellipse","bbox":[498.3333333333333,432,10,10]}
+{"kind":"shape","slide":8,"id":"22","role":"icon glyph","shapeType":"ellipse","bbox":[516.3333333333333,441,10,10]}
+{"kind":"shape","slide":8,"id":"23","role":"icon glyph","shapeType":"rect","bbox":[507.3333333333333,439,19,3]}
+{"kind":"textbox","slide":8,"id":"24","role":"card label","text":"GRAPH FRAUD","textPreview":"GRAPH FRAUD","textChars":11,"textLines":1,"bbox":[551.3333333333333,412,247.33333333333331,28]}
+{"kind":"textbox","slide":8,"id":"25","role":"card body: GRAPH FRAUD","text":"Combine transaction rules\nwith shared-device,\nneighbourhood, and two-hop\ngraph risk.","textPreview":"Combine transaction rules | with shared-device, | neighbourhood, and two-hop | graph risk.","textChars":84,"textLines":4,"bbox":[487.3333333333333,476,307.3333333333333,112]}
+{"kind":"shape","slide":8,"id":"26","role":"card panel: SFA FORECAST","shapeType":"roundRect","bbox":[842.6666666666666,390,355.3333333333333,220]}
+{"kind":"shape","slide":8,"id":"27","role":"card accent: SFA FORECAST","shapeType":"rect","bbox":[842.6666666666666,390,8,220]}
+{"kind":"shape","slide":8,"id":"28","role":"icon badge","shapeType":"ellipse","bbox":[864.6666666666666,414,54,54]}
+{"kind":"shape","slide":8,"id":"29","role":"icon glyph","shapeType":"roundRect","bbox":[877.6666666666666,429,26,13]}
+{"kind":"shape","slide":8,"id":"30","role":"icon glyph","shapeType":"roundRect","bbox":[882.6666666666666,438,26,13]}
+{"kind":"shape","slide":8,"id":"31","role":"icon glyph","shapeType":"roundRect","bbox":[887.6666666666666,447,20,10]}
+{"kind":"textbox","slide":8,"id":"32","role":"card label","text":"SFA FORECAST","textPreview":"SFA FORECAST","textChars":12,"textLines":1,"bbox":[930.6666666666666,412,247.33333333333331,28]}
+{"kind":"textbox","slide":8,"id":"33","role":"card body: SFA FORECAST","text":"Benchmark naive and\nmoving-average forecasts\nbefore translating stockout\nrisk into proposed actions.","textPreview":"Benchmark naive and | moving-average forecasts | before translating stockout | risk into proposed actions.","textChars":100,"textLines":4,"bbox":[866.6666666666666,476,307.3333333333333,112]}
+{"kind":"textbox","slide":8,"id":"34","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":9,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":9,"id":"3","role":"metrics contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":9,"id":"4","role":"header","text":"08 · GOVERNANCE","textPreview":"08 · GOVERNANCE","textChars":15,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":9,"id":"5","role":"header","text":"09 / 10","textPreview":"09 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":9,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":9,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":9,"id":"8","role":"title","text":"The digital twin assembles context; the decision engine governs action","textPreview":"The digital twin assembles context; the decision engine governs action","textChars":70,"textLines":1,"bbox":[64,86,700,142]}
+{"kind":"textbox","slide":9,"id":"9","role":"subtitle","text":"A computed twin provides a point-in-time view without becoming another source of truth.","textPreview":"A computed twin provides a point-in-time view without becoming another source of truth.","textChars":87,"textLines":1,"bbox":[66,234,700,70]}
+{"kind":"shape","slide":9,"id":"10","role":"metric panel: Observed to Recommended","shapeType":"roundRect","bbox":[92,404,330,174]}
+{"kind":"shape","slide":9,"id":"11","role":"metric accent: Observed to Recommended","shapeType":"rect","bbox":[92,404,330,7]}
+{"kind":"textbox","slide":9,"id":"12","role":"metric value","text":"9 lenses","textPreview":"9 lenses","textChars":8,"textLines":1,"bbox":[114,428,286,54]}
+{"kind":"textbox","slide":9,"id":"13","role":"metric label","text":"Observed to Recommended","textPreview":"Observed to Recommended","textChars":23,"textLines":1,"bbox":[116,486,282,38]}
+{"kind":"textbox","slide":9,"id":"14","role":"metric note","text":"Unknown stays visible","textPreview":"Unknown stays visible","textChars":21,"textLines":1,"bbox":[116,536,282,22]}
+{"kind":"shape","slide":9,"id":"15","role":"metric panel: Customer + selected as_of","shapeType":"roundRect","bbox":[462,404,330,174]}
+{"kind":"shape","slide":9,"id":"16","role":"metric accent: Customer + selected as_of","shapeType":"rect","bbox":[462,404,330,7]}
+{"kind":"textbox","slide":9,"id":"17","role":"metric value","text":"1 context","textPreview":"1 context","textChars":9,"textLines":1,"bbox":[484,428,286,54]}
+{"kind":"textbox","slide":9,"id":"18","role":"metric label","text":"Customer + selected as_of","textPreview":"Customer + selected as_of","textChars":25,"textLines":1,"bbox":[486,486,282,38]}
+{"kind":"textbox","slide":9,"id":"19","role":"metric note","text":"Computed on demand","textPreview":"Computed on demand","textChars":18,"textLines":1,"bbox":[486,536,282,22]}
+{"kind":"shape","slide":9,"id":"20","role":"metric panel: Rules + rank + confidence","shapeType":"roundRect","bbox":[832,404,330,174]}
+{"kind":"shape","slide":9,"id":"21","role":"metric accent: Rules + rank + confidence","shapeType":"rect","bbox":[832,404,330,7]}
+{"kind":"textbox","slide":9,"id":"22","role":"metric value","text":"NBA","textPreview":"NBA","textChars":3,"textLines":1,"bbox":[854,428,286,54]}
+{"kind":"textbox","slide":9,"id":"23","role":"metric label","text":"Rules + rank + confidence","textPreview":"Rules + rank + confidence","textChars":25,"textLines":1,"bbox":[856,486,282,38]}
+{"kind":"textbox","slide":9,"id":"24","role":"metric note","text":"Alternatives explained","textPreview":"Alternatives explained","textChars":22,"textLines":1,"bbox":[856,536,282,22]}
+{"kind":"textbox","slide":9,"id":"25","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
+{"kind":"image","slide":10,"id":"2","role":"fallback art plate","path":"fallback-data-url","bbox":[0,0,1280,720]}
+{"kind":"shape","slide":10,"id":"3","role":"content contrast overlay","shapeType":"rect","bbox":[0,0,1280,720]}
+{"kind":"textbox","slide":10,"id":"4","role":"header","text":"09 · DELIVERED EXPERIENCE","textPreview":"09 · DELIVERED EXPERIENCE","textChars":25,"textLines":1,"bbox":[64,34,430,24]}
+{"kind":"textbox","slide":10,"id":"5","role":"header","text":"10 / 10","textPreview":"10 / 10","textChars":7,"textLines":1,"bbox":[1114,34,104,24]}
+{"kind":"shape","slide":10,"id":"6","role":"header rule","shapeType":"rect","bbox":[64,64,1152,2]}
+{"kind":"shape","slide":10,"id":"7","role":"header marker","shapeType":"ellipse","bbox":[57,57,16,16]}
+{"kind":"textbox","slide":10,"id":"8","role":"title","text":"Delivered technical surface","textPreview":"Delivered technical surface","textChars":27,"textLines":1,"bbox":[64,86,760,142]}
+{"kind":"textbox","slide":10,"id":"9","role":"subtitle","text":"FastAPI, the showcase UI, and Copilot expose the evidence chain for discussion.","textPreview":"FastAPI, the showcase UI, and Copilot expose the evidence chain for discussion.","textChars":79,"textLines":1,"bbox":[66,234,720,70]}
+{"kind":"shape","slide":10,"id":"10","role":"card panel: FASTAPI","shapeType":"roundRect","bbox":[84,390,355.3333333333333,220]}
+{"kind":"shape","slide":10,"id":"11","role":"card accent: FASTAPI","shapeType":"rect","bbox":[84,390,8,220]}
+{"kind":"shape","slide":10,"id":"12","role":"icon badge","shapeType":"ellipse","bbox":[106,414,54,54]}
+{"kind":"shape","slide":10,"id":"13","role":"icon glyph","shapeType":"rect","bbox":[122,443,6,12]}
+{"kind":"shape","slide":10,"id":"14","role":"icon glyph","shapeType":"rect","bbox":[131,435,6,20]}
+{"kind":"shape","slide":10,"id":"15","role":"icon glyph","shapeType":"rect","bbox":[140,428,6,27]}
+{"kind":"textbox","slide":10,"id":"16","role":"card label","text":"FASTAPI","textPreview":"FASTAPI","textChars":7,"textLines":1,"bbox":[172,412,247.33333333333331,28]}
+{"kind":"textbox","slide":10,"id":"17","role":"card body: FASTAPI","text":"Stable typed routes wrap\napplication services; route\nfiles contain almost no\nbusiness logic.","textPreview":"Stable typed routes wrap | application services; route | files contain almost no | business logic.","textChars":92,"textLines":4,"bbox":[108,476,307.3333333333333,112]}
+{"kind":"shape","slide":10,"id":"18","role":"card panel: SHOWCASE UI","shapeType":"roundRect","bbox":[463.3333333333333,390,355.3333333333333,220]}
+{"kind":"shape","slide":10,"id":"19","role":"card accent: SHOWCASE UI","shapeType":"rect","bbox":[463.3333333333333,390,8,220]}
+{"kind":"shape","slide":10,"id":"20","role":"icon badge","shapeType":"ellipse","bbox":[485.3333333333333,414,54,54]}
+{"kind":"shape","slide":10,"id":"21","role":"icon glyph","shapeType":"ellipse","bbox":[498.3333333333333,432,10,10]}
+{"kind":"shape","slide":10,"id":"22","role":"icon glyph","shapeType":"ellipse","bbox":[516.3333333333333,441,10,10]}
+{"kind":"shape","slide":10,"id":"23","role":"icon glyph","shapeType":"rect","bbox":[507.3333333333333,439,19,3]}
+{"kind":"textbox","slide":10,"id":"24","role":"card label","text":"SHOWCASE UI","textPreview":"SHOWCASE UI","textChars":11,"textLines":1,"bbox":[551.3333333333333,412,247.33333333333331,28]}
+{"kind":"textbox","slide":10,"id":"25","role":"card body: SHOWCASE UI","text":"Intelligence overview,\ncustomer 360, graph\nexplorer, and capability\nstatus expose the evidence\nchain.","textPreview":"Intelligence overview, | customer 360, graph | explorer, and capability | status expose the evidence | chain.","textChars":101,"textLines":5,"bbox":[487.3333333333333,476,307.3333333333333,112]}
+{"kind":"shape","slide":10,"id":"26","role":"card panel: COPILOT","shapeType":"roundRect","bbox":[842.6666666666666,390,355.3333333333333,220]}
+{"kind":"shape","slide":10,"id":"27","role":"card accent: COPILOT","shapeType":"rect","bbox":[842.6666666666666,390,8,220]}
+{"kind":"shape","slide":10,"id":"28","role":"icon badge","shapeType":"ellipse","bbox":[864.6666666666666,414,54,54]}
+{"kind":"shape","slide":10,"id":"29","role":"icon glyph","shapeType":"roundRect","bbox":[877.6666666666666,429,26,13]}
+{"kind":"shape","slide":10,"id":"30","role":"icon glyph","shapeType":"roundRect","bbox":[882.6666666666666,438,26,13]}
+{"kind":"shape","slide":10,"id":"31","role":"icon glyph","shapeType":"roundRect","bbox":[887.6666666666666,447,20,10]}
+{"kind":"textbox","slide":10,"id":"32","role":"card label","text":"COPILOT","textPreview":"COPILOT","textChars":7,"textLines":1,"bbox":[930.6666666666666,412,247.33333333333331,28]}
+{"kind":"textbox","slide":10,"id":"33","role":"card body: COPILOT","text":"Natural-language\npresentation sits over\nstructured intelligence; it\nis not a source of facts or\nscores.","textPreview":"Natural-language | presentation sits over | structured intelligence; it | is not a source of facts or | scores.","textChars":103,"textLines":5,"bbox":[866.6666666666666,476,307.3333333333333,112]}
+{"kind":"textbox","slide":10,"id":"34","role":"caption","text":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textPreview":"TELCO DIGITAL  ·  SHARED INTELLIGENCE POC","textChars":41,"textLines":1,"bbox":[64,674,980,22]}
